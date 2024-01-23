@@ -24,7 +24,7 @@
 // Values are obtained from DataSheet
 // Names are named after the function before that time
 
-#define POWER_ON_DELAY			  	40
+#define POWER_ON_DELAY			  	35
 #define FUNCTION_SET_DELAY			1
 #define DISPLAY_ON_OFF_CONTROL		1
 #define DISPLAY_CLEAR_DELAY			2
@@ -45,7 +45,7 @@
 
 #define SEND_ENABLE_PULSE() \
 	DIO_enuSetPinValue(EN_PORT, EN_PIN, DIO_u8HIGH); \
-	_delay_ms(2); 									 \
+	_delay_ms(1); 									 \
 	DIO_enuSetPinValue(EN_PORT, EN_PIN, DIO_u8LOW); \
 /****************************************************/
 

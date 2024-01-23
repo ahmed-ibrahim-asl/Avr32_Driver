@@ -59,11 +59,6 @@ ErrorStatus_t LCD_enuInit(void){
 	#if(LCD_MODE == FOUR_BIT)
 
 		/******************** !Function Set! ********************/
-		LCD_enuSendCommand(0b0010);
-		SEND_ENABLE_PULSE();
-		LCD_enuSendCommand(0b0010);
-		SEND_ENABLE_PULSE();
-
 		/**
 		 * NFxx
 		 *
@@ -76,8 +71,12 @@ ErrorStatus_t LCD_enuInit(void){
 		 * */
 
 
-		LCD_enuSendCommand(0b1000);
+		LCD_enuSendCommand(0b00000010);
 		SEND_ENABLE_PULSE();
+		LCD_enuSendCommand(0x28);
+		SEND_ENABLE_PULSE();
+
+
 		/******************************************************/
 
 
@@ -116,12 +115,19 @@ ErrorStatus_t LCD_enuInit(void){
 
 
 	LCD_enuSendCommand(0b00001100);
+
 	/******************************************************/
 
 
 	/******************* !Display CLEAR! *******************/
 	LCD_enuSendCommand(CLEAR);
 	/******************************************************/
+
+
+	/******************* !Entry Mode Set! *******************/
+	LCD_enuSendCommand(0b00000110);
+	/******************************************************/
+
 
 	#ifndef LCD_MODE
 		#warning "LCD_MODE Macro is not defined"
@@ -316,16 +322,16 @@ ErrorStatus_t LCD_u8SetPosXY(uint8_t copy_u8PosX,uint8_t copy_u8PosY)
 	ErrorStatus_t local_u8ErrorState=ERROR_STATUS_OK;
 
 
-	unsigned int local_u8DDRAM=0;
+	uint8_t local_u8DDRAM=0;
 
 	switch(copy_u8PosY)
 	{
 		case 1:
-			local_u8DDRAM = copy_u8PosX;
+			local_u8DDRAM = copy_u8PosX+0x80;
 			break;
 
 		case 2:
-			local_u8DDRAM= copy_u8PosX+0x40;
+			local_u8DDRAM= copy_u8PosX+0xc0;
 			break;
 
 		default:
@@ -334,7 +340,7 @@ ErrorStatus_t LCD_u8SetPosXY(uint8_t copy_u8PosX,uint8_t copy_u8PosY)
 	}
 
 
-	SET_BIT(local_u8DDRAM,7); // From datasheet
+//	SET_BIT(local_u8DDRAM,7); // From datasheet
 
 	LCD_enuSendCommand(local_u8DDRAM);
 
