@@ -14,8 +14,9 @@
 #include "LCD_HAL_interface.h"
 /**********************************************************/
 
-
-
+#if(LCD_MODE == FOUR_BIT)
+	static uint8_t Global_u8FourBitInitFlag = 0;
+#endif
 
 /**********************************************************/
 static ErrorStatus_t WriteNLatch(uint8_t Copy_u8Data);
@@ -24,9 +25,6 @@ static ErrorStatus_t WriteNLatch(uint8_t Copy_u8Data);
 
 
 ErrorStatus_t LCD_enuInit(void){
-
-
-
 	ErrorStatus_t Local_enuErrrorState = ERROR_STATUS_FAILURE;
 
 
@@ -34,99 +32,97 @@ ErrorStatus_t LCD_enuInit(void){
 	DIO_enuSetPinDirection(RS_PORT, RS_PIN, DIO_u8OUTPUT);
 	DIO_enuSetPinDirection(RS_PORT, RW_PIN, DIO_u8OUTPUT);
 	DIO_enuSetPinDirection(RS_PORT, EN_PIN, DIO_u8OUTPUT);
-	/***************************************************/
+	/******************************************************/
 
 
-	/******************** !Data Pins! ********************/
-	// I choose these pins because they are common
-	// among 4bit and 8bit lcd modes.
+	/******************** !Data Pins! *********************/
 	DIO_enuSetPinDirection(DB7_PORT, DB7_PIN, DIO_u8OUTPUT);
 	DIO_enuSetPinDirection(DB6_PORT, DB6_PIN, DIO_u8OUTPUT);
 	DIO_enuSetPinDirection(DB5_PORT, DB5_PIN, DIO_u8OUTPUT);
 	DIO_enuSetPinDirection(DB4_PORT, DB4_PIN, DIO_u8OUTPUT);
+	/*******************************************************/
+
 
 	_delay_ms(POWER_ON_DELAY);
-	#if(LCD_MODE == EIGHT_BIT)
 
-		DIO_enuSetPinDirection(DB3_PORT, DB3_PIN, DIO_u8OUTPUT);
-		DIO_enuSetPinDirection(DB2_PORT, DB2_PIN, DIO_u8OUTPUT);
-		DIO_enuSetPinDirection(DB1_PORT, DB1_PIN, DIO_u8OUTPUT);
-		DIO_enuSetPinDirection(DB0_PORT, DB0_PIN, DIO_u8OUTPUT);
-	#endif
 
-	/***************************************************/
 
 	#if(LCD_MODE == FOUR_BIT)
 
 		/******************** !Function Set! ********************/
 		/**
-		 * NFxx
+		 * Note: this description is for third command, first and
+		 * second are have to be sent said by datasheet
+		 * 0011NFxx
 		 *
 		 * N - Number of lines
-		 * 		(0 - oneline | 1 - twolines)
+		 * 			 (0, One line | 1, Two lines )
+		 *
 		 *
 		 * F - Font
-		 * 		(0 - 5x7dot matrix)
-		 * 			means 5dot in width and 7dot in height
-		 * */
+		 * 			 (0 - 5x7 dot matrix)
+		 * 			 (means 5dot in width and 7dot height)
+		 */
 
 
-		LCD_enuSendCommand(0b00000010);
-		SEND_ENABLE_PULSE();
-		LCD_enuSendCommand(0x28);
-		SEND_ENABLE_PULSE();
-
-
-		/******************************************************/
-
-
-
+			LCD_enuSendCommand(0x20);
+			LCD_enuSendCommand(0x20);
+			LCD_enuSendCommand(0x80);
+			_delay_ms(FUNCTION_SET_DELAY);
+		/********************************************************/
 	#endif
 
 
 	#if(LCD_MODE == EIGHT_BIT)
+		/******************** !Data Pins! *********************/
+		DIO_enuSetPinDirection(DB3_PORT, DB3_PIN, DIO_u8OUTPUT);
+		DIO_enuSetPinDirection(DB2_PORT, DB2_PIN, DIO_u8OUTPUT);
+		DIO_enuSetPinDirection(DB1_PORT, DB1_PIN, DIO_u8OUTPUT);
+		DIO_enuSetPinDirection(DB0_PORT, DB0_PIN, DIO_u8OUTPUT);
+		/*******************************************************/
+
+
 
 		/******************** !Function Set! ********************/
-		/**
-		 * 0b0011NFxx
-		 *
-		 * N - Number of lines
-		 * 		(0 - oneline | 1 - twolines)
-		 *
-		 * F - Font
-		 * 		(0 - 5x7dot matrix)
-		 * 			means 5dot in width and 7dot in height
-		 * */
-
 		LCD_enuSendCommand(0b00111000);
 		_delay_ms(FUNCTION_SET_DELAY);
-		/******************************************************/
+		/********************************************************/
 	#endif
 
+
+
 	/******************* !Display ON/OFF! *******************/
-	/**
-	 *	1DCBxxxx
-	 *
-	 * D - Controls the Display on or off
-     * C - Controls Cursor on or off
-     * B - Control Blinking of cursor position
-     * x - don't care
-     * */
+		/**
+		 *  Note: this description is for second command first
+		 *  one has to be sent said by datasheet.
+		 *
+		 *
+		 * 1DCBxxxx
+		 * D - Controls the Display on or off
+		 * C - Controls Cursor on or off
+		 * B - Control Blinking of cursor position
+		 * x - don't care
+		 */
 
 
-	LCD_enuSendCommand(0b00001100);
-
-	/******************************************************/
+		LCD_enuSendCommand(0x00);
+		LCD_enuSendCommand(0xF0);
+		_delay_ms(DISPLAY_ON_OFF_CONTROL);
+	/********************************************************/
 
 
 	/******************* !Display CLEAR! *******************/
+	LCD_enuSendCommand(0x00);
 	LCD_enuSendCommand(CLEAR);
-	/******************************************************/
+	_delay_ms(DISPLAY_CLEAR_DELAY);
+	/*******************************************************/
 
 
 	/******************* !Entry Mode Set! *******************/
-	LCD_enuSendCommand(0b00000110);
-	/******************************************************/
+//	LCD_enuSendCommand(0x00);
+//	LCD_enuSendCommand(0b00000110);
+	/********************************************************/
+
 
 
 	#ifndef LCD_MODE
@@ -134,10 +130,20 @@ ErrorStatus_t LCD_enuInit(void){
 		return Local_enuErrrorState;
 	#endif
 
-	Local_enuErrrorState = ERROR_STATUS_OK;
+	#if(LCD_MODE == FOUR_BIT)
+		Global_u8FourBitInitFlag=1;
+	#endif
 
+		Local_enuErrrorState = ERROR_STATUS_OK;
 	return Local_enuErrrorState;
 }
+
+
+
+
+
+
+
 
 
 static ErrorStatus_t WriteNLatch(uint8_t Copy_u8Data){
@@ -154,14 +160,15 @@ static ErrorStatus_t WriteNLatch(uint8_t Copy_u8Data){
 
         SEND_ENABLE_PULSE();
 
+        if(Global_u8FourBitInitFlag){
         // Send Lower Nibble
-        DIO_enuSetPinValue(LCD_DATA_PORT, DB4_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_1));
-        DIO_enuSetPinValue(LCD_DATA_PORT, DB5_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_2));
-        DIO_enuSetPinValue(LCD_DATA_PORT, DB6_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_3));
-        DIO_enuSetPinValue(LCD_DATA_PORT, DB7_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_4));
+        	DIO_enuSetPinValue(LCD_DATA_PORT, DB4_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_1));
+        	DIO_enuSetPinValue(LCD_DATA_PORT, DB5_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_2));
+        	DIO_enuSetPinValue(LCD_DATA_PORT, DB6_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_3));
+        	DIO_enuSetPinValue(LCD_DATA_PORT, DB7_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_4));
 
-        SEND_ENABLE_PULSE();
-
+        	SEND_ENABLE_PULSE();
+        }
     #elif(LCD_MODE == EIGHT_BIT)
 
         DIO_enuSetPinValue(LCD_DATA_PORT, DB4_PIN, GET_BIT(Copy_u8Data, 4));
@@ -173,6 +180,8 @@ static ErrorStatus_t WriteNLatch(uint8_t Copy_u8Data){
         DIO_enuSetPinValue(LCD_DATA_PORT, DB5_PIN, GET_BIT(Copy_u8Data, 1));
         DIO_enuSetPinValue(LCD_DATA_PORT, DB6_PIN, GET_BIT(Copy_u8Data, 2));
         DIO_enuSetPinValue(LCD_DATA_PORT, DB7_PIN, GET_BIT(Copy_u8Data, 3));
+
+
         SEND_ENABLE_PULSE();
 
     #else

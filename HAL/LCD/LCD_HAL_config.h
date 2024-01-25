@@ -16,7 +16,7 @@
 
 /***************** Mode of Operation *****************/
 // Options: FOUR_BIT or EIGHT_BIT
-#define LCD_MODE 					FOUR_BIT
+#define LCD_MODE 					EIGHT_BIT
 /****************************************************/
 
 
@@ -29,7 +29,7 @@
 #define RW_PORT						DIO_u8PortB
 #define RW_PIN						DIO_u8PIN2
 
-#define EN_PORT 					DIO_u8PortB
+#define EN_PORT 					DIO_u8PortA
 #define EN_PIN						DIO_u8PIN3
 /***************************************************/
 
@@ -42,16 +42,16 @@
 
 
 	#define DB7_PORT				DIO_u8PortA
-	#define DB7_PIN					DIO_u8PIN7
+	#define DB7_PIN					DIO_u8PIN6
 
 	#define DB6_PORT				DIO_u8PortA
-	#define DB6_PIN					DIO_u8PIN6
+	#define DB6_PIN					DIO_u8PIN5
 
 	#define DB5_PORT				DIO_u8PortA
-	#define DB5_PIN					DIO_u8PIN5
+	#define DB5_PIN					DIO_u8PIN4
 
 	#define DB4_PORT				DIO_u8PortA
-	#define DB4_PIN					DIO_u8PIN4
+	#define DB4_PIN					DIO_u8PIN3
 #endif
 
 #if(LCD_MODE == EIGHT_BIT)

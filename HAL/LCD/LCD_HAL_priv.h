@@ -45,7 +45,7 @@
 
 #define SEND_ENABLE_PULSE() \
 	DIO_enuSetPinValue(EN_PORT, EN_PIN, DIO_u8HIGH); \
-	_delay_ms(1); 									 \
+	_delay_ms(2); 									 \
 	DIO_enuSetPinValue(EN_PORT, EN_PIN, DIO_u8LOW); \
 /****************************************************/
 
