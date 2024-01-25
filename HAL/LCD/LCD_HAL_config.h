@@ -29,7 +29,7 @@
 #define RW_PORT						DIO_u8PortB
 #define RW_PIN						DIO_u8PIN2
 
-#define EN_PORT 					DIO_u8PortA
+#define EN_PORT 					DIO_u8PortB
 #define EN_PIN						DIO_u8PIN3
 /***************************************************/
 

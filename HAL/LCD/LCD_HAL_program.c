@@ -70,6 +70,43 @@ ErrorStatus_t LCD_enuInit(void){
 			LCD_enuSendCommand(0x80);
 			_delay_ms(FUNCTION_SET_DELAY);
 		/********************************************************/
+
+
+		/******************* !Display ON/OFF! *******************/
+			/**
+		     *  Note: this description is for second command first
+		     *  one has to be sent said by datasheet.
+		     *
+		     *
+		     * 1DCBxxxx
+			 * D - Controls the Display on or off
+			 * C - Controls Cursor on or off
+			 * B - Control Blinking of cursor position
+			 * x - don't care
+			 */
+
+
+			  LCD_enuSendCommand(0x00);
+			  LCD_enuSendCommand(0xF0);
+			  _delay_ms(DISPLAY_ON_OFF_CONTROL);
+		/********************************************************/
+
+
+		/******************* !Display CLEAR! *******************/
+		LCD_enuSendCommand(0x00);
+		LCD_enuSendCommand(CLEAR);
+		_delay_ms(DISPLAY_CLEAR_DELAY);
+		/*******************************************************/
+
+
+	    /******************* !Entry Mode Set! *******************/
+	    LCD_enuSendCommand(0x00);
+	    LCD_enuSendCommand(0b00000110);
+	    /********************************************************/
+
+
+
+
 	#endif
 
 
@@ -84,44 +121,39 @@ ErrorStatus_t LCD_enuInit(void){
 
 
 		/******************** !Function Set! ********************/
-		LCD_enuSendCommand(0b00111000);
+		LCD_enuSendCommand(0x38);
 		_delay_ms(FUNCTION_SET_DELAY);
 		/********************************************************/
+
+
+		/******************* !Display ON/OFF! *******************/
+			/**
+		     *  Note: this description is for second command first
+		     *  one has to be sent said by datasheet.
+		     *
+		     *
+		     * 1DCBxxxx
+			 * D - Controls the Display on or off
+			 * C - Controls Cursor on or off
+			 * B - Control Blinking of cursor position
+			 * x - don't care
+			 */
+		LCD_enuSendCommand(0x0C);
+		/********************************************************/
+
+
+		/******************* !Display CLEAR! *******************/
+		LCD_enuSendCommand(CLEAR);
+		/********************************************************/
+
+
+	    /******************* !Entry Mode Set! *******************/
+	    LCD_enuSendCommand(0x00);
+	    LCD_enuSendCommand(0b00000110);
+	    /********************************************************/
+
+
 	#endif
-
-
-
-	/******************* !Display ON/OFF! *******************/
-		/**
-		 *  Note: this description is for second command first
-		 *  one has to be sent said by datasheet.
-		 *
-		 *
-		 * 1DCBxxxx
-		 * D - Controls the Display on or off
-		 * C - Controls Cursor on or off
-		 * B - Control Blinking of cursor position
-		 * x - don't care
-		 */
-
-
-		LCD_enuSendCommand(0x00);
-		LCD_enuSendCommand(0xF0);
-		_delay_ms(DISPLAY_ON_OFF_CONTROL);
-	/********************************************************/
-
-
-	/******************* !Display CLEAR! *******************/
-	LCD_enuSendCommand(0x00);
-	LCD_enuSendCommand(CLEAR);
-	_delay_ms(DISPLAY_CLEAR_DELAY);
-	/*******************************************************/
-
-
-	/******************* !Entry Mode Set! *******************/
-//	LCD_enuSendCommand(0x00);
-//	LCD_enuSendCommand(0b00000110);
-	/********************************************************/
 
 
 
@@ -133,6 +165,11 @@ ErrorStatus_t LCD_enuInit(void){
 	#if(LCD_MODE == FOUR_BIT)
 		Global_u8FourBitInitFlag=1;
 	#endif
+
+
+
+
+
 
 		Local_enuErrrorState = ERROR_STATUS_OK;
 	return Local_enuErrrorState;
@@ -171,15 +208,18 @@ static ErrorStatus_t WriteNLatch(uint8_t Copy_u8Data){
         }
     #elif(LCD_MODE == EIGHT_BIT)
 
-        DIO_enuSetPinValue(LCD_DATA_PORT, DB4_PIN, GET_BIT(Copy_u8Data, 4));
-        DIO_enuSetPinValue(LCD_DATA_PORT, DB5_PIN, GET_BIT(Copy_u8Data, 5));
-        DIO_enuSetPinValue(LCD_DATA_PORT, DB6_PIN, GET_BIT(Copy_u8Data, 6));
-        DIO_enuSetPinValue(LCD_DATA_PORT, DB7_PIN, GET_BIT(Copy_u8Data, 7));
+        DIO_enuSetPinValue(LCD_DATA_PORT, DB0_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_1));
+        DIO_enuSetPinValue(LCD_DATA_PORT, DB1_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_2));
+        DIO_enuSetPinValue(LCD_DATA_PORT, DB2_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_3));
+        DIO_enuSetPinValue(LCD_DATA_PORT, DB3_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_4));
 
-        DIO_enuSetPinValue(LCD_DATA_PORT, DB4_PIN, GET_BIT(Copy_u8Data, 0));
-        DIO_enuSetPinValue(LCD_DATA_PORT, DB5_PIN, GET_BIT(Copy_u8Data, 1));
-        DIO_enuSetPinValue(LCD_DATA_PORT, DB6_PIN, GET_BIT(Copy_u8Data, 2));
-        DIO_enuSetPinValue(LCD_DATA_PORT, DB7_PIN, GET_BIT(Copy_u8Data, 3));
+        DIO_enuSetPinValue(LCD_DATA_PORT, DB4_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_5));
+        DIO_enuSetPinValue(LCD_DATA_PORT, DB5_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_6));
+        DIO_enuSetPinValue(LCD_DATA_PORT, DB6_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_7));
+        DIO_enuSetPinValue(LCD_DATA_PORT, DB7_PIN, GET_BIT(Copy_u8Data, LCD_DATA_BIT_8));
+
+
+
 
 
         SEND_ENABLE_PULSE();
@@ -325,34 +365,112 @@ ErrorStatus_t LCD_enuIntegerToString(sint32_t Copy_u8data, uint8_t Copy_u8Base){
 
 
 
-//! Is not working
 ErrorStatus_t LCD_u8SetPosXY(uint8_t copy_u8PosX,uint8_t copy_u8PosY)
 {
-	ErrorStatus_t local_u8ErrorState=ERROR_STATUS_OK;
+	ErrorStatus_t local_u8ErrorState=ERROR_STATUS_FAILURE;
 
+	if(copy_u8PosX > 16 || copy_u8PosY > 2){
+		return local_u8ErrorState;
+	}
 
-	uint8_t local_u8DDRAM=0;
+	else{
+		uint8_t local_u8DDRAM=0;
 
-	switch(copy_u8PosY)
-	{
-		case 1:
-			local_u8DDRAM = copy_u8PosX+0x80;
+		switch(copy_u8PosY)
+		{
+			case 1:
+				local_u8DDRAM = copy_u8PosX;
+				break;
+
+			case 2:
+				local_u8DDRAM= copy_u8PosX+0x40;
+				break;
+
+			default:
+				local_u8ErrorState=ERROR_STATUS_FAILURE;
 			break;
+		}
 
-		case 2:
-			local_u8DDRAM= copy_u8PosX+0xc0;
-			break;
 
-		default:
-			local_u8ErrorState=ERROR_STATUS_FAILURE;
-		break;
+		SET_BIT(local_u8DDRAM,7); // From datasheet
+
+		LCD_enuSendCommand(local_u8DDRAM);
+	}
+
+	local_u8ErrorState = ERROR_STATUS_OK;
+	return local_u8ErrorState;
+}
+
+
+ErrorStatus_t LCD_u8StoreCustomChar(uint8_t *copy_u8pattern, uint8_t copy_u8CGRAM_index){
+	ErrorStatus_t Local_enuErrrorState = ERROR_STATUS_FAILURE;
+
+
+
+	if(copy_u8pattern == NULL || copy_u8CGRAM_index < 0 || copy_u8CGRAM_index > 8){
+		return Local_enuErrrorState;
+
+	}else{
+		uint8_t local_u8CGRAM= copy_u8CGRAM_index*8;
+
+		SET_BIT(local_u8CGRAM, 6); // from datasheet
+		LCD_enuSendCommand(local_u8CGRAM);
+
+
+
+		for(uint8_t Local_u8Index = 0; Local_u8Index < 8; Local_u8Index++){
+			LCD_enuSendData(copy_u8pattern[Local_u8Index]);
+		}
+
 	}
 
 
-//	SET_BIT(local_u8DDRAM,7); // From datasheet
-
-	LCD_enuSendCommand(local_u8DDRAM);
-
-	return local_u8ErrorState;
+	// return Home
+	LCD_enuSendCommand(RETURN_HOME);
+	Local_enuErrrorState = ERROR_STATUS_OK;
+	return Local_enuErrrorState;
 }
+
+
+
+ErrorStatus_t LCD_u8DisplayCustomChar(uint8_t copy_u8CGRAM_index, uint8_t copy_u8Col, uint8_t copy_u8Row){
+	ErrorStatus_t Local_enuErrrorState = ERROR_STATUS_FAILURE;
+
+
+	LCD_u8SetPosXY(copy_u8Row, copy_u8Col);
+
+	/*
+	 * if tried to write 0-7
+	 * we accessing reserved places in CGROM for CGRAM
+	 * */
+
+	LCD_enuSendData(copy_u8CGRAM_index);
+
+
+	Local_enuErrrorState = ERROR_STATUS_OK;
+	return Local_enuErrrorState;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

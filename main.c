@@ -18,13 +18,14 @@ int main(){
 
 
 	LCD_enuInit();
+	keypad_enuInit();
 
 
-	LCD_u8SendString("Ahmed Asl");
-	LCD_u8SetPosXY(0, 2);
 
-	LCD_u8SendString("Mohamed Asl");
 
+
+
+	LCD_u8DisplayCustomChar(0, 0, 0);
 
 	while(1){
 

@@ -27,11 +27,13 @@ ErrorStatus_t LCD_enuIntegerToString(sint32_t Copy_u8data, uint8_t Copy_u8Base);
 
 ErrorStatus_t LCD_u8SetPosXY(uint8_t copy_u8PosX, uint8_t copy_u8PosY);
 
-// 3. ErrorStatus_t LCD_enuDisplayAtXY(
-//	 uint8_t Copy_u8Column,
-//	 uint8_t Copy_u8Row,
-//	 const uint8_t* Copy_u8String)
 
 // 4. Display weird characters
+
+
+
+ErrorStatus_t LCD_u8StoreCustomChar(uint8_t *copy_u8pattern, uint8_t copy_u8CGRAM_index);
+
+ErrorStatus_t LCD_u8DisplayCustomChar(uint8_t copy_u8CGRAM_index, uint8_t copy_u8Col, uint8_t copy_u8Row);
 
 #endif /* HAL_LCD_HAL_INTERFACE_H_ */
