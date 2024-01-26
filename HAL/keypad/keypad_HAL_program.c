@@ -101,7 +101,6 @@ ErrorStatus_t keypad_enuGetPressedKey(uint8_t* Copy_pu8KeyValue){
 		uint8_t Local_u8RowIterator = 0;
 		uint8_t Local_u8COLIterator = 0;
 
-
 		uint8_t Local_u8Columns_ArrayPORT[KEYPAD_ROW_NUM] = {
 				KEYPAD_COL1_PORT, KEYPAD_COL2_PORT,
 				KEYPAD_COL3_PORT, KEYPAD_COL4_PORT};
@@ -116,7 +115,7 @@ ErrorStatus_t keypad_enuGetPressedKey(uint8_t* Copy_pu8KeyValue){
 			LCD_vidSetRowPattern(Local_u8RowIterator);
 
 
-			for( Local_u8COLIterator = 0; (Local_u8COLIterator <  KEYPAD_COL_NUM)&&Local_u8KeyStatus; Local_u8COLIterator++){
+			for( Local_u8COLIterator = 0; (Local_u8COLIterator <  KEYPAD_COL_NUM); Local_u8COLIterator++){
 
 				DIO_enuGetPinValue(
 						Local_u8Columns_ArrayPORT[Local_u8COLIterator],
@@ -125,24 +124,28 @@ ErrorStatus_t keypad_enuGetPressedKey(uint8_t* Copy_pu8KeyValue){
 
 
 
-			}
+			     if(Local_u8KeyStatus == KEY_PRESSED) {
 
-			if(Local_u8KeyStatus == 0){
-				/**
-				 * Negative one because in for loop last sequence we add one then checker fails
-				 * */
+
+			    	 *Copy_pu8KeyValue = keypadOutput[(KEYPAD_ROW_NUM * Local_u8RowIterator) + Local_u8COLIterator];
 
 
 
-				*Copy_pu8KeyValue= keypadOutput[(KEYPAD_ROW_NUM*Local_u8RowIterator) + Local_u8COLIterator-1];
-				break;
+			    	 while(Local_u8KeyStatus == KEY_PRESSED){
+			    			DIO_enuGetPinValue(
+			    							Local_u8Columns_ArrayPORT[Local_u8COLIterator],
+			    							Local_u8Columns_ArrayPIN[Local_u8COLIterator],
+			    							&Local_u8KeyStatus);
+			    	 }
+
+
+			    	 Local_enuErrrorState = ERROR_STATUS_OK;
+			    	 return Local_enuErrrorState;
+			      }
 			}
 
 		}
-		Local_enuErrrorState = ERROR_STATUS_OK;
 	}
-
-
 	return Local_enuErrrorState;
 }
 

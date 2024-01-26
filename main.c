@@ -27,15 +27,21 @@ int main(){
 
 
 	while(1){
-		keypad_enuGetPressedKey(&Local_u8KeypadValue);
 
-		   if(Local_u8KeypadValue != 0) {
-			   LCD_enuSendData(Local_u8KeypadValue);
-		    }
+		if(keypad_enuGetPressedKey(&Local_u8KeypadValue) != ERROR_STATUS_FAILURE){
 
+
+			if(Local_u8KeypadValue == 'K'){
+				LCD_enuSendCommand(0X01);
+			}
+
+			else{
+				LCD_enuSendData(Local_u8KeypadValue);
+			}
 
 	}
 
+	}
 	    return 0;
 }
 
