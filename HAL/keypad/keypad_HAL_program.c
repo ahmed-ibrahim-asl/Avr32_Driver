@@ -18,26 +18,31 @@ ErrorStatus_t keypad_enuInit(void){
 
 	ErrorStatus_t Local_enuErrrorState = ERROR_STATUS_FAILURE;
 
-	/************************ !Columns Pins! ************************/
-	 DIO_enuSetPinDirection(KEYPAD_COL1_PORT, KEYPAD_COL1_PIN, DIO_u8OUTPUT);
-	 DIO_enuSetPinDirection(KEYPAD_COL2_PORT, KEYPAD_COL2_PIN, DIO_u8OUTPUT);
-	 DIO_enuSetPinDirection(KEYPAD_COL3_PORT, KEYPAD_COL3_PIN, DIO_u8OUTPUT);
-	 DIO_enuSetPinDirection(KEYPAD_COL4_PORT, KEYPAD_COL4_PIN, DIO_u8OUTPUT);
-	/****************************************************************/
+	/************************ !Rows Pins! ************************/
+	 DIO_enuSetPinDirection(KEYPAD_ROW1_PORT, KEYPAD_ROW1_PIN, DIO_u8OUTPUT);
+	 DIO_enuSetPinDirection(KEYPAD_ROW2_PORT, KEYPAD_ROW2_PIN, DIO_u8OUTPUT);
+	 DIO_enuSetPinDirection(KEYPAD_ROW3_PORT, KEYPAD_ROW3_PIN, DIO_u8OUTPUT);
+	 DIO_enuSetPinDirection(KEYPAD_ROW4_PORT, KEYPAD_ROW4_PIN, DIO_u8OUTPUT);
 
-
-	/************************* !Rows Pins! **************************/
-	 DIO_enuSetPinDirection(KEYPAD_ROW1_PORT, KEYPAD_ROW1_PIN, DIO_u8INPUT);
-	 DIO_enuSetPinDirection(KEYPAD_ROW2_PORT, KEYPAD_ROW2_PIN, DIO_u8INPUT);
-	 DIO_enuSetPinDirection(KEYPAD_ROW3_PORT, KEYPAD_ROW3_PIN, DIO_u8INPUT);
-	 DIO_enuSetPinDirection(KEYPAD_ROW4_PORT, KEYPAD_ROW4_PIN, DIO_u8INPUT);
-
-	// To activate internal input-pull resistor we set corresponding
-	// pin to high
 	 DIO_enuSetPinValue(KEYPAD_ROW1_PORT, KEYPAD_ROW1_PIN, DIO_u8HIGH);
 	 DIO_enuSetPinValue(KEYPAD_ROW2_PORT, KEYPAD_ROW2_PIN, DIO_u8HIGH);
 	 DIO_enuSetPinValue(KEYPAD_ROW3_PORT, KEYPAD_ROW3_PIN, DIO_u8HIGH);
 	 DIO_enuSetPinValue(KEYPAD_ROW4_PORT, KEYPAD_ROW4_PIN, DIO_u8HIGH);
+	/****************************************************************/
+
+
+	/************************* !Columns Pins! **************************/
+	 DIO_enuSetPinDirection(KEYPAD_COL1_PORT, KEYPAD_COL1_PIN, DIO_u8INPUT);
+	 DIO_enuSetPinDirection(KEYPAD_COL2_PORT, KEYPAD_COL2_PIN, DIO_u8INPUT);
+	 DIO_enuSetPinDirection(KEYPAD_COL3_PORT, KEYPAD_COL3_PIN, DIO_u8INPUT);
+	 DIO_enuSetPinDirection(KEYPAD_COL4_PORT, KEYPAD_COL4_PIN, DIO_u8INPUT);
+
+	// To activate internal input-pull resistor we set corresponding
+	// pin to high
+	 DIO_enuSetPinValue(KEYPAD_COL1_PORT, KEYPAD_COL1_PIN, DIO_u8HIGH);
+	 DIO_enuSetPinValue(KEYPAD_COL2_PORT, KEYPAD_COL2_PIN, DIO_u8HIGH);
+	 DIO_enuSetPinValue(KEYPAD_COL3_PORT, KEYPAD_COL3_PIN, DIO_u8HIGH);
+	 DIO_enuSetPinValue(KEYPAD_COL4_PORT, KEYPAD_COL4_PIN, DIO_u8HIGH);
 
 	/****************************************************************/
 
@@ -50,8 +55,7 @@ static void LCD_vidSetRowPattern(uint8_t Copy_u8Row){
 
 	uint8_t Local_u8RowIterator = 0;
 
-	// since we working with index of arrays
-	Copy_u8Row -= 1;
+
 
 	uint8_t Local_u8RowsArrayPORT[KEYPAD_ROW_NUM] = {
 			KEYPAD_ROW1_PORT, KEYPAD_ROW2_PORT,
@@ -92,9 +96,11 @@ ErrorStatus_t keypad_enuGetPressedKey(uint8_t* Copy_pu8KeyValue){
 	}
 
 	else{
+
+		uint8_t Local_u8KeyStatus = 1;
 		uint8_t Local_u8RowIterator = 0;
 		uint8_t Local_u8COLIterator = 0;
-		uint8_t Local_u8KeyStatus = 1;
+
 
 		uint8_t Local_u8Columns_ArrayPORT[KEYPAD_ROW_NUM] = {
 				KEYPAD_COL1_PORT, KEYPAD_COL2_PORT,
@@ -105,17 +111,19 @@ ErrorStatus_t keypad_enuGetPressedKey(uint8_t* Copy_pu8KeyValue){
 				KEYPAD_COL3_PIN, KEYPAD_COL4_PIN
 		};
 
-		for(Local_u8RowIterator = 0; Local_u8RowIterator <  KEYPAD_ROW_NUM; Local_u8RowIterator++){
+		for( Local_u8RowIterator = 0; Local_u8RowIterator <  KEYPAD_ROW_NUM; Local_u8RowIterator++){
 
 			LCD_vidSetRowPattern(Local_u8RowIterator);
 
 
-			for(Local_u8COLIterator = 0; (Local_u8COLIterator <  KEYPAD_ROW_NUM)&&Local_u8KeyStatus; Local_u8COLIterator++){
+			for( Local_u8COLIterator = 0; (Local_u8COLIterator <  KEYPAD_COL_NUM)&&Local_u8KeyStatus; Local_u8COLIterator++){
 
 				DIO_enuGetPinValue(
 						Local_u8Columns_ArrayPORT[Local_u8COLIterator],
 						Local_u8Columns_ArrayPIN[Local_u8COLIterator],
 						&Local_u8KeyStatus);
+
+
 
 			}
 
@@ -124,7 +132,10 @@ ErrorStatus_t keypad_enuGetPressedKey(uint8_t* Copy_pu8KeyValue){
 				 * Negative one because in for loop last sequence we add one then checker fails
 				 * */
 
+
+
 				*Copy_pu8KeyValue= keypadOutput[(KEYPAD_ROW_NUM*Local_u8RowIterator) + Local_u8COLIterator-1];
+				break;
 			}
 
 		}

@@ -152,7 +152,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x2786
+.text           0x00000000     0x2766
  *(.vectors)
  .vectors       0x00000000       0x54 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
                 0x00000000                __vectors
@@ -316,57 +316,57 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                 0x00001ac6       0xe2 ./MCAL/DIO/DIO_program.o
                 0x00001ac6                DIO_enuSetPortValue
  .text.keypad_enuInit
-                0x00001ba8       0x92 ./HAL/keypad/keypad_HAL_program.o
+                0x00001ba8       0xba ./HAL/keypad/keypad_HAL_program.o
                 0x00001ba8                keypad_enuInit
  .text.LCD_vidSetRowPattern
-                0x00001c3a       0xc6 ./HAL/keypad/keypad_HAL_program.o
+                0x00001c62       0xc0 ./HAL/keypad/keypad_HAL_program.o
  .text.keypad_enuGetPressedKey
-                0x00001d00       0xfe ./HAL/keypad/keypad_HAL_program.o
-                0x00001d00                keypad_enuGetPressedKey
+                0x00001d22      0x100 ./HAL/keypad/keypad_HAL_program.o
+                0x00001d22                keypad_enuGetPressedKey
  .text.LCD_enuInit
-                0x00001dfe      0x282 ./HAL/LCD/LCD_HAL_program.o
-                0x00001dfe                LCD_enuInit
+                0x00001e22      0x282 ./HAL/LCD/LCD_HAL_program.o
+                0x00001e22                LCD_enuInit
  .text.WriteNLatch
-                0x00002080      0x1ca ./HAL/LCD/LCD_HAL_program.o
+                0x000020a4      0x1ca ./HAL/LCD/LCD_HAL_program.o
  .text.LCD_enuSendData
-                0x0000224a       0x34 ./HAL/LCD/LCD_HAL_program.o
-                0x0000224a                LCD_enuSendData
+                0x0000226e       0x34 ./HAL/LCD/LCD_HAL_program.o
+                0x0000226e                LCD_enuSendData
  .text.LCD_enuSendCommand
-                0x0000227e       0x38 ./HAL/LCD/LCD_HAL_program.o
-                0x0000227e                LCD_enuSendCommand
+                0x000022a2       0x38 ./HAL/LCD/LCD_HAL_program.o
+                0x000022a2                LCD_enuSendCommand
  .text.LCD_u8SendString
-                0x000022b6       0x74 ./HAL/LCD/LCD_HAL_program.o
-                0x000022b6                LCD_u8SendString
+                0x000022da       0x74 ./HAL/LCD/LCD_HAL_program.o
+                0x000022da                LCD_u8SendString
  .text.LCD_enuIntegerToString
-                0x0000232a      0x1ae ./HAL/LCD/LCD_HAL_program.o
-                0x0000232a                LCD_enuIntegerToString
+                0x0000234e      0x1ae ./HAL/LCD/LCD_HAL_program.o
+                0x0000234e                LCD_enuIntegerToString
  .text.LCD_u8SetPosXY
-                0x000024d8       0x86 ./HAL/LCD/LCD_HAL_program.o
-                0x000024d8                LCD_u8SetPosXY
+                0x000024fc       0x86 ./HAL/LCD/LCD_HAL_program.o
+                0x000024fc                LCD_u8SetPosXY
  .text.LCD_u8StoreCustomChar
-                0x0000255e       0x98 ./HAL/LCD/LCD_HAL_program.o
-                0x0000255e                LCD_u8StoreCustomChar
+                0x00002582       0x98 ./HAL/LCD/LCD_HAL_program.o
+                0x00002582                LCD_u8StoreCustomChar
  .text.LCD_u8DisplayCustomChar
-                0x000025f6       0x36 ./HAL/LCD/LCD_HAL_program.o
-                0x000025f6                LCD_u8DisplayCustomChar
- .text.main     0x0000262c       0x6e ./main.o
-                0x0000262c                main
- .text.libgcc   0x0000269a       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
-                0x0000269a                __divmodsi4
- .text.libgcc   0x000026d0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .text.libgcc   0x000026d0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .text.libgcc   0x000026d0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
- .text.libgcc   0x000026d0       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
-                0x000026d0                __udivmodsi4
- .text.libgcc   0x00002714       0x38 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
-                0x00002714                __prologue_saves__
- .text.libgcc   0x0000274c       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
-                0x0000274c                __epilogue_restores__
-                0x00002782                . = ALIGN (0x2)
+                0x0000261a       0x36 ./HAL/LCD/LCD_HAL_program.o
+                0x0000261a                LCD_u8DisplayCustomChar
+ .text.main     0x00002650       0x2a ./main.o
+                0x00002650                main
+ .text.libgcc   0x0000267a       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
+                0x0000267a                __divmodsi4
+ .text.libgcc   0x000026b0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x000026b0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x000026b0        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x000026b0       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+                0x000026b0                __udivmodsi4
+ .text.libgcc   0x000026f4       0x38 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+                0x000026f4                __prologue_saves__
+ .text.libgcc   0x0000272c       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+                0x0000272c                __epilogue_restores__
+                0x00002762                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00002782        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x00002782                exit
-                0x00002782                _exit
+ .fini9         0x00002762        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x00002762                exit
+                0x00002762                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -385,11 +385,11 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00002782        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .fini0         0x00002762        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00002786                _etext = .
+                0x00002766                _etext = .
 
-.data           0x00800060       0x20 load address 0x00002786
+.data           0x00800060       0x18 load address 0x00002766
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800060        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
@@ -424,59 +424,57 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                 0x00800068       0x10 ./HAL/keypad/keypad_HAL_program.o
  *(.rodata)
  *(.rodata*)
- .rodata.C.0.1347
-                0x00800078        0x8 ./main.o
  *(.gnu.linkonce.d*)
-                0x00800080                . = ALIGN (0x2)
-                0x00800080                _edata = .
-                0x00800080                PROVIDE (__data_end, .)
+                0x00800078                . = ALIGN (0x2)
+                0x00800078                _edata = .
+                0x00800078                PROVIDE (__data_end, .)
 
-.bss            0x00800080        0xc
-                0x00800080                PROVIDE (__bss_start, .)
+.bss            0x00800078        0xc
+                0x00800078                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
- .bss           0x00800080        0x0 ./MCAL/GIE/GIE_program.o
- .bss           0x00800080        0x0 ./MCAL/EXTI/EXTI_config.o
- .bss           0x00800080        0x0 ./MCAL/EXTI/EXTI_program.o
- .bss           0x00800080        0x0 ./MCAL/DIO/DIO_program.o
- .bss           0x00800080        0x0 ./HAL/keypad/keypad_HAL_program.o
- .bss           0x00800080        0x0 ./HAL/LCD/LCD_HAL_program.o
- .bss           0x00800080        0x0 ./main.o
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixunssfsi.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_addsub_sf.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mul_sf.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_gt_sf.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_ge_sf.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_lt_sf.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_sf_to_si.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_thenan_sf.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_pack_sf.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_unpack_sf.o)
- .bss           0x00800080        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fpcmp_parts_sf.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
+ .bss           0x00800078        0x0 ./MCAL/GIE/GIE_program.o
+ .bss           0x00800078        0x0 ./MCAL/EXTI/EXTI_config.o
+ .bss           0x00800078        0x0 ./MCAL/EXTI/EXTI_program.o
+ .bss           0x00800078        0x0 ./MCAL/DIO/DIO_program.o
+ .bss           0x00800078        0x0 ./HAL/keypad/keypad_HAL_program.o
+ .bss           0x00800078        0x0 ./HAL/LCD/LCD_HAL_program.o
+ .bss           0x00800078        0x0 ./main.o
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fixunssfsi.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_addsub_sf.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mul_sf.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_gt_sf.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_ge_sf.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_lt_sf.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_sf_to_si.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_thenan_sf.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_pack_sf.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_unpack_sf.o)
+ .bss           0x00800078        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_fpcmp_parts_sf.o)
  *(.bss*)
  .bss.EXTI_GroupConfig
-                0x00800080        0x6 ./MCAL/EXTI/EXTI_config.o
-                0x00800080                EXTI_GroupConfig
+                0x00800078        0x6 ./MCAL/EXTI/EXTI_config.o
+                0x00800078                EXTI_GroupConfig
  .bss.EXTI_pfunISRFun
-                0x00800086        0x6 ./MCAL/EXTI/EXTI_program.o
+                0x0080007e        0x6 ./MCAL/EXTI/EXTI_program.o
  *(COMMON)
-                0x0080008c                PROVIDE (__bss_end, .)
-                0x00002786                __data_load_start = LOADADDR (.data)
-                0x000027a6                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00800084                PROVIDE (__bss_end, .)
+                0x00002766                __data_load_start = LOADADDR (.data)
+                0x0000277e                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080008c        0x0
-                0x0080008c                PROVIDE (__noinit_start, .)
+.noinit         0x00800084        0x0
+                0x00800084                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x0080008c                PROVIDE (__noinit_end, .)
-                0x0080008c                _end = .
-                0x0080008c                PROVIDE (__heap_start, .)
+                0x00800084                PROVIDE (__noinit_end, .)
+                0x00800084                _end = .
+                0x00800084                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -494,7 +492,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .signature
  *(.signature*)
 
-.stab           0x00000000     0x2d6c
+.stab           0x00000000     0x2da8
  *(.stab)
  .stab          0x00000000      0x300 ./MCAL/GIE/GIE_program.o
  .stab          0x00000300      0x108 ./MCAL/EXTI/EXTI_config.o
@@ -503,16 +501,16 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                                 0xaec (size before relaxing)
  .stab          0x00000ea0      0x954 ./MCAL/DIO/DIO_program.o
                                 0x990 (size before relaxing)
- .stab          0x000017f4      0x534 ./HAL/keypad/keypad_HAL_program.o
-                                0x570 (size before relaxing)
- .stab          0x00001d28      0xe7c ./HAL/LCD/LCD_HAL_program.o
+ .stab          0x000017f4      0x558 ./HAL/keypad/keypad_HAL_program.o
+                                0x594 (size before relaxing)
+ .stab          0x00001d4c      0xe7c ./HAL/LCD/LCD_HAL_program.o
                                 0xeb8 (size before relaxing)
- .stab          0x00002ba4      0x1c8 ./main.o
-                                0x444 (size before relaxing)
+ .stab          0x00002bc8      0x1e0 ./main.o
+                                0x45c (size before relaxing)
 
-.stabstr        0x00000000     0x1c52
+.stabstr        0x00000000     0x1c39
  *(.stabstr)
- .stabstr       0x00000000     0x1c52 ./MCAL/GIE/GIE_program.o
+ .stabstr       0x00000000     0x1c39 ./MCAL/GIE/GIE_program.o
 
 .stab.excl
  *(.stab.excl)

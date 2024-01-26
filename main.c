@@ -23,17 +23,17 @@ int main(){
 
 
 
+	uint8_t Local_u8KeypadValue = 0;
 
-
-	LCD_u8DisplayCustomChar(0, 0, 0);
 
 	while(1){
+		keypad_enuGetPressedKey(&Local_u8KeypadValue);
+
+		   if(Local_u8KeypadValue != 0) {
+			   LCD_enuSendData(Local_u8KeypadValue);
+		    }
 
 
-//
-//		LCD_enuSendData(test++);
-//
-//		_delay_ms(1);
 	}
 
 	    return 0;
