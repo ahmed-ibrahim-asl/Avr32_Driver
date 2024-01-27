@@ -17,6 +17,7 @@
 #include "EXTI_interface.h"
 #include "EXTI_priv.h"
 #include "EXTI_config.h"
+
 #include <avr/interrupt.h>
 /**********************************************************/
 
@@ -38,120 +39,128 @@ ErrorStatus_t EXTI_enuInit(EXTI* Copy_pu8GroupConfig){
 
 
 	else{
-		/**************** INT0 Configuration ****************/
-		if(Copy_pu8GroupConfig[INT0].Int_State == ENABLED){
 
-			GICR |= (1<<INT0_switch);
+
+		/**************** INT0 Configuration ****************/
+		if(Copy_pu8GroupConfig[INT0].Int_State == EXTI_ENABLED){
+
+			SET_BIT(GICR, INT0_switch);
 
 			switch(Copy_pu8GroupConfig[INT0].Sence_Level){
-				case ANY_lOGICALCHANGE:
 
-					MCUCCR |=  (1 << ISC00);
-					MCUCCR &= ~(1 << ISC01);
 
-					break;
+				case EXTI_LOW_LEVEL:
 
-				case LOW_LEVEL:
-
-					MCUCCR &= ~(1 << ISC00);
-					MCUCCR &= ~(1 << ISC01);
+					CLR_BIT(MCUCR, ISC00);
+					CLR_BIT(MCUCR, ISC01);
 
 					break;
 
-				case FALLING_EDGE:
+				case EXTI_ANY_lOGICALCHANGE:
 
-					MCUCCR &= ~(1 << ISC00);
-					MCUCCR |=  (1 << ISC01);
+					SET_BIT(MCUCR, ISC00);
+					CLR_BIT(MCUCR, ISC01);
 
 					break;
 
-				case RISING_EDGE:
 
-					MCUCCR |=  (1 << ISC00);
-					MCUCCR |=  (1 << ISC01);
+				case EXTI_FALLING_EDGE:
+
+					CLR_BIT(MCUCR, ISC00);
+					SET_BIT(MCUCR, ISC01);
+
+					break;
+
+				case EXTI_RISING_EDGE:
+
+					SET_BIT(MCUCR, ISC00);
+					SET_BIT(MCUCR, ISC01);
 
 					break;
 			}
 
 
 		}
-		else if (Copy_pu8GroupConfig[INT0].Int_State == DISABLED){
+		else if (Copy_pu8GroupConfig[INT0].Int_State == EXTI_DISABLED){
 
-			GICR &= ~(1<<INT0_switch);
+			CLR_BIT(GICR, INT0_switch);
 
 		}
 		/***************************************************/
 
 
 		/**************** INT1 Configuration ****************/
-		if(Copy_pu8GroupConfig[INT1].Int_State == ENABLED){
+		if(Copy_pu8GroupConfig[INT1].Int_State == EXTI_ENABLED){
 
-			GICR |= (1<<INT1_switch);
+			SET_BIT(GICR, INT1_switch);
 
 
 			switch(Copy_pu8GroupConfig[INT1].Sence_Level){
-				case ANY_lOGICALCHANGE:
 
-					MCUCCR |=   (1 << ISC10);
-					MCUCCR &=  ~(1 << ISC11);
+				case EXTI_LOW_LEVEL:
 
-					break;
-
-				case LOW_LEVEL:
-
-					MCUCCR &=  ~(1 << ISC10);
-					MCUCCR &=  ~(1 << ISC11);
+					CLR_BIT(MCUCR, ISC10);
+					CLR_BIT(MCUCR, ISC11);
 
 					break;
 
-				case FALLING_EDGE:
 
-					MCUCCR &=  ~(1 << ISC10);
-					MCUCCR |=   (1 << ISC11);
+				case EXTI_ANY_lOGICALCHANGE:
+
+					SET_BIT(MCUCR, ISC10);
+					CLR_BIT(MCUCR, ISC11);
 
 					break;
 
-				case RISING_EDGE:
 
-					MCUCCR |=  (1 << ISC10);
-					MCUCCR |=  (1 << ISC11);
+				case EXTI_FALLING_EDGE:
+
+					CLR_BIT(MCUCR, ISC10);
+					SET_BIT(MCUCR, ISC11);
+
+					break;
+
+				case EXTI_RISING_EDGE:
+
+
+					SET_BIT(MCUCR, ISC10);
+					SET_BIT(MCUCR, ISC11);
 
 					break;
 			}
 
 
 		}
-		else if (Copy_pu8GroupConfig[INT1].Int_State == DISABLED){
+		else if (Copy_pu8GroupConfig[INT1].Int_State == EXTI_DISABLED){
 
-			GICR &= ~(1<<INT1_switch);
-
+			CLR_BIT(GICR, INT1_switch);
 		}
 		/***************************************************/
 
 
 		/**************** INT2 Configuration ****************/
-		if(Copy_pu8GroupConfig[INT2].Int_State == ENABLED){
-			GICR |= (1<<INT2_switch);
+		if(Copy_pu8GroupConfig[INT2].Int_State == EXTI_ENABLED){
+
+			SET_BIT(GICR, INT2_switch);
 
 			switch(Copy_pu8GroupConfig[INT2].Sence_Level){
 
-				case FALLING_EDGE:
-					MCUCSR &= ~(1 << ISC2);
+				case EXTI_FALLING_EDGE:
 
+					CLR_BIT(MCUCSR, ISC2);
 					break;
 
-				case RISING_EDGE:
+				case EXTI_RISING_EDGE:
 
-					MCUCSR |= (1 << ISC2);
-
+					SET_BIT(MCUCSR, ISC2);
 					break;
 			}
 
 
 		}
-		else if (Copy_pu8GroupConfig[INT2].Int_State == DISABLED){
+		else if (Copy_pu8GroupConfig[INT2].Int_State == EXTI_DISABLED){
 
-			GICR &= ~(1<<INT2_switch);
+			CLR_BIT(GICR, INT2_switch);
 
 		}
 		/***************************************************/
@@ -171,30 +180,28 @@ ErrorStatus_t EXTI_enuEnableInterrupt(uint8_t Copy_u8IntNumber){
 
 	ErrorStatus_t Local_enuErrorStatus = ERROR_STATUS_FAILURE;
 
-	if( (Copy_u8IntNumber > INT2)){
-		return Local_enuErrorStatus;
-	}
-
-	else{
 
 		switch(Copy_u8IntNumber){
-		case INT0:
+			case INT0:
 
-			GICR |= (1<<INT0_switch);
-			break;
 
-		case INT1:
+				SET_BIT(GICR, INT0_switch);
+				break;
 
-			GICR |= (1<<INT1_switch);
-			break;
+			case INT1:
 
-		case INT2:
-			GICR |= (1<<INT2_switch);
 
+				SET_BIT(GICR, INT1_switch);
+
+				break;
+
+			case INT2:
+
+				SET_BIT(GICR, INT2_switch);
 		}
 
 		Local_enuErrorStatus = ERROR_STATUS_OK;
-	}
+
 
 	return Local_enuErrorStatus;
 }
@@ -238,7 +245,7 @@ ErrorStatus_t EXTI_enuSetSenseLevel(uint8_t Copy_u8IntNumber,  uint8_t Copy_u8Se
 	ErrorStatus_t Local_enuErrorStatus = ERROR_STATUS_FAILURE;
 
 
-	if( (Copy_u8IntNumber > INT2) || Copy_u8SenseLevel > RISING_EDGE){
+	if( (Copy_u8IntNumber > INT2) || Copy_u8SenseLevel > EXTI_RISING_EDGE){
 
 		return Local_enuErrorStatus;
 	}
@@ -250,31 +257,31 @@ ErrorStatus_t EXTI_enuSetSenseLevel(uint8_t Copy_u8IntNumber,  uint8_t Copy_u8Se
 
 			/**************** INT0 Sense_LEVEL ****************/
 			switch(Copy_u8SenseLevel){
-				case ANY_lOGICALCHANGE:
+				case EXTI_ANY_lOGICALCHANGE:
 
-					MCUCCR |=  (1 << ISC00);
-					MCUCCR &= ~(1 << ISC01);
-
-					break;
-
-				case LOW_LEVEL:
-
-					MCUCCR &= ~(1 << ISC00);
-					MCUCCR &= ~(1 << ISC01);
+					MCUCR |=  (1 << ISC00);
+					MCUCR &= ~(1 << ISC01);
 
 					break;
 
-				case FALLING_EDGE:
+				case EXTI_LOW_LEVEL:
 
-					MCUCCR &= ~(1 << ISC00);
-					MCUCCR |=  (1 << ISC01);
+					MCUCR &= ~(1 << ISC00);
+					MCUCR &= ~(1 << ISC01);
 
 					break;
 
-				case RISING_EDGE:
+				case EXTI_FALLING_EDGE:
 
-					MCUCCR |=  (1 << ISC00);
-					MCUCCR |=  (1 << ISC01);
+					MCUCR &= ~(1 << ISC00);
+					MCUCR |=  (1 << ISC01);
+
+					break;
+
+				case EXTI_RISING_EDGE:
+
+					MCUCR |=  (1 << ISC00);
+					MCUCR |=  (1 << ISC01);
 
 					break;
 			}
@@ -286,31 +293,31 @@ ErrorStatus_t EXTI_enuSetSenseLevel(uint8_t Copy_u8IntNumber,  uint8_t Copy_u8Se
 
 			/**************** INT1 Sense_LEVEL ****************/
 			switch(Copy_u8SenseLevel){
-			case ANY_lOGICALCHANGE:
+			case EXTI_ANY_lOGICALCHANGE:
 
-				MCUCCR |=   (1 << ISC10);
-				MCUCCR &=  ~(1 << ISC11);
-
-				break;
-
-			case LOW_LEVEL:
-
-				MCUCCR &=  ~(1 << ISC10);
-				MCUCCR &=  ~(1 << ISC11);
+				MCUCR |=   (1 << ISC10);
+				MCUCR &=  ~(1 << ISC11);
 
 				break;
 
-			case FALLING_EDGE:
+			case EXTI_LOW_LEVEL:
 
-				MCUCCR &=  ~(1 << ISC10);
-				MCUCCR |=   (1 << ISC11);
+				MCUCR &=  ~(1 << ISC10);
+				MCUCR &=  ~(1 << ISC11);
 
 				break;
 
-			case RISING_EDGE:
+			case EXTI_FALLING_EDGE:
 
-				MCUCCR |=  (1 << ISC10);
-				MCUCCR |=  (1 << ISC11);
+				MCUCR &=  ~(1 << ISC10);
+				MCUCR |=   (1 << ISC11);
+
+				break;
+
+			case EXTI_RISING_EDGE:
+
+				MCUCR |=  (1 << ISC10);
+				MCUCR |=  (1 << ISC11);
 
 				break;
 			}
@@ -325,12 +332,12 @@ ErrorStatus_t EXTI_enuSetSenseLevel(uint8_t Copy_u8IntNumber,  uint8_t Copy_u8Se
 			/**************** INT2 Sense_LEVEL ****************/
 			switch(Copy_u8SenseLevel){
 
-				case FALLING_EDGE:
+				case EXTI_FALLING_EDGE:
 					MCUCSR &= ~(1 << ISC2);
 
 					break;
 
-				case RISING_EDGE:
+				case EXTI_RISING_EDGE:
 
 					MCUCSR |= (1 << ISC2);
 
@@ -349,7 +356,7 @@ ErrorStatus_t EXTI_enuSetSenseLevel(uint8_t Copy_u8IntNumber,  uint8_t Copy_u8Se
 }
 
 
-ErrorStatus_t EXTI_enuCallBack( void (*Copy_pfunAppFun)(void), uint8_t Copy_u8IntNumber){
+ErrorStatus_t EXTI_enuSetCallBack( void (*Copy_pfunAppFun)(void), uint8_t Copy_u8IntNumber){
 
 	ErrorStatus_t Local_enuErrorStatus = ERROR_STATUS_FAILURE;
 
@@ -384,17 +391,30 @@ ISR(INT0_vect){
 		}
 }
 
+
+
+
 ISR(INT1_vect){
 
-		if(EXTI_pfunISRFun[INT1] != NULL){
-			EXTI_pfunISRFun[INT1]();
+		if(EXTI_pfunISRFun[INT0] != NULL){
+			EXTI_pfunISRFun[INT0]();
 		}
 }
+
 
 
 ISR(INT2_vect){
 
-		if(EXTI_pfunISRFun[INT2] != NULL){
-			EXTI_pfunISRFun[INT2]();
+		if(EXTI_pfunISRFun[INT0] != NULL){
+			EXTI_pfunISRFun[INT0]();
 		}
 }
+
+
+
+
+
+
+
+
+

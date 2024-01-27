@@ -31,10 +31,10 @@
 /********************************************************/
 
 /********************** Keypad col **********************/
-#define KEYPAD_COL1_PIN		DIO_u8PIN2
+#define KEYPAD_COL1_PIN		DIO_u8PIN0
 #define KEYPAD_COL1_PORT	DIO_u8PortD
 
-#define KEYPAD_COL2_PIN		DIO_u8PIN3
+#define KEYPAD_COL2_PIN		DIO_u8PIN1
 #define KEYPAD_COL2_PORT	DIO_u8PortD
 
 #define KEYPAD_COL3_PIN		DIO_u8PIN4

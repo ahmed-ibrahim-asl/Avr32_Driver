@@ -12,40 +12,38 @@
 #include "MCAL/GIE/GIE_interface.h"
 #include "MCAL/EXTI/EXTI_interface.h"
 #include <util/delay.h>
-/**********************************************************/
-int main(){
 
+/**********************************************************/
+
+void warningSequence();
+int main(){
 
 
 	LCD_enuInit();
 	keypad_enuInit();
+//!	EXTI_enuInit(EXTI_GroupConfig);
+
+	DIO_enuSetPinDirection(DIO_u8PortD, DIO_u8PIN2, DIO_u8INPUT);
+
+
+	EXTI_enuSetCallBack(warningSequence, INT0);
 
 
 
-
-	uint8_t Local_u8KeypadValue = 0;
+	EXTI_enuEnableInterrupt(INT0);
+	EXTI_enuSetSenseLevel(INT0, EXTI_RISING_EDGE);
+	GIE_enuEnable();
 
 
 	while(1){
 
-		if(keypad_enuGetPressedKey(&Local_u8KeypadValue) != ERROR_STATUS_FAILURE){
 
-
-			if(Local_u8KeypadValue == 'K'){
-				LCD_enuSendCommand(0X01);
-			}
-
-			else{
-				LCD_enuSendData(Local_u8KeypadValue);
-			}
-
-	}
 
 	}
 	    return 0;
 }
 
-
-
-
+void warningSequence(){
+	LCD_u8SendString("WARNING");
+}
 

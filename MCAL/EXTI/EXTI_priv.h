@@ -24,66 +24,49 @@
  * */
 
 
-/********** Used Registers **********/
-#define MCUCCR 	*((uint8_t*) (0x55))
-#define MCUCSR 	*((uint8_t*) (0x54))
-#define GICR	*((uint8_t*) (0x5B))
-#define GIFR	*((uint8_t*) (0x5A))
-/*********************************/
-
-
-#define NUM_INT				3
-
-#define INT0				0
-#define INT1				1
-#define INT2				2
-
-/********** Sense Modes **********/
-#define ANY_lOGICALCHANGE	0
-#define LOW_LEVEL			1
-#define FALLING_EDGE		2
-#define RISING_EDGE			3
-/*********************************/
-
-
-#define DISABLED			0
-#define ENABLED				1
+/******************** General_Macros ********************/
+#define MCUCR 	*((volatile uint8_t*) (0x55))
+#define MCUCSR 	*((volatile uint8_t*) (0x54))
+#define GIFR	*((volatile uint8_t*) (0x5A))
+#define GICR    *((volatile uint8_t*) (0x5B))
 
 
 
-/********* INT0/1/2 bits *********/
-//Sense Mode Section
-#define ISC00				0
-#define ISC01				1
-#define ISC10				2
-#define ISC11				3
 
-#define ISC2				6
+#define NUM_INT						3
+
+#define INT0						0
+#define INT1						1
+#define INT2						2
+
+#define EXTI_DISABLED				0
+#define EXTI_ENABLED				1
 
 
 //On-Off Control Section
-#define INT0_switch			6
-#define INT1_switch			7
-#define INT2_switch			5
-
-/*********************************/
+#define INT0_switch					6
+#define INT1_switch					7
+#define INT2_switch					5
 
 
+#define ISC00						0
+#define ISC01						1
+#define ISC10						2
+#define ISC11						3
+#define ISC2						6
+/******************************************************/
 
 
-//
-//#define ISR(VECTOR_NUM)  void VECTOR_NUM(void) __attribute__((signal)); \
-//                         void VECTOR_NUM(void)
-//
-//
-//
-//#define INT0_vector		__vector_1
-//#define INT1_vector 	__vector_2
-//#define INT2_vector 	__vector_2
-//
-//
+/******************** Sense Modes ********************/
+#define EXTI_LOW_LEVEL				0
+#define EXTI_ANY_lOGICALCHANGE		1
+#define EXTI_FALLING_EDGE			2
+#define EXTI_RISING_EDGE			3
 
 
+//#define EXTI_INT2_Falling_Edge	0
+//#define EXTI_INT2_Rising_Edge   	1
+/*****************************************************/
 
 
 
