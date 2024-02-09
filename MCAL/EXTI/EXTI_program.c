@@ -175,7 +175,6 @@ ErrorStatus_t EXTI_enuInit(EXTI* Copy_pu8GroupConfig){
 	return Local_enuErrorStatus;
 }
 
-
 ErrorStatus_t EXTI_enuEnableInterrupt(uint8_t Copy_u8IntNumber){
 
 	ErrorStatus_t Local_enuErrorStatus = ERROR_STATUS_FAILURE;
@@ -184,15 +183,12 @@ ErrorStatus_t EXTI_enuEnableInterrupt(uint8_t Copy_u8IntNumber){
 		switch(Copy_u8IntNumber){
 			case INT0:
 
-
 				SET_BIT(GICR, INT0_switch);
 				break;
 
 			case INT1:
 
-
 				SET_BIT(GICR, INT1_switch);
-
 				break;
 
 			case INT2:
@@ -205,7 +201,6 @@ ErrorStatus_t EXTI_enuEnableInterrupt(uint8_t Copy_u8IntNumber){
 
 	return Local_enuErrorStatus;
 }
-
 
 ErrorStatus_t EXTI_enuDisableInterrupt(uint8_t Copy_u8IntNumber){
 

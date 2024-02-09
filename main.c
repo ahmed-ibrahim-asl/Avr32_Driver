@@ -24,15 +24,15 @@ int main(){
 //!	EXTI_enuInit(EXTI_GroupConfig);
 
 	DIO_enuSetPinDirection(DIO_u8PortD, DIO_u8PIN2, DIO_u8INPUT);
-
-
-	EXTI_enuSetCallBack(warningSequence, INT0);
-
+	GIE_enuEnable();
 
 
 	EXTI_enuEnableInterrupt(INT0);
 	EXTI_enuSetSenseLevel(INT0, EXTI_RISING_EDGE);
-	GIE_enuEnable();
+	EXTI_enuSetCallBack(warningSequence, INT0);
+
+
+
 
 
 	while(1){

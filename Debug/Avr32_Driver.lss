@@ -2031,7 +2031,6 @@ ErrorStatus_t EXTI_enuInit(EXTI* Copy_pu8GroupConfig){
 
 00000e5e <EXTI_enuEnableInterrupt>:
 
-
 ErrorStatus_t EXTI_enuEnableInterrupt(uint8_t Copy_u8IntNumber){
      e5e:	df 93       	push	r29
      e60:	cf 93       	push	r28
@@ -2069,7 +2068,6 @@ ErrorStatus_t EXTI_enuEnableInterrupt(uint8_t Copy_u8IntNumber){
      e96:	17 c0       	rjmp	.+46     	; 0xec6 <EXTI_enuEnableInterrupt+0x68>
 			case INT0:
 
-
 				SET_BIT(GICR, INT0_switch);
      e98:	ab e5       	ldi	r26, 0x5B	; 91
      e9a:	b0 e0       	ldi	r27, 0x00	; 0
@@ -2083,7 +2081,6 @@ ErrorStatus_t EXTI_enuEnableInterrupt(uint8_t Copy_u8IntNumber){
 
 			case INT1:
 
-
 				SET_BIT(GICR, INT1_switch);
      ea8:	ab e5       	ldi	r26, 0x5B	; 91
      eaa:	b0 e0       	ldi	r27, 0x00	; 0
@@ -2093,7 +2090,6 @@ ErrorStatus_t EXTI_enuEnableInterrupt(uint8_t Copy_u8IntNumber){
      eb2:	80 68       	ori	r24, 0x80	; 128
      eb4:	8c 93       	st	X, r24
      eb6:	07 c0       	rjmp	.+14     	; 0xec6 <EXTI_enuEnableInterrupt+0x68>
-
 				break;
 
 			case INT2:
@@ -2125,7 +2121,6 @@ ErrorStatus_t EXTI_enuEnableInterrupt(uint8_t Copy_u8IntNumber){
      ed8:	08 95       	ret
 
 00000eda <EXTI_enuDisableInterrupt>:
-
 
 ErrorStatus_t EXTI_enuDisableInterrupt(uint8_t Copy_u8IntNumber){
      eda:	df 93       	push	r29
@@ -6359,25 +6354,22 @@ int main(){
     2686:	62 e0       	ldi	r22, 0x02	; 2
     2688:	40 e0       	ldi	r20, 0x00	; 0
     268a:	0e 94 be 09 	call	0x137c	; 0x137c <DIO_enuSetPinDirection>
-
-
-	EXTI_enuSetCallBack(warningSequence, INT0);
-    268e:	86 e5       	ldi	r24, 0x56	; 86
-    2690:	93 e1       	ldi	r25, 0x13	; 19
-    2692:	60 e0       	ldi	r22, 0x00	; 0
-    2694:	0e 94 c5 08 	call	0x118a	; 0x118a <EXTI_enuSetCallBack>
-
+	GIE_enuEnable();
+    268e:	0e 94 a3 05 	call	0xb46	; 0xb46 <GIE_enuEnable>
 
 
 	EXTI_enuEnableInterrupt(INT0);
-    2698:	80 e0       	ldi	r24, 0x00	; 0
-    269a:	0e 94 2f 07 	call	0xe5e	; 0xe5e <EXTI_enuEnableInterrupt>
+    2692:	80 e0       	ldi	r24, 0x00	; 0
+    2694:	0e 94 2f 07 	call	0xe5e	; 0xe5e <EXTI_enuEnableInterrupt>
 	EXTI_enuSetSenseLevel(INT0, EXTI_RISING_EDGE);
-    269e:	80 e0       	ldi	r24, 0x00	; 0
-    26a0:	63 e0       	ldi	r22, 0x03	; 3
-    26a2:	0e 94 b5 07 	call	0xf6a	; 0xf6a <EXTI_enuSetSenseLevel>
-	GIE_enuEnable();
-    26a6:	0e 94 a3 05 	call	0xb46	; 0xb46 <GIE_enuEnable>
+    2698:	80 e0       	ldi	r24, 0x00	; 0
+    269a:	63 e0       	ldi	r22, 0x03	; 3
+    269c:	0e 94 b5 07 	call	0xf6a	; 0xf6a <EXTI_enuSetSenseLevel>
+	EXTI_enuSetCallBack(warningSequence, INT0);
+    26a0:	86 e5       	ldi	r24, 0x56	; 86
+    26a2:	93 e1       	ldi	r25, 0x13	; 19
+    26a4:	60 e0       	ldi	r22, 0x00	; 0
+    26a6:	0e 94 c5 08 	call	0x118a	; 0x118a <EXTI_enuSetCallBack>
     26aa:	ff cf       	rjmp	.-2      	; 0x26aa <main+0x36>
 
 000026ac <warningSequence>:
