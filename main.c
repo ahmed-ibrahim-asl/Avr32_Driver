@@ -27,9 +27,9 @@ int main(){
 	GIE_enuEnable();
 
 
-	EXTI_enuEnableInterrupt(0);
-	EXTI_enuSetSenseLevel(0, EXTI_RISING_EDGE);
-	EXTI_enuSetCallBack(warningSequence, 0);
+	EXTI_enuEnableInterrupt(1);
+	EXTI_enuSetSenseLevel(1, EXTI_RISING_EDGE);
+	EXTI_enuSetCallBack(warningSequence, 1);
 
 
 

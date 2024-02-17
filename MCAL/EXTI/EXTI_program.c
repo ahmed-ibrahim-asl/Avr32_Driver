@@ -42,7 +42,7 @@ ErrorStatus_t EXTI_enuInit(EXTI* Copy_pu8GroupConfig){
 
 
 		/**************** INT0 Configuration ****************/
-		if(Copy_pu8GroupConfig[INT0_NO_0].Int_State == EXTI_ENABLED){
+		if(Copy_pu8GroupConfig[INT_NO_0].Int_State == EXTI_ENABLED){
 
 			SET_BIT(GICR, INT0_switch);
 
@@ -249,7 +249,7 @@ ErrorStatus_t EXTI_enuSetSenseLevel(uint8_t Copy_u8IntNumber,  uint8_t Copy_u8Se
 	else{
 
 		switch(Copy_u8IntNumber){
-		case INT0_NO_0:
+		case INT_NO_0:
 
 			/**************** INT0 Sense_LEVEL ****************/
 			switch(Copy_u8SenseLevel){

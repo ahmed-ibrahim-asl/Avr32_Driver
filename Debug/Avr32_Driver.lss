@@ -1580,7 +1580,7 @@ ErrorStatus_t EXTI_enuInit(EXTI* Copy_pu8GroupConfig){
 
 
 		/**************** INT0 Configuration ****************/
-		if(Copy_pu8GroupConfig[0].Int_State == EXTI_ENABLED){
+		if(Copy_pu8GroupConfig[INT_NO_0].Int_State == EXTI_ENABLED){
      bd2:	ea 81       	ldd	r30, Y+2	; 0x02
      bd4:	fb 81       	ldd	r31, Y+3	; 0x03
      bd6:	80 81       	ld	r24, Z
@@ -1597,7 +1597,7 @@ ErrorStatus_t EXTI_enuInit(EXTI* Copy_pu8GroupConfig){
      be8:	80 64       	ori	r24, 0x40	; 64
      bea:	8c 93       	st	X, r24
 
-			switch(Copy_pu8GroupConfig[0].Sence_Level){
+			switch(Copy_pu8GroupConfig[INT_NO_0].Sence_Level){
      bec:	ea 81       	ldd	r30, Y+2	; 0x02
      bee:	fb 81       	ldd	r31, Y+3	; 0x03
      bf0:	81 81       	ldd	r24, Z+1	; 0x01
@@ -1723,7 +1723,7 @@ ErrorStatus_t EXTI_enuInit(EXTI* Copy_pu8GroupConfig){
 
 
 		}
-		else if (Copy_pu8GroupConfig[0].Int_State == EXTI_DISABLED){
+		else if (Copy_pu8GroupConfig[INT_NO_0].Int_State == EXTI_DISABLED){
      ca6:	ea 81       	ldd	r30, Y+2	; 0x02
      ca8:	fb 81       	ldd	r31, Y+3	; 0x03
      caa:	80 81       	ld	r24, Z
@@ -1743,7 +1743,7 @@ ErrorStatus_t EXTI_enuInit(EXTI* Copy_pu8GroupConfig){
 
 
 		/**************** INT1 Configuration ****************/
-		if(Copy_pu8GroupConfig[1].Int_State == EXTI_ENABLED){
+		if(Copy_pu8GroupConfig[INT_NO_1].Int_State == EXTI_ENABLED){
      cbe:	8a 81       	ldd	r24, Y+2	; 0x02
      cc0:	9b 81       	ldd	r25, Y+3	; 0x03
      cc2:	fc 01       	movw	r30, r24
@@ -1763,7 +1763,7 @@ ErrorStatus_t EXTI_enuInit(EXTI* Copy_pu8GroupConfig){
      cda:	8c 93       	st	X, r24
 
 
-			switch(Copy_pu8GroupConfig[1].Sence_Level){
+			switch(Copy_pu8GroupConfig[INT_NO_1].Sence_Level){
      cdc:	8a 81       	ldd	r24, Y+2	; 0x02
      cde:	9b 81       	ldd	r25, Y+3	; 0x03
      ce0:	fc 01       	movw	r30, r24
@@ -1890,7 +1890,7 @@ ErrorStatus_t EXTI_enuInit(EXTI* Copy_pu8GroupConfig){
 
 
 		}
-		else if (Copy_pu8GroupConfig[1].Int_State == EXTI_DISABLED){
+		else if (Copy_pu8GroupConfig[INT_NO_1].Int_State == EXTI_DISABLED){
      d9a:	8a 81       	ldd	r24, Y+2	; 0x02
      d9c:	9b 81       	ldd	r25, Y+3	; 0x03
      d9e:	fc 01       	movw	r30, r24
@@ -1912,7 +1912,7 @@ ErrorStatus_t EXTI_enuInit(EXTI* Copy_pu8GroupConfig){
 
 
 		/**************** INT2 Configuration ****************/
-		if(Copy_pu8GroupConfig[2].Int_State == EXTI_ENABLED){
+		if(Copy_pu8GroupConfig[INT_NO_2].Int_State == EXTI_ENABLED){
      db6:	8a 81       	ldd	r24, Y+2	; 0x02
      db8:	9b 81       	ldd	r25, Y+3	; 0x03
      dba:	fc 01       	movw	r30, r24
@@ -1930,7 +1930,7 @@ ErrorStatus_t EXTI_enuInit(EXTI* Copy_pu8GroupConfig){
      dce:	80 62       	ori	r24, 0x20	; 32
      dd0:	8c 93       	st	X, r24
 
-			switch(Copy_pu8GroupConfig[2].Sence_Level){
+			switch(Copy_pu8GroupConfig[INT_NO_2].Sence_Level){
      dd2:	8a 81       	ldd	r24, Y+2	; 0x02
      dd4:	9b 81       	ldd	r25, Y+3	; 0x03
      dd6:	fc 01       	movw	r30, r24
@@ -1981,7 +1981,7 @@ ErrorStatus_t EXTI_enuInit(EXTI* Copy_pu8GroupConfig){
 
 
 		}
-		else if (Copy_pu8GroupConfig[2].Int_State == EXTI_DISABLED){
+		else if (Copy_pu8GroupConfig[INT_NO_2].Int_State == EXTI_DISABLED){
      e1a:	8a 81       	ldd	r24, Y+2	; 0x02
      e1c:	9b 81       	ldd	r25, Y+3	; 0x03
      e1e:	fc 01       	movw	r30, r24
@@ -2058,7 +2058,7 @@ ErrorStatus_t EXTI_enuEnableInterrupt(uint8_t Copy_u8IntNumber){
      e82:	9c 81       	ldd	r25, Y+4	; 0x04
      e84:	00 97       	sbiw	r24, 0x00	; 0
      e86:	b9 f4       	brne	.+46     	; 0xeb6 <EXTI_enuEnableInterrupt+0x64>
-			case 0:
+			case INT_NO_0:
 
 				SET_BIT(GICR, INT0_switch);
      e88:	ab e5       	ldi	r26, 0x5B	; 91
@@ -2071,7 +2071,7 @@ ErrorStatus_t EXTI_enuEnableInterrupt(uint8_t Copy_u8IntNumber){
      e96:	0f c0       	rjmp	.+30     	; 0xeb6 <EXTI_enuEnableInterrupt+0x64>
 				break;
 
-			case 1:
+			case INT_NO_1:
 
 				SET_BIT(GICR, INT1_switch);
      e98:	ab e5       	ldi	r26, 0x5B	; 91
@@ -2084,7 +2084,7 @@ ErrorStatus_t EXTI_enuEnableInterrupt(uint8_t Copy_u8IntNumber){
      ea6:	07 c0       	rjmp	.+14     	; 0xeb6 <EXTI_enuEnableInterrupt+0x64>
 				break;
 
-			case 2:
+			case INT_NO_2:
 
 				SET_BIT(GICR, INT2_switch);
      ea8:	ab e5       	ldi	r26, 0x5B	; 91
@@ -2127,7 +2127,7 @@ ErrorStatus_t EXTI_enuDisableInterrupt(uint8_t Copy_u8IntNumber){
 	ErrorStatus_t Local_enuErrorStatus = ERROR_STATUS_FAILURE;
      eda:	19 82       	std	Y+1, r1	; 0x01
 
-	if(Copy_u8IntNumber > 2){
+	if(Copy_u8IntNumber > INT_NO_2){
      edc:	8a 81       	ldd	r24, Y+2	; 0x02
      ede:	83 30       	cpi	r24, 0x03	; 3
      ee0:	18 f0       	brcs	.+6      	; 0xee8 <EXTI_enuDisableInterrupt+0x1e>
@@ -2159,8 +2159,9 @@ ErrorStatus_t EXTI_enuDisableInterrupt(uint8_t Copy_u8IntNumber){
      f08:	9c 81       	ldd	r25, Y+4	; 0x04
      f0a:	00 97       	sbiw	r24, 0x00	; 0
      f0c:	b9 f4       	brne	.+46     	; 0xf3c <EXTI_enuDisableInterrupt+0x72>
-		case 0:
+		case INT_NO_0:
 
+			
 			GICR &= ~(1<<INT0_switch);
      f0e:	ab e5       	ldi	r26, 0x5B	; 91
      f10:	b0 e0       	ldi	r27, 0x00	; 0
@@ -2172,7 +2173,7 @@ ErrorStatus_t EXTI_enuDisableInterrupt(uint8_t Copy_u8IntNumber){
      f1c:	0f c0       	rjmp	.+30     	; 0xf3c <EXTI_enuDisableInterrupt+0x72>
 			break;
 
-		case 1:
+		case INT_NO_1:
 
 			GICR &= ~(1<<INT1_switch);
      f1e:	ab e5       	ldi	r26, 0x5B	; 91
@@ -2185,7 +2186,7 @@ ErrorStatus_t EXTI_enuDisableInterrupt(uint8_t Copy_u8IntNumber){
      f2c:	07 c0       	rjmp	.+14     	; 0xf3c <EXTI_enuDisableInterrupt+0x72>
 			break;
 
-		case 2:
+		case INT_NO_2:
 
 			GICR &= ~(1<<INT2_switch);
      f2e:	ab e5       	ldi	r26, 0x5B	; 91
@@ -2237,7 +2238,7 @@ ErrorStatus_t EXTI_enuSetSenseLevel(uint8_t Copy_u8IntNumber,  uint8_t Copy_u8Se
      f6e:	19 82       	std	Y+1, r1	; 0x01
 
 
-	if( (Copy_u8IntNumber > 2) || Copy_u8SenseLevel > EXTI_RISING_EDGE){
+	if( (Copy_u8IntNumber > INT_NO_2) || Copy_u8SenseLevel > EXTI_RISING_EDGE){
      f70:	8a 81       	ldd	r24, Y+2	; 0x02
      f72:	83 30       	cpi	r24, 0x03	; 3
      f74:	18 f4       	brcc	.+6      	; 0xf7c <EXTI_enuSetSenseLevel+0x26>
@@ -2276,7 +2277,7 @@ ErrorStatus_t EXTI_enuSetSenseLevel(uint8_t Copy_u8IntNumber,  uint8_t Copy_u8Se
      fa8:	00 97       	sbiw	r24, 0x00	; 0
      faa:	09 f0       	breq	.+2      	; 0xfae <EXTI_enuSetSenseLevel+0x58>
      fac:	d5 c0       	rjmp	.+426    	; 0x1158 <EXTI_enuSetSenseLevel+0x202>
-		case 0:
+		case INT_NO_0:
 
 			/**************** INT0 Sense_LEVEL ****************/
 			switch(Copy_u8SenseLevel){
@@ -2398,7 +2399,7 @@ ErrorStatus_t EXTI_enuSetSenseLevel(uint8_t Copy_u8IntNumber,  uint8_t Copy_u8Se
     1062:	7a c0       	rjmp	.+244    	; 0x1158 <EXTI_enuSetSenseLevel+0x202>
 			/**************************************************/
 
-		case 1:
+		case INT_NO_1:
 
 			/**************** 1 Sense_LEVEL ****************/
 			switch(Copy_u8SenseLevel){
@@ -2520,7 +2521,7 @@ ErrorStatus_t EXTI_enuSetSenseLevel(uint8_t Copy_u8IntNumber,  uint8_t Copy_u8Se
     1118:	1f c0       	rjmp	.+62     	; 0x1158 <EXTI_enuSetSenseLevel+0x202>
 
 
-		case 2:
+		case INT_NO_2:
 
 			/**************** INT2 Sense_LEVEL ****************/
 			switch(Copy_u8SenseLevel){
@@ -2625,7 +2626,7 @@ ErrorStatus_t EXTI_enuSetCallBack( void (*Copy_pfunAppFun)(void), uint8_t Copy_u
     119a:	18 c0       	rjmp	.+48     	; 0x11cc <EXTI_enuSetCallBack+0x58>
 	}
 
-	else if(Copy_u8IntNumber > 2){
+	else if(Copy_u8IntNumber > INT_NO_2){
     119c:	8c 81       	ldd	r24, Y+4	; 0x04
     119e:	83 30       	cpi	r24, 0x03	; 3
     11a0:	28 f0       	brcs	.+10     	; 0x11ac <EXTI_enuSetCallBack+0x38>
@@ -2699,12 +2700,12 @@ ISR(INT0_vect){
     1204:	cd b7       	in	r28, 0x3d	; 61
     1206:	de b7       	in	r29, 0x3e	; 62
 
-		if(EXTI_pfunISRFun[0] != NULL){
+		if(EXTI_pfunISRFun[INT_NO_0] != NULL){
     1208:	80 91 86 00 	lds	r24, 0x0086
     120c:	90 91 87 00 	lds	r25, 0x0087
     1210:	00 97       	sbiw	r24, 0x00	; 0
     1212:	29 f0       	breq	.+10     	; 0x121e <__vector_1+0x40>
-			EXTI_pfunISRFun[0]();
+			EXTI_pfunISRFun[INT_NO_0]();
     1214:	e0 91 86 00 	lds	r30, 0x0086
     1218:	f0 91 87 00 	lds	r31, 0x0087
     121c:	09 95       	icall
@@ -2758,12 +2759,12 @@ ISR(INT1_vect){
     126a:	cd b7       	in	r28, 0x3d	; 61
     126c:	de b7       	in	r29, 0x3e	; 62
 
-		if(EXTI_pfunISRFun[1] != NULL){
+		if(EXTI_pfunISRFun[INT_NO_1] != NULL){
     126e:	80 91 88 00 	lds	r24, 0x0088
     1272:	90 91 89 00 	lds	r25, 0x0089
     1276:	00 97       	sbiw	r24, 0x00	; 0
     1278:	29 f0       	breq	.+10     	; 0x1284 <__vector_2+0x40>
-			EXTI_pfunISRFun[1]();
+			EXTI_pfunISRFun[INT_NO_1]();
     127a:	e0 91 88 00 	lds	r30, 0x0088
     127e:	f0 91 89 00 	lds	r31, 0x0089
     1282:	09 95       	icall
@@ -2816,12 +2817,12 @@ ISR(INT2_vect){
     12d0:	cd b7       	in	r28, 0x3d	; 61
     12d2:	de b7       	in	r29, 0x3e	; 62
 
-		if(EXTI_pfunISRFun[2] != NULL){
+		if(EXTI_pfunISRFun[INT_NO_2] != NULL){
     12d4:	80 91 8a 00 	lds	r24, 0x008A
     12d8:	90 91 8b 00 	lds	r25, 0x008B
     12dc:	00 97       	sbiw	r24, 0x00	; 0
     12de:	29 f0       	breq	.+10     	; 0x12ea <__vector_3+0x40>
-			EXTI_pfunISRFun[2]();
+			EXTI_pfunISRFun[INT_NO_2]();
     12e0:	e0 91 8a 00 	lds	r30, 0x008A
     12e4:	f0 91 8b 00 	lds	r31, 0x008B
     12e8:	09 95       	icall
@@ -6347,17 +6348,17 @@ int main(){
     2678:	0e 94 a3 05 	call	0xb46	; 0xb46 <GIE_enuEnable>
 
 
-	EXTI_enuEnableInterrupt(0);
-    267c:	80 e0       	ldi	r24, 0x00	; 0
+	EXTI_enuEnableInterrupt(1);
+    267c:	81 e0       	ldi	r24, 0x01	; 1
     267e:	0e 94 29 07 	call	0xe52	; 0xe52 <EXTI_enuEnableInterrupt>
-	EXTI_enuSetSenseLevel(0, EXTI_RISING_EDGE);
-    2682:	80 e0       	ldi	r24, 0x00	; 0
+	EXTI_enuSetSenseLevel(1, EXTI_RISING_EDGE);
+    2682:	81 e0       	ldi	r24, 0x01	; 1
     2684:	63 e0       	ldi	r22, 0x03	; 3
     2686:	0e 94 ab 07 	call	0xf56	; 0xf56 <EXTI_enuSetSenseLevel>
-	EXTI_enuSetCallBack(warningSequence, 0);
+	EXTI_enuSetCallBack(warningSequence, 1);
     268a:	8b e4       	ldi	r24, 0x4B	; 75
     268c:	93 e1       	ldi	r25, 0x13	; 19
-    268e:	60 e0       	ldi	r22, 0x00	; 0
+    268e:	61 e0       	ldi	r22, 0x01	; 1
     2690:	0e 94 ba 08 	call	0x1174	; 0x1174 <EXTI_enuSetCallBack>
     2694:	ff cf       	rjmp	.-2      	; 0x2694 <main+0x36>
 
