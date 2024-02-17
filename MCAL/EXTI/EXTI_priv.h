@@ -35,9 +35,9 @@
 
 #define NUM_INT						3
 
-#define INT0						0
-#define INT1						1
-#define INT2						2
+#define INT_NO_0					0
+#define INT_NO_1					1
+#define INT_NO_2					2
 
 #define EXTI_DISABLED				0
 #define EXTI_ENABLED				1

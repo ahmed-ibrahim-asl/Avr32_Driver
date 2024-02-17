@@ -27,12 +27,13 @@ int main(){
 	GIE_enuEnable();
 
 
-	EXTI_enuEnableInterrupt(INT0);
-	EXTI_enuSetSenseLevel(INT0, EXTI_RISING_EDGE);
-	EXTI_enuSetCallBack(warningSequence, INT0);
+	EXTI_enuEnableInterrupt(0);
+	EXTI_enuSetSenseLevel(0, EXTI_RISING_EDGE);
+	EXTI_enuSetCallBack(warningSequence, 0);
 
 
 
+//	LCD_u8SendString("WARNING");
 
 
 	while(1){
