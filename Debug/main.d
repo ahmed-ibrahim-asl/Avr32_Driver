@@ -8,7 +8,10 @@ main.o main.o: ../main.c ../MCAL/DIO/DIO_interface.h \
   ../HAL/LCD/LCD_HAL_interface.h ../HAL/keypad/keypad_HAL_interface.h \
   ../MCAL/GIE/GIE_interface.h ../MCAL/EXTI/EXTI_interface.h \
   ../MCAL/EXTI/../DIO/helper_embedded_libraries/micro_config.h \
-  ../MCAL/EXTI/EXTI_config.h ../MCAL/EXTI/EXTI_priv.h
+  ../MCAL/EXTI/EXTI_config.h ../MCAL/EXTI/EXTI_priv.h \
+  ../MCAL/ADC/ADC_initerface.h \
+  ../MCAL/ADC/../DIO/helper_embedded_libraries/micro_config.h \
+  ../MCAL/ADC/ADC_priv.h
 
 ../MCAL/DIO/DIO_interface.h:
 
@@ -39,3 +42,9 @@ main.o main.o: ../main.c ../MCAL/DIO/DIO_interface.h \
 ../MCAL/EXTI/EXTI_config.h:
 
 ../MCAL/EXTI/EXTI_priv.h:
+
+../MCAL/ADC/ADC_initerface.h:
+
+../MCAL/ADC/../DIO/helper_embedded_libraries/micro_config.h:
+
+../MCAL/ADC/ADC_priv.h:

@@ -16,21 +16,21 @@
 
 /***************** Mode of Operation *****************/
 // Options: FOUR_BIT or EIGHT_BIT
-#define LCD_MODE 					EIGHT_BIT
+#define LCD_MODE 					FOUR_BIT
 /****************************************************/
 
 
 /******************* Control Pins *******************/
 
-#define RS_PORT 			    	DIO_u8PortB
+#define RS_PORT 			    	DIO_u8PortA
 #define RS_PIN						DIO_u8PIN1
 
 
-#define RW_PORT						DIO_u8PortB
-#define RW_PIN						DIO_u8PIN2
+#define RW_PORT						DIO_u8PortD
+#define RW_PIN						DIO_u8PIN0
 
-#define EN_PORT 					DIO_u8PortB
-#define EN_PIN						DIO_u8PIN3
+#define EN_PORT 					DIO_u8PortA
+#define EN_PIN						DIO_u8PIN2
 /***************************************************/
 
 
@@ -55,7 +55,7 @@
 #endif
 
 #if(LCD_MODE == EIGHT_BIT)
-	#define LCD_DATA_PORT 	DIO_u8PortA
+	#define LCD_DATA_PORT 	DIO_u8PortC
 
 
 	#define DB7_PORT 				DIO_u8PortA
@@ -87,9 +87,5 @@
 
 /***************************************************/
 
-//#define FIRST_LINE					0x80
-//#define END_FIRST_LINE				0x8f
-//
-//#define SECOND_LINE					0xc0
-//#define SECOND_LINE					0xcf
+
 #endif /* HAL_LCD_HAL_CONFIG_H_ */

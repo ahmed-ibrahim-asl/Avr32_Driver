@@ -6,13 +6,14 @@
  */
 
 
-/*************** Include Section Start ********************/
+/******************* Include  Section Start *******************/
 #include <util/delay.h>
 #include "../../MCAL/DIO/DIO_interface.h"
 #include "LCD_HAL_priv.h"
 #include "LCD_HAL_config.h"
 #include "LCD_HAL_interface.h"
-/**********************************************************/
+/**************************************************************/
+
 
 #if(LCD_MODE == FOUR_BIT)
 	static uint8_t Global_u8FourBitInitFlag = 0;
@@ -28,19 +29,19 @@ ErrorStatus_t LCD_enuInit(void){
 	ErrorStatus_t Local_enuErrrorState = ERROR_STATUS_FAILURE;
 
 
-	/******************* !Control Pins! *******************/
+	/*********************** !Control Pins! ***********************/
 	DIO_enuSetPinDirection(RS_PORT, RS_PIN, DIO_u8OUTPUT);
 	DIO_enuSetPinDirection(RS_PORT, RW_PIN, DIO_u8OUTPUT);
 	DIO_enuSetPinDirection(RS_PORT, EN_PIN, DIO_u8OUTPUT);
-	/******************************************************/
+	/**************************************************************/
 
 
-	/******************** !Data Pins! *********************/
+	/************************ !Data  Pins! ************************/
 	DIO_enuSetPinDirection(DB7_PORT, DB7_PIN, DIO_u8OUTPUT);
 	DIO_enuSetPinDirection(DB6_PORT, DB6_PIN, DIO_u8OUTPUT);
 	DIO_enuSetPinDirection(DB5_PORT, DB5_PIN, DIO_u8OUTPUT);
 	DIO_enuSetPinDirection(DB4_PORT, DB4_PIN, DIO_u8OUTPUT);
-	/*******************************************************/
+	/**************************************************************/
 
 
 	_delay_ms(POWER_ON_DELAY);
@@ -49,7 +50,7 @@ ErrorStatus_t LCD_enuInit(void){
 
 	#if(LCD_MODE == FOUR_BIT)
 
-		/******************** !Function Set! ********************/
+		/*********************** !Function Set! ***********************/
 		/**
 		 * Note: this description is for third command, first and
 		 * second are have to be sent said by datasheet
@@ -69,10 +70,13 @@ ErrorStatus_t LCD_enuInit(void){
 			LCD_enuSendCommand(0x20);
 			LCD_enuSendCommand(0x80);
 			_delay_ms(FUNCTION_SET_DELAY);
-		/********************************************************/
+		/**************************************************************/
 
 
-		/******************* !Display ON/OFF! *******************/
+
+
+
+		/********************** !Display ON*OFF! **********************/
 			/**
 		     *  Note: this description is for second command first
 		     *  one has to be sent said by datasheet.
@@ -89,7 +93,7 @@ ErrorStatus_t LCD_enuInit(void){
 			  LCD_enuSendCommand(0x00);
 			  LCD_enuSendCommand(0xF0);
 			  _delay_ms(DISPLAY_ON_OFF_CONTROL);
-		/********************************************************/
+		/**************************************************************/
 
 
 		/******************* !Display CLEAR! *******************/

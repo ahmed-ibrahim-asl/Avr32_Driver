@@ -23,6 +23,7 @@ C_DEPS :=
 SUBDIRS := \
 HAL/LCD \
 HAL/keypad \
+MCAL/ADC \
 MCAL/DIO \
 MCAL/EXTI \
 MCAL/GIE \

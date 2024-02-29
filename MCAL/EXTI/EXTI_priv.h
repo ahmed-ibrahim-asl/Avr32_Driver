@@ -9,6 +9,9 @@
 #define MCAL_EXTI_EXTI_PRIV_H_
 
 /**
+ * Remeber Job of each Register:
+ *
+ *
  * MCUCCR - MCU Control Register
  * 	contains control bits for interrupt sense control and ....
  *

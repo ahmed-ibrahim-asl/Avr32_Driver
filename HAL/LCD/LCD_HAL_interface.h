@@ -28,7 +28,7 @@ ErrorStatus_t LCD_enuIntegerToString(sint32_t Copy_u8data, uint8_t Copy_u8Base);
 ErrorStatus_t LCD_u8SetPosXY(uint8_t copy_u8PosX, uint8_t copy_u8PosY);
 
 
-// 4. Display weird characters
+
 
 
 
