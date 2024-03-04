@@ -12,10 +12,13 @@
 
 
 #include <util/delay.h>
+#include <avr/interrupt.h>
 /************************************************************************************/
 
 
 
+
+static void (*ADC_CallBackFunction)(void) = NULL;
 
 
 void ADC_enuInit(){
@@ -78,7 +81,6 @@ void ADC_enuInit(){
 
 
 
-
 	// Waiting until ADC is stablized
 	_delay_ms(200);
 
@@ -110,33 +112,74 @@ ErrorStatus_t ADC_enuStartConversion(ADC_Channel_types ADC_channel_N){
 uint16 ADC_GetResult(){
 //	uint16 * Copy_pu16ReadValue;
 
-	#if	ADC_ADJUSTMENT_SELECTOR == ADC_LEFT_ADJUSTED
-		uint16 Copy_u16ReadValue = 0;
-		while(GET_BIT(ADCSRA_REG, ADCSRA_ADSC) == 1);
 
 
-		Copy_u16ReadValue = (ADCL_REG >> 6);
 
-		Copy_u16ReadValue |= ((uint16)ADCH_REG<<2);
-		return Copy_u16ReadValue;
+	#if ADC_MODE_SELECTOR == ADC_MODE_AUTO_TRIGGER
+		#if	ADC_ADJUSTMENT_SELECTOR == ADC_LEFT_ADJUSTED
+			uint16 Copy_u16ReadValue = 0;
+			Copy_u16ReadValue = (ADCL_REG >> 6);
+			Copy_u16ReadValue |= ((uint16)ADCH_REG<<2);
+			return Copy_u16ReadValue;
+		#endif
 
+		#if	ADC_ADJUSTMENT_SELECTOR == ADC_RIGHT_ADJUSTED
+			return ADCLH_REG;
+		#endif
+	#elif ADC_MODE_SELECTOR == ADC_MODE_SINGLE_CONVERSION
+		#if	ADC_ADJUSTMENT_SELECTOR == ADC_LEFT_ADJUSTED
+			uint16 Copy_u16ReadValue = 0;
+			while(GET_BIT(ADCSRA_REG, ADCSRA_ADSC) == 1);
+
+
+			Copy_u16ReadValue = (ADCL_REG >> 6);
+
+			Copy_u16ReadValue |= ((uint16)ADCH_REG<<2);
+			return Copy_u16ReadValue;
+
+		#endif
+
+		#if	ADC_ADJUSTMENT_SELECTOR == ADC_RIGHT_ADJUSTED
+			while(GET_BIT(ADCSRA_REG, ADCSRA_ADSC) == 1);
+			return ADCLH_REG;
+		#endif
 	#endif
 
-	#if	ADC_ADJUSTMENT_SELECTOR == ADC_RIGHT_ADJUSTED
-		while(GET_BIT(ADCSRA_REG, ADCSRA_ADSC) == 1);
-		return ADCLH_REG;
-	#endif
+
+
+
+
 
 }
 
 
 
 
+ErrorStatus_t ADC_enuSetCallBack(void(*Copy_pfunAppFun)(void)){
+	ErrorStatus_t Local_enuErrrorState = ERROR_STATUS_FAILURE;
+
+//	if(Copy_pfunAppFun == NULL ||  Copy_u8IntNumber> IN)
+
+	if(Copy_pfunAppFun == NULL){
+
+		return Local_enuErrrorState;
+	}
+
+	else{
+		Local_enuErrrorState = ERROR_STATUS_OK;
+
+		ADC_CallBackFunction = Copy_pfunAppFun;
+
+	}
 
 
 
+	return Local_enuErrrorState;
+}
 
-
-
-
-
+ISR(__vector_16){
+	if(ADC_CallBackFunction != NULL){
+		ADC_CallBackFunction();
+	}
+	 SET_BIT(ADCSRA_REG, ADCSRA_ADIF);
+}

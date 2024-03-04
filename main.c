@@ -19,7 +19,7 @@
 
 
 
-
+void testADC_interrupt();
 
 int main(){
 
@@ -41,20 +41,33 @@ int main(){
 	/************************************************/
 
 
-	/************** Testing ADC Driver **************/
+//	/************** Testing ADC Driver without interrupt **************/
+//	ADC_enuInit();
+//	DIO_enuSetPinDirection(DIO_u8PortA, DIO_u8PIN0, DIO_u8INPUT);
+//	uint16 AnalogReadingValue = 0;
+//	ADC_enuStartConversion(ADC_Channel_0);
+//	AnalogReadingValue = (ADC_GetResult() * ((uint32_t)5000000/ 1024ul))/10000ul;
+//
+//	/************************************************/
+
+
+
 	ADC_enuInit();
 	DIO_enuSetPinDirection(DIO_u8PortA, DIO_u8PIN0, DIO_u8INPUT);
-	uint16 AnalogReadingValue = 0;
-	/************************************************/
 
+	ADC_enuEnableInterrupt();
+	GIE_enuEnable();
 
+	ADC_enuSetCallBack(testADC_interrupt);
+	ADC_enuStartConversion(ADC_Channel_0);
 	while(1){
-		ADC_enuStartConversion(ADC_Channel_0);
-		AnalogReadingValue = (ADC_GetResult() * ((uint32_t)5000000/ 1024ul))/10000ul;
 
 
 
-		LCD_enuIntegerToString(AnalogReadingValue, 10);
+
+
+
+
 
 		_delay_ms(1000);
 	}
@@ -64,5 +77,10 @@ int main(){
 	    return 0;
 }
 
+void testADC_interrupt(){
+
+	uint16 AnalogReadingValue =  (ADC_GetResult() * ((uint32_t)5000000/ 1024ul))/10000ul;
+	LCD_enuIntegerToString(AnalogReadingValue, 10);
+}
 
 

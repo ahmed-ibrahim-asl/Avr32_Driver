@@ -16,24 +16,22 @@
 
 
 
-//uint8_t resolutionBits, uint32_t maxVoltageMicrovolts
 
-void ADC_enuInit();
-
-
-
-
+void ADC_enuInit(void);
 ErrorStatus_t ADC_enuStartConversion(ADC_Channel_types ADC_channel_N);
-uint16 ADC_GetResult();
+uint16 ADC_GetResult(void);
+
+
 
 
 
 
 #define ADC_enuEnableInterrupt()	SET_BIT(ADCSRA_REG, ADCSRA_ADIE)
+#define ADC_enuDisableInterrupt()	CLR_BIT(ADCSRA_REG, ADCSRA_ADIE)
+ErrorStatus_t ADC_enuSetCallBack(void(*Copy_pfunAppFun)(void));
 
 
 
-ErrorStatus_t ADC_enuSetCallBack(void(*Copy_pfunAppFun)(void), uint8_t Copy_u8IntNumber);
 
 
 
