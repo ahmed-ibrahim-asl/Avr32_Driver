@@ -9,10 +9,22 @@
 /********************************* Include  Section *********************************/
 #include "ADC_initerface.h"
 #include "ADC_config.h"
+
+
+#include <util/delay.h>
 /************************************************************************************/
 
 
-void ADC_enuInit(void){
+
+/******************************* Main  ADC parameters *******************************/
+static uint8_t  Global_u8ResolutionBits = 0;
+static uint32_t Global_u32MaxVoltage_MicroVolts = 0;
+/************************************************************************************/
+
+
+
+
+void ADC_enuInit(uint8_t Copy_u8ResolutionBits, uint32_t Copy_u32MaxVoltage_MicroVolts){
 
 
 	/**
@@ -20,8 +32,9 @@ void ADC_enuInit(void){
 	 * 1. Selecting voltage reference
 	 * 2. Selecting ADC MODE!
 	 * 3. Selecting Adjustment
-	 * 4. clearing interrupt flag
-	 * 5. enabling ADC
+	 * 4. Clearing interrupt flag
+	 * 5. Enabling ADC
+	 * 6. Setting values for adc parameters
 	 * */
 
 
@@ -69,6 +82,17 @@ void ADC_enuInit(void){
 	/*********************************** Enabling ADC ***********************************/
 		SET_BIT(ADCSRA_REG, ADCSRA_ADEN);
 	/************************************************************************************/
+
+
+
+
+	Global_u8ResolutionBits = Copy_u8ResolutionBits;
+	Global_u32MaxVoltage_MicroVolts = Copy_u32MaxVoltage_MicroVolts;
+
+
+	// Waiting until ADC is stablized
+	_delay_ms(200);
+
 }
 
 
@@ -85,6 +109,7 @@ ErrorStatus_t ADC_enuStartConversion(ADC_Channel_types ADC_channel_N){
 
 
 	/******************************* ADC Start Conversion *******************************/
+	//!!!!!!!!!!!!!!
 	SET_BIT(ADCSRA_REG, ADCSRA_ADSC);
 	/************************************************************************************/
 
@@ -96,10 +121,32 @@ ErrorStatus_t ADC_enuStartConversion(ADC_Channel_types ADC_channel_N){
 uint16 ADC_GetResult(){
 //	uint16 * Copy_pu16ReadValue;
 
-	while(GET_BIT(ADCSRA_REG, ADCSRA_ADSC));
+	#if	ADC_ADJUSTMENT_SELECTOR == ADC_LEFT_ADJUSTED
+		uint16 Copy_u16ReadValue = 0;
+		while(GET_BIT(ADCSRA_REG, ADCSRA_ADSC) == 1);
+
+
+		Copy_u16ReadValue = (ADCL_REG >> 6);
+
+		Copy_u16ReadValue |= ((uint16)ADCH_REG<<2);
+		return Copy_u16ReadValue;
+
+	#endif
+
+	#if	ADC_ADJUSTMENT_SELECTOR == ADC_RIGHT_ADJUSTED
+		while(GET_BIT(ADCSRA_REG, ADCSRA_ADSC) == 1);
+	#endif
 
 	return ADCLH_REG;
 }
+
+
+
+
+
+
+
+
 
 
 
