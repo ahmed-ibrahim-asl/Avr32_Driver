@@ -16,15 +16,9 @@
 
 
 
-/******************************* Main  ADC parameters *******************************/
-static uint8_t  Global_u8ResolutionBits = 0;
-static uint32_t Global_u32MaxVoltage_MicroVolts = 0;
-/************************************************************************************/
 
 
-
-
-void ADC_enuInit(uint8_t Copy_u8ResolutionBits, uint32_t Copy_u32MaxVoltage_MicroVolts){
+void ADC_enuInit(){
 
 
 	/**
@@ -34,7 +28,6 @@ void ADC_enuInit(uint8_t Copy_u8ResolutionBits, uint32_t Copy_u32MaxVoltage_Micr
 	 * 3. Selecting Adjustment
 	 * 4. Clearing interrupt flag
 	 * 5. Enabling ADC
-	 * 6. Setting values for adc parameters
 	 * */
 
 
@@ -86,10 +79,6 @@ void ADC_enuInit(uint8_t Copy_u8ResolutionBits, uint32_t Copy_u32MaxVoltage_Micr
 
 
 
-	Global_u8ResolutionBits = Copy_u8ResolutionBits;
-	Global_u32MaxVoltage_MicroVolts = Copy_u32MaxVoltage_MicroVolts;
-
-
 	// Waiting until ADC is stablized
 	_delay_ms(200);
 
@@ -135,9 +124,9 @@ uint16 ADC_GetResult(){
 
 	#if	ADC_ADJUSTMENT_SELECTOR == ADC_RIGHT_ADJUSTED
 		while(GET_BIT(ADCSRA_REG, ADCSRA_ADSC) == 1);
+		return ADCLH_REG;
 	#endif
 
-	return ADCLH_REG;
 }
 
 

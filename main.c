@@ -42,7 +42,7 @@ int main(){
 
 
 	/************** Testing ADC Driver **************/
-	ADC_enuInit(10, 5000000);
+	ADC_enuInit();
 	DIO_enuSetPinDirection(DIO_u8PortA, DIO_u8PIN0, DIO_u8INPUT);
 	uint16 AnalogReadingValue = 0;
 	/************************************************/
