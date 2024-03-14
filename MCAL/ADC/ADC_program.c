@@ -181,5 +181,5 @@ ISR(__vector_16){
 	if(ADC_CallBackFunction != NULL){
 		ADC_CallBackFunction();
 	}
-	 SET_BIT(ADCSRA_REG, ADCSRA_ADIF);
+
 }
