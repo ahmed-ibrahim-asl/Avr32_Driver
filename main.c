@@ -12,8 +12,10 @@
 #include "MCAL/GIE/GIE_interface.h"
 #include "MCAL/EXTI/EXTI_interface.h"
 #include <util/delay.h>
-
+#include "MCAL/uart/UART_interface.h"
 #include "MCAL/ADC/ADC_initerface.h"
+#include "MCAL/SPI/SPI_interface.h"
+
 /****************************************************************/
 
 
@@ -72,16 +74,23 @@ int main(){
 //		}
 	/****************************************************************/
 
+	/************ Testing UART Driver                    ************/
+//	DIO_enuSetPinDirection(DIO_u8PortD, DIO_u8PIN0, DIO_u8INPUT);
+//	DIO_enuSetPinDirection(DIO_u8PortD, DIO_u8PIN1, DIO_u8OUTPUT);
+//	UART_vidInit();
+	/****************************************************************/
 
-	DIO_enuSetPinDirection(DIO_u8PortD, DIO_u8PIN0, DIO_u8INPUT);
-	DIO_enuSetPinDirection(DIO_u8PortD, DIO_u8PIN1, DIO_u8OUTPUT);
-	UART_vidInit();
+	SPI_vidInit();
 
+	uint8_t	data = 0;
 
 	while(1){
 
-		UART_enuSendString("Works ");
+		SPI_enuSlaveReceive_Char(&data);
 
+
+		LCD_enuSendData(data);
+		_delay_ms(100);
 	}
 
 
