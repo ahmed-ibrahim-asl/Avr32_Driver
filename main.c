@@ -7,14 +7,9 @@
 
 /******************** Include  Section Start ********************/
 #include "MCAL/DIO/DIO_interface.h"
+#include "MCAL/TWI/TWI_interface.h"
 #include "HAL/LCD/LCD_HAL_interface.h"
-#include "HAL/keypad/keypad_HAL_interface.h"
-#include "MCAL/GIE/GIE_interface.h"
-#include "MCAL/EXTI/EXTI_interface.h"
 #include <util/delay.h>
-#include "MCAL/uart/UART_interface.h"
-#include "MCAL/ADC/ADC_initerface.h"
-#include "MCAL/SPI/SPI_interface.h"
 
 /****************************************************************/
 
@@ -24,74 +19,44 @@
 
 int main(){
 
-
-//	/****************** Testing Interrupt Driver ******************/
-//		EXTI_enuInit(EXTI_GroupConfig);
-//		DIO_enuSetPinDirection(DIO_u8PortD, DIO_u8PIN2, DIO_u8INPUT);
-//		GIE_enuEnable();
-//		EXTI_enuEnableInterrupt(1);
-//		EXTI_enuSetSenseLevel(1, EXTI_RISING_EDGE);
-//		EXTI_enuSetCallBack(warningSequence, 1);
-//	/**************************************************************/
+	TWI_enuInit();
 
 
-	/********************* Testing LCD Driver *********************/
-	LCD_enuInit();
-	LCD_u8SendString("Ahmed Asl");
-	LCD_u8SetPosXY(0, 2);
-	/**************************************************************/
-
-
-//	/************ Testing ADC Driver without Interrupt ************/
-//		ADC_enuInit();
-//		DIO_enuSetPinDirection(DIO_u8PortA, DIO_u8PIN0, DIO_u8INPUT);
-//		uint16 AnalogReadingValue = 0;
-//		ADC_enuStartConversion(ADC_Channel_0);
-//		AnalogReadingValue = (ADC_GetResult() * ((uint32_t)5000000/ 1024ul))/10000ul;
-//
-//	/***************************************************************/
+	#if(TWI_MODE_M_or_S == TWI_SLAVE_MODE)
+		LCD_enuInit();
+		uint8_t Local_u8Data = 0;
+	#endif
 
 
 
-//	/************** Testing  ADC Driver with Interrupt **************/
-//		uint8_t SWFLAG=0;
-//		void testADC_interrupt();
-//
-//		ADC_enuInit();
-//		DIO_enuSetPinDirection(DIO_u8PortA, DIO_u8PIN0, DIO_u8INPUT);
-//
-//		ADC_enuEnableInterrupt();
-//		GIE_enuEnable();
-//
-//		ADC_enuSetCallBack(testADC_interrupt);
-//		ADC_enuStartConversion(ADC_Channel_0);
-//
-//
-//		// in while(1)
-//		if(SWFLAG == 1){
-//			uint16 AnalogReadingValue =  (ADC_GetResult() * ((uint32_t)5000000/ 1024ul))/10000ul;
-//			LCD_enuIntegerToString(AnalogReadingValue, 10);
-//		}
-	/****************************************************************/
-
-	/************ Testing UART Driver                    ************/
-//	DIO_enuSetPinDirection(DIO_u8PortD, DIO_u8PIN0, DIO_u8INPUT);
-//	DIO_enuSetPinDirection(DIO_u8PortD, DIO_u8PIN1, DIO_u8OUTPUT);
-//	UART_vidInit();
-	/****************************************************************/
-
-	SPI_vidInit();
-
-	uint8_t	data = 0;
 
 	while(1){
+		#if(TWI_MODE_M_or_S == TWI_MASTER_MODE)
+			if( TWI_STATUS_OK == TWI_enuStartCondition()){
 
-		SPI_enuSlaveReceive_Char(&data);
+				if( TWI_STATUS_OK == TWI_enuSetSlaveOperation(5, TWI_WriteOperation)){
+
+					if(TWI_STATUS_OK == TWI_enuWriteData('@')){
+						TWI_enuStopCondition();
+
+					}
+				}
+			}
 
 
-		LCD_enuSendData(data);
-		_delay_ms(100);
+		#elif(TWI_MODE_M_or_S == TWI_SLAVE_MODE)
+			if( TWI_STATUS_OK == TWI_enuCheckMyAddress() ){
+
+				if(TWI_STATUS_OK == TWI_enuReadData(&Local_u8Data)){
+					LCD_enuSendData(Local_u8Data);
+				}
+
+			}
+			_delay_ms(100);
+
+		#endif
 	}
+
 
 
 

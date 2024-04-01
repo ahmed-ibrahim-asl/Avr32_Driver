@@ -28,6 +28,7 @@ MCAL/DIO \
 MCAL/EXTI \
 MCAL/GIE \
 MCAL/SPI \
+MCAL/TWI \
 MCAL/uart \
 . \
 
