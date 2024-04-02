@@ -32,16 +32,15 @@ int main(){
 
 	while(1){
 //		#if(TWI_MODE_M_or_S == TWI_MASTER_MODE)
-//			if( TWI_STATUS_OK == TWI_enuStartCondition()){
-//
-//				if( TWI_STATUS_OK == TWI_enuSetSlaveOperation(5, TWI_WriteOperation)){
-//
-//					if(TWI_STATUS_OK == TWI_enuWriteData('@')){
-//						TWI_enuStopCondition();
-//
-//					}
-//				}
-//			}
+
+
+
+		if(TWI_enuStartCondition() == TWI_STATUS_OK ){
+
+			TWI_enuSetSlaveOperation(5, TWI_WriteOperation);
+			TWI_enuWriteData('@');
+			TWI_enuStopCondition();
+		}
 //
 //
 //		#elif(TWI_MODE_M_or_S == TWI_SLAVE_MODE)
@@ -55,11 +54,9 @@ int main(){
 //
 //		#endif
 
-	TWI_enuStartCondition();
-	TWI_enuSetSlaveOperation(5, TWI_WriteOperation);
-	TWI_enuWriteData('@');
-	TWI_enuStopCondition();
-	_delay_ms(1000);
+
+
+
 	}
 
 

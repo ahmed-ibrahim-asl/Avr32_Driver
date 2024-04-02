@@ -156,7 +156,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x3506
+.text           0x00000000     0x3410
  *(.vectors)
  .vectors       0x00000000       0x54 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
                 0x00000000                __vectors
@@ -298,153 +298,153 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                 0x00000e62       0x54 ./MCAL/TWI/TWI_program.o
                 0x00000e62                TWI_enuRepeatStartCondition
  .text.TWI_enuStopCondition
-                0x00000eb6       0x40 ./MCAL/TWI/TWI_program.o
+                0x00000eb6       0x36 ./MCAL/TWI/TWI_program.o
                 0x00000eb6                TWI_enuStopCondition
  .text.TWI_enuSetSlaveOperation
-                0x00000ef6       0x72 ./MCAL/TWI/TWI_program.o
-                0x00000ef6                TWI_enuSetSlaveOperation
+                0x00000eec       0x72 ./MCAL/TWI/TWI_program.o
+                0x00000eec                TWI_enuSetSlaveOperation
  .text.TWI_enuWriteData
-                0x00000f68       0xa2 ./MCAL/TWI/TWI_program.o
-                0x00000f68                TWI_enuWriteData
+                0x00000f5e       0xa2 ./MCAL/TWI/TWI_program.o
+                0x00000f5e                TWI_enuWriteData
  .text.TWI_enuReadData
-                0x0000100a       0x76 ./MCAL/TWI/TWI_program.o
-                0x0000100a                TWI_enuReadData
+                0x00001000       0x76 ./MCAL/TWI/TWI_program.o
+                0x00001000                TWI_enuReadData
  .text.TWI_enuCheckMyAddress
-                0x00001080       0x60 ./MCAL/TWI/TWI_program.o
-                0x00001080                TWI_enuCheckMyAddress
+                0x00001076       0x60 ./MCAL/TWI/TWI_program.o
+                0x00001076                TWI_enuCheckMyAddress
  .text.SPI_vidInit
-                0x000010e0       0x98 ./MCAL/SPI/SPI_program.o
-                0x000010e0                SPI_vidInit
+                0x000010d6       0x98 ./MCAL/SPI/SPI_program.o
+                0x000010d6                SPI_vidInit
  .text.SPI_enuMasterTransmit_Char
-                0x00001178       0x30 ./MCAL/SPI/SPI_program.o
-                0x00001178                SPI_enuMasterTransmit_Char
+                0x0000116e       0x30 ./MCAL/SPI/SPI_program.o
+                0x0000116e                SPI_enuMasterTransmit_Char
  .text.SPI_enuMasterTransmit_String
-                0x000011a8       0x56 ./MCAL/SPI/SPI_program.o
-                0x000011a8                SPI_enuMasterTransmit_String
+                0x0000119e       0x56 ./MCAL/SPI/SPI_program.o
+                0x0000119e                SPI_enuMasterTransmit_String
  .text.SPI_enuSlaveReceive_Char
-                0x000011fe       0x3a ./MCAL/SPI/SPI_program.o
-                0x000011fe                SPI_enuSlaveReceive_Char
+                0x000011f4       0x3a ./MCAL/SPI/SPI_program.o
+                0x000011f4                SPI_enuSlaveReceive_Char
  .text.SPI_enuSlaveReceive_String
-                0x00001238       0x78 ./MCAL/SPI/SPI_program.o
-                0x00001238                SPI_enuSlaveReceive_String
+                0x0000122e       0x78 ./MCAL/SPI/SPI_program.o
+                0x0000122e                SPI_enuSlaveReceive_String
  .text.GIE_enuEnable
-                0x000012b0       0x32 ./MCAL/GIE/GIE_program.o
-                0x000012b0                GIE_enuEnable
+                0x000012a6       0x32 ./MCAL/GIE/GIE_program.o
+                0x000012a6                GIE_enuEnable
  .text.GIE_enuDisable
-                0x000012e2       0x32 ./MCAL/GIE/GIE_program.o
-                0x000012e2                GIE_enuDisable
+                0x000012d8       0x32 ./MCAL/GIE/GIE_program.o
+                0x000012d8                GIE_enuDisable
  .text.EXTI_enuInit
-                0x00001314      0x2a8 ./MCAL/EXTI/EXTI_program.o
-                0x00001314                EXTI_enuInit
+                0x0000130a      0x2a8 ./MCAL/EXTI/EXTI_program.o
+                0x0000130a                EXTI_enuInit
  .text.EXTI_enuEnableInterrupt
-                0x000015bc       0x78 ./MCAL/EXTI/EXTI_program.o
-                0x000015bc                EXTI_enuEnableInterrupt
+                0x000015b2       0x78 ./MCAL/EXTI/EXTI_program.o
+                0x000015b2                EXTI_enuEnableInterrupt
  .text.EXTI_enuDisableInterrupt
-                0x00001634       0x8c ./MCAL/EXTI/EXTI_program.o
-                0x00001634                EXTI_enuDisableInterrupt
+                0x0000162a       0x8c ./MCAL/EXTI/EXTI_program.o
+                0x0000162a                EXTI_enuDisableInterrupt
  .text.EXTI_enuSetSenseLevel
-                0x000016c0      0x21e ./MCAL/EXTI/EXTI_program.o
-                0x000016c0                EXTI_enuSetSenseLevel
+                0x000016b6      0x21e ./MCAL/EXTI/EXTI_program.o
+                0x000016b6                EXTI_enuSetSenseLevel
  .text.EXTI_enuSetCallBack
-                0x000018de       0x6a ./MCAL/EXTI/EXTI_program.o
-                0x000018de                EXTI_enuSetCallBack
+                0x000018d4       0x6a ./MCAL/EXTI/EXTI_program.o
+                0x000018d4                EXTI_enuSetCallBack
  .text.__vector_1
-                0x00001948       0x66 ./MCAL/EXTI/EXTI_program.o
-                0x00001948                __vector_1
+                0x0000193e       0x66 ./MCAL/EXTI/EXTI_program.o
+                0x0000193e                __vector_1
  .text.__vector_2
-                0x000019ae       0x66 ./MCAL/EXTI/EXTI_program.o
-                0x000019ae                __vector_2
+                0x000019a4       0x66 ./MCAL/EXTI/EXTI_program.o
+                0x000019a4                __vector_2
  .text.__vector_3
-                0x00001a14       0x66 ./MCAL/EXTI/EXTI_program.o
-                0x00001a14                __vector_3
+                0x00001a0a       0x66 ./MCAL/EXTI/EXTI_program.o
+                0x00001a0a                __vector_3
  .text.DIO_enuInit
-                0x00001a7a       0x56 ./MCAL/DIO/DIO_program.o
-                0x00001a7a                DIO_enuInit
+                0x00001a70       0x56 ./MCAL/DIO/DIO_program.o
+                0x00001a70                DIO_enuInit
  .text.DIO_enuSetPinDirection
-                0x00001ad0      0x1f8 ./MCAL/DIO/DIO_program.o
-                0x00001ad0                DIO_enuSetPinDirection
+                0x00001ac6      0x1f8 ./MCAL/DIO/DIO_program.o
+                0x00001ac6                DIO_enuSetPinDirection
  .text.DIO_enuSetPinValue
-                0x00001cc8      0x1f8 ./MCAL/DIO/DIO_program.o
-                0x00001cc8                DIO_enuSetPinValue
+                0x00001cbe      0x1f8 ./MCAL/DIO/DIO_program.o
+                0x00001cbe                DIO_enuSetPinValue
  .text.DIO_enuGetPinValue
-                0x00001ec0      0x142 ./MCAL/DIO/DIO_program.o
-                0x00001ec0                DIO_enuGetPinValue
+                0x00001eb6      0x142 ./MCAL/DIO/DIO_program.o
+                0x00001eb6                DIO_enuGetPinValue
  .text.DIO_enuTogglePinValue
-                0x00002002      0x122 ./MCAL/DIO/DIO_program.o
-                0x00002002                DIO_enuTogglePinValue
+                0x00001ff8      0x122 ./MCAL/DIO/DIO_program.o
+                0x00001ff8                DIO_enuTogglePinValue
  .text.DIO_enuSetPortDirection
-                0x00002124       0xe2 ./MCAL/DIO/DIO_program.o
-                0x00002124                DIO_enuSetPortDirection
+                0x0000211a       0xe2 ./MCAL/DIO/DIO_program.o
+                0x0000211a                DIO_enuSetPortDirection
  .text.DIO_enuSetPortValue
-                0x00002206       0xe2 ./MCAL/DIO/DIO_program.o
-                0x00002206                DIO_enuSetPortValue
+                0x000021fc       0xe2 ./MCAL/DIO/DIO_program.o
+                0x000021fc                DIO_enuSetPortValue
  .text.ADC_enuInit
-                0x000022e8      0x178 ./MCAL/ADC/ADC_program.o
-                0x000022e8                ADC_enuInit
+                0x000022de      0x178 ./MCAL/ADC/ADC_program.o
+                0x000022de                ADC_enuInit
  .text.ADC_enuStartConversion
-                0x00002460       0x46 ./MCAL/ADC/ADC_program.o
-                0x00002460                ADC_enuStartConversion
+                0x00002456       0x46 ./MCAL/ADC/ADC_program.o
+                0x00002456                ADC_enuStartConversion
  .text.ADC_GetResult
-                0x000024a6       0x16 ./MCAL/ADC/ADC_program.o
-                0x000024a6                ADC_GetResult
+                0x0000249c       0x16 ./MCAL/ADC/ADC_program.o
+                0x0000249c                ADC_GetResult
  .text.ADC_enuSetCallBack
-                0x000024bc       0x44 ./MCAL/ADC/ADC_program.o
-                0x000024bc                ADC_enuSetCallBack
+                0x000024b2       0x44 ./MCAL/ADC/ADC_program.o
+                0x000024b2                ADC_enuSetCallBack
  .text.__vector_16
-                0x00002500       0x66 ./MCAL/ADC/ADC_program.o
-                0x00002500                __vector_16
+                0x000024f6       0x66 ./MCAL/ADC/ADC_program.o
+                0x000024f6                __vector_16
  .text.keypad_enuInit
-                0x00002566       0xba ./HAL/keypad/keypad_HAL_program.o
-                0x00002566                keypad_enuInit
+                0x0000255c       0xba ./HAL/keypad/keypad_HAL_program.o
+                0x0000255c                keypad_enuInit
  .text.LCD_vidSetRowPattern
-                0x00002620       0xc0 ./HAL/keypad/keypad_HAL_program.o
+                0x00002616       0xc0 ./HAL/keypad/keypad_HAL_program.o
  .text.keypad_enuGetPressedKey
-                0x000026e0      0x138 ./HAL/keypad/keypad_HAL_program.o
-                0x000026e0                keypad_enuGetPressedKey
+                0x000026d6      0x138 ./HAL/keypad/keypad_HAL_program.o
+                0x000026d6                keypad_enuGetPressedKey
  .text.LCD_enuInit
-                0x00002818      0x440 ./HAL/LCD/LCD_HAL_program.o
-                0x00002818                LCD_enuInit
+                0x0000280e      0x440 ./HAL/LCD/LCD_HAL_program.o
+                0x0000280e                LCD_enuInit
  .text.WriteNLatch
-                0x00002c58      0x2cc ./HAL/LCD/LCD_HAL_program.o
+                0x00002c4e      0x2cc ./HAL/LCD/LCD_HAL_program.o
  .text.LCD_enuSendData
-                0x00002f24       0x34 ./HAL/LCD/LCD_HAL_program.o
-                0x00002f24                LCD_enuSendData
+                0x00002f1a       0x34 ./HAL/LCD/LCD_HAL_program.o
+                0x00002f1a                LCD_enuSendData
  .text.LCD_enuSendCommand
-                0x00002f58       0x38 ./HAL/LCD/LCD_HAL_program.o
-                0x00002f58                LCD_enuSendCommand
+                0x00002f4e       0x38 ./HAL/LCD/LCD_HAL_program.o
+                0x00002f4e                LCD_enuSendCommand
  .text.LCD_u8SendString
-                0x00002f90       0x74 ./HAL/LCD/LCD_HAL_program.o
-                0x00002f90                LCD_u8SendString
+                0x00002f86       0x74 ./HAL/LCD/LCD_HAL_program.o
+                0x00002f86                LCD_u8SendString
  .text.LCD_enuIntegerToString
-                0x00003004      0x1ae ./HAL/LCD/LCD_HAL_program.o
-                0x00003004                LCD_enuIntegerToString
+                0x00002ffa      0x1ae ./HAL/LCD/LCD_HAL_program.o
+                0x00002ffa                LCD_enuIntegerToString
  .text.LCD_u8SetPosXY
-                0x000031b2       0x86 ./HAL/LCD/LCD_HAL_program.o
-                0x000031b2                LCD_u8SetPosXY
+                0x000031a8       0x86 ./HAL/LCD/LCD_HAL_program.o
+                0x000031a8                LCD_u8SetPosXY
  .text.LCD_u8StoreCustomChar
-                0x00003238       0x98 ./HAL/LCD/LCD_HAL_program.o
-                0x00003238                LCD_u8StoreCustomChar
+                0x0000322e       0x98 ./HAL/LCD/LCD_HAL_program.o
+                0x0000322e                LCD_u8StoreCustomChar
  .text.LCD_u8DisplayCustomChar
-                0x000032d0       0x36 ./HAL/LCD/LCD_HAL_program.o
-                0x000032d0                LCD_u8DisplayCustomChar
- .text.main     0x00003306      0x114 ./main.o
-                0x00003306                main
- .text.libgcc   0x0000341a       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
-                0x0000341a                __divmodsi4
- .text.libgcc   0x00003450        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .text.libgcc   0x00003450        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .text.libgcc   0x00003450        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
- .text.libgcc   0x00003450       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
-                0x00003450                __udivmodsi4
- .text.libgcc   0x00003494       0x38 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
-                0x00003494                __prologue_saves__
- .text.libgcc   0x000034cc       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
-                0x000034cc                __epilogue_restores__
-                0x00003502                . = ALIGN (0x2)
+                0x000032c6       0x36 ./HAL/LCD/LCD_HAL_program.o
+                0x000032c6                LCD_u8DisplayCustomChar
+ .text.main     0x000032fc       0x28 ./main.o
+                0x000032fc                main
+ .text.libgcc   0x00003324       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
+                0x00003324                __divmodsi4
+ .text.libgcc   0x0000335a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x0000335a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x0000335a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x0000335a       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+                0x0000335a                __udivmodsi4
+ .text.libgcc   0x0000339e       0x38 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_prologue.o)
+                0x0000339e                __prologue_saves__
+ .text.libgcc   0x000033d6       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_epilogue.o)
+                0x000033d6                __epilogue_restores__
+                0x0000340c                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00003502        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x00003502                exit
-                0x00003502                _exit
+ .fini9         0x0000340c        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x0000340c                exit
+                0x0000340c                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -463,11 +463,11 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00003502        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .fini0         0x0000340c        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00003506                _etext = .
+                0x00003410                _etext = .
 
-.data           0x00800060       0x1e load address 0x00003506
+.data           0x00800060       0x1e load address 0x00003410
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800060        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
@@ -556,8 +556,8 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                 0x00800086        0x1 ./HAL/LCD/LCD_HAL_program.o
  *(COMMON)
                 0x00800087                PROVIDE (__bss_end, .)
-                0x00003506                __data_load_start = LOADADDR (.data)
-                0x00003524                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00003410                __data_load_start = LOADADDR (.data)
+                0x0000342e                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800087        0x0
                 0x00800087                PROVIDE (__noinit_start, .)
@@ -582,33 +582,33 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .signature
  *(.signature*)
 
-.stab           0x00000000     0x47b8
+.stab           0x00000000     0x4728
  *(.stab)
  .stab          0x00000000      0x5dc ./MCAL/uart/UART_program.o
- .stab          0x000005dc      0x75c ./MCAL/TWI/TWI_program.o
-                                0x798 (size before relaxing)
- .stab          0x00000d38      0x510 ./MCAL/SPI/SPI_program.o
+ .stab          0x000005dc      0x8dc ./MCAL/TWI/TWI_program.o
+                                0x918 (size before relaxing)
+ .stab          0x00000eb8      0x510 ./MCAL/SPI/SPI_program.o
                                 0x54c (size before relaxing)
- .stab          0x00001248      0x2c4 ./MCAL/GIE/GIE_program.o
+ .stab          0x000013c8      0x2c4 ./MCAL/GIE/GIE_program.o
                                 0x300 (size before relaxing)
- .stab          0x0000150c      0x108 ./MCAL/EXTI/EXTI_config.o
+ .stab          0x0000168c      0x108 ./MCAL/EXTI/EXTI_config.o
                                 0x114 (size before relaxing)
- .stab          0x00001614      0xa80 ./MCAL/EXTI/EXTI_program.o
+ .stab          0x00001794      0x924 ./MCAL/EXTI/EXTI_program.o
                                 0xad4 (size before relaxing)
- .stab          0x00002094      0x954 ./MCAL/DIO/DIO_program.o
+ .stab          0x000020b8      0x954 ./MCAL/DIO/DIO_program.o
                                 0x990 (size before relaxing)
- .stab          0x000029e8      0x534 ./MCAL/ADC/ADC_program.o
+ .stab          0x00002a0c      0x528 ./MCAL/ADC/ADC_program.o
                                 0x6fc (size before relaxing)
- .stab          0x00002f1c      0x57c ./HAL/keypad/keypad_HAL_program.o
+ .stab          0x00002f34      0x57c ./HAL/keypad/keypad_HAL_program.o
                                 0x5b8 (size before relaxing)
- .stab          0x00003498     0x10c8 ./HAL/LCD/LCD_HAL_program.o
+ .stab          0x000034b0     0x10c8 ./HAL/LCD/LCD_HAL_program.o
                                0x1110 (size before relaxing)
- .stab          0x00004560      0x258 ./main.o
-                                0x4e0 (size before relaxing)
+ .stab          0x00004578      0x1b0 ./main.o
+                                0x438 (size before relaxing)
 
-.stabstr        0x00000000     0x247f
+.stabstr        0x00000000     0x2489
  *(.stabstr)
- .stabstr       0x00000000     0x247f ./MCAL/uart/UART_program.o
+ .stabstr       0x00000000     0x2489 ./MCAL/uart/UART_program.o
 
 .stab.excl
  *(.stab.excl)

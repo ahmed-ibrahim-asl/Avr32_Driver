@@ -13,6 +13,10 @@
 #include "TWI_interface.h"
 #include "TWI_config.h"
 #include "TWI_priv.h"
+
+
+#include <util/delay.h>
+
 /**************************************************************************/
 
 void TWI_enuInit(void){
@@ -80,9 +84,7 @@ TWIStatus_t TWI_enuStartCondition(void){
 	 * 0xF8
 	 * */
 
-
-	if( (TWSR_REG &0xF8) == TWI_START_SUCCESS_CODE){
-
+	if( (TWSR_REG &0xF8) == 0x08){
 		Local_enu_ErrorState = TWI_STATUS_OK;
 	}
 
@@ -134,10 +136,6 @@ TWIStatus_t TWI_enuStopCondition(void){
 	// Stop Condition
 	SET_BIT(TWCR_REG, TWCR_TWSTO);
 
-	// Wait for TWINT Flag set. This indicates that the START condition has been transmitted.
-	while(!(GET_BIT(TWCR_REG, TWCR_TWINT)));
-
-
 
 
 	Local_enu_ErrorState = TWI_STATUS_OK;
@@ -168,6 +166,7 @@ TWIStatus_t TWI_enuSetSlaveOperation(
     // Check for operation success based on requested operation
     if(copy_u8Operation == TWI_SLA_WR_ACK_TSUCCESS_CODE ){
         Local_enu_ErrorState = TWI_STATUS_OK;
+
 
     } else if(copy_u8Operation == TWI_SLA_RD_ACK_TSUCCESS_CODE ){
         Local_enu_ErrorState = TWI_STATUS_OK;
