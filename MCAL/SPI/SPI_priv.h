@@ -8,7 +8,7 @@
 #ifndef MCAL_SPI_SPI_PRIV_H_
 #define MCAL_SPI_SPI_PRIV_H_
 
-/*********************** Uart Registers ***********************/
+/************************ SPI Registers ************************/
 #define SPCR_REG	*((volatile uint8_t*) (0x2D))
 #define SPSR_REG	*((volatile uint8_t*) (0x2E))
 #define SPDR_REG	*((volatile uint8_t*) (0x2F))

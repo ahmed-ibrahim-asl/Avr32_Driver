@@ -15,7 +15,7 @@
 
 
 
-void TWI_enuInit(void);
+TWIStatus_t TWI_enuInit(void);
 
 TWIStatus_t TWI_enuStartCondition(void);
 TWIStatus_t TWI_enuRepeatStartCondition(void);

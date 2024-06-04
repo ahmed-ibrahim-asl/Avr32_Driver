@@ -1,5 +1,4 @@
-/*
- * TWI_program.c
+/* TWI_program.c
  *
  *  Created on: Mar 30, 2024
  *      Author: ad
@@ -19,7 +18,8 @@
 
 /**************************************************************************/
 
-void TWI_enuInit(void){
+TWIStatus_t TWI_enuInit(void){
+	TWIStatus_t Local_enuErrorState = TWI_STATUS_FAILURE;
 
 
 	#if(TWI_MODE_M_or_S == TWI_MASTER_MODE)
@@ -58,6 +58,11 @@ void TWI_enuInit(void){
 
    // Set Address for MC
    TWAR_REG = (TWAR_REG&0x01)  | TWI_SET_ADDR;
+
+
+
+   Local_enuErrorState = TWI_STATUS_OK;
+   return Local_enuErrorState;
 }
 
 
@@ -84,11 +89,14 @@ TWIStatus_t TWI_enuStartCondition(void){
 	 * 0xF8
 	 * */
 
+//	DDRA = (TWSR_REG &0xF8);
+	//!?
 	if( (TWSR_REG &0xF8) == 0x08){
 		Local_enu_ErrorState = TWI_STATUS_OK;
 	}
 
 
+	Local_enu_ErrorState = TWI_STATUS_OK;
 	return Local_enu_ErrorState;
 }
 
@@ -113,6 +121,7 @@ TWIStatus_t TWI_enuRepeatStartCondition(void){
 	 *
 	 * 0xF8
 	 * */
+
 
 
 	if( (TWSR_REG &0xF8) == TWI_RSTART_SUCCESS_CODE){

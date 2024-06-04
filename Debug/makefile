@@ -10,6 +10,7 @@ RM := rm -rf
 -include sources.mk
 -include MCAL/uart/subdir.mk
 -include MCAL/TWI/subdir.mk
+-include MCAL/TIMER/subdir.mk
 -include MCAL/SPI/subdir.mk
 -include MCAL/GIE/subdir.mk
 -include MCAL/EXTI/subdir.mk
@@ -17,6 +18,7 @@ RM := rm -rf
 -include MCAL/ADC/subdir.mk
 -include HAL/keypad/subdir.mk
 -include HAL/LCD/subdir.mk
+-include HAL/EEPROM/subdir.mk
 -include subdir.mk
 -include objects.mk
 

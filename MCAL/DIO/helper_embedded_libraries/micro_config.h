@@ -6,6 +6,7 @@
 	#include "error_types.h"
 	#include "std_types.h"
 	#include "register.h"
+	#include <math.h>
 	/******************************************************/
 
 
