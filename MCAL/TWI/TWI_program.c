@@ -90,7 +90,6 @@ TWIStatus_t TWI_enuStartCondition(void){
 	 * */
 
 //	DDRA = (TWSR_REG &0xF8);
-	//!?
 	if( (TWSR_REG &0xF8) == 0x08){
 		Local_enu_ErrorState = TWI_STATUS_OK;
 	}

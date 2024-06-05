@@ -12,22 +12,26 @@
 /****************************************************************/
 
 int main(){
+	EEPROM_enuInit();
 
 
 	EEPROM_Input_t EEPROM_1;
-    EEPROM_1.A0 = 1;          // Set appropriate value
+    EEPROM_1.A0 = 0;          // Set appropriate value
     EEPROM_1.A1 = 0;          // Set appropriate value
     EEPROM_1.address = 0x00;  // Set initial address
-    EEPROM_1.data = 0x01;     // Set initial data
+    EEPROM_1.data = 'A';     // Set initial data
 
-	EEPROM_enuInit();
 	EEPROM_enuWriteData(&EEPROM_1);
-	_delay_ms(15);
-	EEPROM_enuReadData(&EEPROM_1);
+	_delay_ms(20);
 
+
+	EEPROM_enuReadData(&EEPROM_1);
 
 	//! For speed and making the lab easier
 	DDRA = EEPROM_1.data;
+
+
+
 
 
 	while(1){
