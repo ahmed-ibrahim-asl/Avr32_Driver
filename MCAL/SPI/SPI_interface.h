@@ -22,6 +22,6 @@ ErrorStatus_t SPI_enuSlaveReceive_Char(uint8_t* copy_pu8Data);
 ErrorStatus_t SPI_enuSlaveReceive_String(uint8_t* copy_pu8Data);
 /****************************************************************/
 
-
+static inline uint8_t flipBits(uint8_t byte);
 
 #endif /* MCAL_SPI_SPI_INTERFACE_H_ */

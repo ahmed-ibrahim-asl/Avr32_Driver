@@ -1,3 +1,159 @@
+//Content of SPI_config.h
+/*
+ * spi_ config.h
+ *
+ *  Created on: Mar 15, 2024
+ *      Author: ad
+ */
+
+#ifndef MCAL_SPI_SPI_CONFIG_H_
+#define MCAL_SPI_SPI_CONFIG_H_
+
+#include "../DIO/DIO_priv.h"
+
+/************	Configure SPI Pins 	*********/
+#define SPI_MOSI_PORT			DIO_u8PortB
+#define SPI_MOSI_PIN			DIO_u8PIN5
+
+
+#define SPI_MISO_PORT			DIO_u8PortB
+#define SPI_MISO_PIN			DIO_u8PIN6
+
+
+#define SPI_SCK_PORT			DIO_u8PortB
+#define SPI_SCK_PIN				DIO_u8PIN7
+
+
+#define SPI_SS_PORT				DIO_u8PortB
+#define SPI_SS_PIN				DIO_u8PIN4
+/********************************************/
+
+
+// Options: SPI_SLAVE_MODE or SPI_MASTER_MODE
+#define SPI_MODE				SPI_SLAVE_MODE
+
+// Options: SPI_DORD_MSB   or SPI_DORD_LSB
+#define SPI_DORD				SPI_DORD_LSB
+
+
+// CPOL - CLock Polarity
+// Options: SPI_LRising_TFalling or SPI_LFalling_TRising
+#define SPI_CPOL				SPI_LRising_TFalling
+
+// CPHA - Clock Phase
+// Options: SPI_LRead_TWrite	or SPI_LWrite_TRead
+#define  SPI_CPHA				SPI_LWrite_TRead
+
+
+// Options: SPI_PRES_04,	SPI_PRES_16
+//			SPI_PRES_64,	SPI_PRES_128
+//			SPI_PRES_2_DoubleSpeed
+//			SPI_PRES_8_DoubleSpeed
+//			SPI_PRES_32_DoubleSpeed
+//			SPI_PRES_64_DoubleSpeed
+#define SPI_PRES_SELECT			SPI_PRES_16
+
+
+
+
+#endif /* MCAL_SPI_SPI_CONFIG_H_ */
+
+//--------------------
+//Content of SPI_interface.h
+/*
+ * spi_interface.h
+ *
+ *  Created on: Mar 15, 2024
+ *      Author: ad
+ */
+
+#ifndef MCAL_SPI_SPI_INTERFACE_H_
+#define MCAL_SPI_SPI_INTERFACE_H_
+
+
+/********************* Functions  Prototype *********************/
+void SPI_vidInit(void);
+
+
+ErrorStatus_t SPI_enuMasterTransmit_Char(uint8_t copy_u8Data);
+
+ErrorStatus_t SPI_enuMasterTransmit_String(uint8_t* copy_pu8Data);
+
+
+ErrorStatus_t SPI_enuSlaveReceive_Char(uint8_t* copy_pu8Data);
+ErrorStatus_t SPI_enuSlaveReceive_String(uint8_t* copy_pu8Data);
+/****************************************************************/
+
+
+
+#endif /* MCAL_SPI_SPI_INTERFACE_H_ */
+
+//--------------------
+//Content of SPI_priv.h
+/*
+ * SPI_priv.h
+ *
+ *  Created on: Mar 15, 2024
+ *      Author: ad
+ */
+
+#ifndef MCAL_SPI_SPI_PRIV_H_
+#define MCAL_SPI_SPI_PRIV_H_
+
+/************************ SPI Registers ************************/
+#define SPCR_REG	*((volatile uint8_t*) (0x2D))
+#define SPSR_REG	*((volatile uint8_t*) (0x2E))
+#define SPDR_REG	*((volatile uint8_t*) (0x2F))
+/***************************************************************/
+
+
+//! SPCR
+#define SPCR_SPIE							7
+#define SPCR_SPE							6
+#define SPCR_DORD							5
+#define SPCR_MSTR							4
+#define SPCR_CPOL							3
+#define SPCR_CPHA							2
+#define SPCR_SPR1							1
+#define SPCR_SPR0							0
+
+//! SPSR
+#define SPSR_SPI2x							0
+#define SPSR_SPIF							7
+
+
+
+#define SPI_SLAVE_MODE						0
+#define SPI_MASTER_MODE						1
+
+#define SPI_DORD_MSB						2
+#define SPI_DORD_LSB						3
+
+#define SPI_LRising_TFalling				4
+#define SPI_LFalling_TRising				5
+
+#define SPI_LRead_TWrite					6
+#define SPI_LWrite_TRead					7
+
+
+#define SPI_PRES_04							8
+#define SPI_PRES_16							9
+#define SPI_PRES_64							10
+#define SPI_PRES_128						11
+#define SPI_PRES_2_DoubleSpeed				12
+#define SPI_PRES_8_DoubleSpeed				13
+#define SPI_PRES_32_DoubleSpeed				14
+#define SPI_PRES_64_DoubleSpeed				15
+
+
+
+
+
+
+#endif /* MCAL_SPI_SPI_PRIV_H_ */
+
+//--------------------
+//Content of SPI_program.c
 /*
  * spi_program.c
  *
@@ -117,17 +273,7 @@ ErrorStatus_t SPI_enuMasterTransmit_Char(uint8_t copy_u8Data){
 	ErrorStatus_t Local_enu_ErrorState = ERROR_STATUS_FAILURE;
 
 
-
-
-	#if(SPI_DORD == SPI_DORD_LSB)
-		SPDR_REG = copy_u8Data;
-	#endif
-
-
-	#if(SPI_DORD == SPI_DORD_MSB)
-		SPDR_REG = flipBits(copy_u8Data);
-	#endif
-
+	SPDR_REG = copy_u8Data;
 
 	/*! Wait for transmission complete */
 	while(!GET_BIT(SPSR_REG, SPSR_SPIF));
@@ -170,18 +316,6 @@ ErrorStatus_t SPI_enuSlaveReceive_Char(uint8_t* copy_pu8Data){
 	*copy_pu8Data = SPDR_REG;
 
 
-	#if(SPI_DORD == SPI_DORD_LSB)
-		*copy_pu8Data = SPDR_REG;
-	#endif
-
-
-	#if(SPI_DORD == SPI_DORD_MSB)
-		*copy_pu8Data= flipBits(SPDR_REG);
-	#endif
-
-
-
-
 	Local_enu_ErrorState = ERROR_STATUS_OK;
 	return Local_enu_ErrorState;
 }
@@ -212,10 +346,6 @@ ErrorStatus_t SPI_enuSlaveReceive_String(uint8_t* copy_pu8Data){
 	return Local_enu_ErrorState;
 }
 
-static inline uint8_t flipBits(uint8_t byte) {
-    byte = (byte & 0xF0) >> 4 | (byte & 0x0F) << 4;
-    byte = (byte & 0xCC) >> 2 | (byte & 0x33) << 2;
-    byte = (byte & 0xAA) >> 1 | (byte & 0x55) << 1;
-    return byte;
-}
 
+
+//--------------------

@@ -32,12 +32,12 @@
 #define SPI_MODE				SPI_SLAVE_MODE
 
 // Options: SPI_DORD_MSB   or SPI_DORD_LSB
-#define SPI_DORD				SPI_DORD_LSB
+#define SPI_DORD				SPI_DORD_MSB
 
 
 // CPOL - CLock Polarity
 // Options: SPI_LRising_TFalling or SPI_LFalling_TRising
-#define SPI_CPOL				SPI_LRising_TFalling
+#define SPI_CPOL				SPI_LFalling_TRising
 
 // CPHA - Clock Phase
 // Options: SPI_LRead_TWrite	or SPI_LWrite_TRead

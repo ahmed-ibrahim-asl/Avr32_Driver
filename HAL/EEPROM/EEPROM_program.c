@@ -36,7 +36,6 @@ ErrorStatus_t EEPROM_enuWriteData(EEPROM_Input_t* eepromInstance){
 		TWI_enuWriteData(Local_u8ByteAddress);
 
 
-		TWI_enuRepeatStartCondition();
 
 		TWI_enuWriteData(eepromInstance->data);
 		TWI_enuStopCondition();

@@ -56,6 +56,4 @@
 
 
 
-
-
 #endif /* MCAL_SPI_SPI_PRIV_H_ */

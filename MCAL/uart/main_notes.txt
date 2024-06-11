@@ -9,50 +9,44 @@
 /******************** Include  Section Start ********************/
 #include "MCAL/DIO/DIO_interface.h"
 #include "HAL/LCD/LCD_HAL_interface.h"
-#include "MCAL/SPI/SPI_interface.h"
+#include "MCAL/uart/UART_interface.h"
 /****************************************************************/
 
-
-
+// Master
 //int main(){
-//	SPI_vidInit();
+//
+//	UART_vidInit();
+//
+//	uint8_t Local_u8Data[] = "Tx: Data";
 //
 //
-//	uint8_t Local_u8RxBuffer = 'b';
 //
-//	SPI_enuMasterTransmit_Char(Local_u8RxBuffer);
+//    while (1) {
+//	UART_enuSendString(Local_u8Data);
 //
-//	while(1){
+//    }
 //
-//	}
-//
-//	return 0;
+//    return 0;
 //}
-//
 
 
 
-// Slave
+//slave
 int main(){
-	uint8_t Rx_buffer;
+	UART_vidInit();
+    LCD_enuInit();
 
+    uint8_t Local_u8Data[50];
 
-	SPI_vidInit();
-	LCD_enuInit();
-
-	SPI_enuSlaveReceive_Char(&Rx_buffer);
-
-
-
-
-	LCD_enuSendData(Rx_buffer);
     while (1) {
+    	UART_enuRecieveChar(Local_u8Data);
+    	LCD_u8SendString(Local_u8Data);
+
 
     }
 
     return 0;
 }
-
 
 
 
