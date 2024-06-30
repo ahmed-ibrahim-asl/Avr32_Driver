@@ -9,48 +9,36 @@
 /******************** Include  Section Start ********************/
 #include "MCAL/DIO/DIO_interface.h"
 #include "HAL/LCD/LCD_HAL_interface.h"
-#include "MCAL/SPI/SPI_interface.h"
+#include "MCAL/uart/UART_interface.h"
+#include "MCAL/uart/UART_config.h"
+#include <util/delay.h>
+#include <avr/io.h>
 /****************************************************************/
 
 
 
-//int main(){
-//	SPI_vidInit();
-//
-//
-//	uint8_t Local_u8RxBuffer = 'b';
-//
-//	SPI_enuMasterTransmit_Char(Local_u8RxBuffer);
-//
-//	while(1){
-//
-//	}
-//
-//	return 0;
-//}
-//
-
-
-
-// Slave
 int main(){
-	uint8_t Rx_buffer;
 
 
-	SPI_vidInit();
-	LCD_enuInit();
-
-	SPI_enuSlaveReceive_Char(&Rx_buffer);
+	UART_setBaudRate(9600);
+    UCSRB |= (1<<RXEN) | (1<<TXEN); // Enable receiver and transmitter
 
 
+	//////////////////////////////////////////////////////////////////
 
 
-	LCD_enuSendData(Rx_buffer);
+    UART_vidInit(9600);
+    _delay_ms(1000); // Wait for a moment
+
+
+
     while (1) {
 
+        UART_enuSendString((uint8_t*)"Hello World\r\n");
+        _delay_ms(1000);
     }
 
-    return 0;
+	return 0;
 }
 
 

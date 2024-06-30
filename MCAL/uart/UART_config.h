@@ -49,8 +49,8 @@
 //! baud rate
 
 // NOTICE: 16000000 -> 16MHZ
-#define UART_MC_OSC_FREQ					16000000
-#define UART_BAUD_RATE						9600
+#define UART_MC_OSC_FREQ					8000000UL
+
 
 
 

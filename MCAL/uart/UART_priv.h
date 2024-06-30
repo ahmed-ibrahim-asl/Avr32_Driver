@@ -10,7 +10,7 @@
 
 /*********************** Uart Registers ***********************/
 #define UBRRH_REG	*((volatile uint8_t*) (0x40))
-#define UBRRL_REG	*((volatile uint8_t*) (0x2A))
+#define UBRRL_REG	*((volatile uint8_t*) (0x29))
 #define UCSRC_REG	*((volatile uint8_t*) (0x40))
 
 #define UDR_REG	    *((volatile uint8_t*) (0x2C))
@@ -22,7 +22,7 @@
 /************************* UCSRA Bits *************************/
 #define UCSRA_MPCM							0
 #define UCSRA_U2X							1
-#define UCSRA_UDE							5
+#define UCSRA_URDE							5
 #define UCSRA_RXC							7
 /**************************************************************/
 
@@ -31,7 +31,7 @@
 /************************* UCSRB Bits *************************/
 #define UCSRB_TXEN							3
 #define UCSRB_RXEN							4
-#define UCSRB_UMSEL							6
+#define UCSRB_TXCIE							6
 #define UCSRB_UCSZ2							2
 /**************************************************************/
 
@@ -45,6 +45,9 @@
 
 #define UCSRC_UPM0							4
 #define UCSRC_UPM1							5
+#define UCSRC_UMSEL							6
+#define UCSRC_URSEL							7
+
 /**************************************************************/
 #define UBRRH_URSEL							7
 
