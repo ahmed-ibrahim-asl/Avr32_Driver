@@ -1,49 +1,32 @@
-/*
- * main.c
- *
- *  Created on: Dec 30, 2023
- *      Author: ad
- */
-
-
-/******************** Include  Section Start ********************/
+/******************** Include Section Start ********************/
 #include "MCAL/DIO/DIO_interface.h"
-#include "HAL/LCD/LCD_HAL_interface.h"
-#include "MCAL/uart/UART_interface.h"
-#include "MCAL/uart/UART_config.h"
+#include "HAL/EEPROM/EEPROM_interface.h"
 #include <util/delay.h>
-#include <avr/io.h>
 /****************************************************************/
 
+int main() {
 
 
-int main(){
+	EEPROM_enuInit();
+    EEPROM_Input_t EEPROM_1;
 
 
-	UART_setBaudRate(9600);
-    UCSRB |= (1<<RXEN) | (1<<TXEN); // Enable receiver and transmitter
+    EEPROM_1.A0 = 0;
+    EEPROM_1.A1 = 0;
+    EEPROM_1.A2 = 0;
+    EEPROM_1.address = 0x00;
+    EEPROM_1.data = 'Z';
 
+    EEPROM_enuWriteData(&EEPROM_1);
+    _delay_ms(10);
 
-	//////////////////////////////////////////////////////////////////
+    EEPROM_enuReadData(&EEPROM_1);
 
-
-    UART_vidInit(9600);
-    _delay_ms(1000); // Wait for a moment
-
-
+    DDRA = EEPROM_1.data;
 
     while (1) {
-
-        UART_enuSendString((uint8_t*)"Hello World\r\n");
-        _delay_ms(1000);
+        // Infinite loop
     }
 
-	return 0;
+    return 0;
 }
-
-
-
-
-
-
-

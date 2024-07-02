@@ -8,9 +8,6 @@
 #ifndef MCAL_TWI_TWI_PRIV_H_
 #define MCAL_TWI_TWI_PRIV_H_
 
-/********************** Include  Section **********************/
-#include <math.h>
-/**************************************************************/
 
 
 /*********************** TWI  Registers ***********************/
@@ -54,16 +51,32 @@
 
 
 /******************** TWI Prescaler Macros ********************/
-#define TWI_PRESCALER_1						0
-#define TWI_PRESCALER_4						1
-#define TWI_PRESCALER_16					2
-#define TWI_PRESCALER_64					3
+#if   TWI_PRESCALER_SELECTOR == TWI_PRESCALER_1
+    #define TWI_PRESCALER_VALUE     0x00
+    #define TWI_PRESCALER_DIV       1
+
+#elif TWI_PRESCALER_SELECTOR == TWI_PRESCALER_4
+    #define TWI_PRESCALER_VALUE     0x01
+    #define TWI_PRESCALER_DIV       4
+
+#elif TWI_PRESCALER_SELECTOR == TWI_PRESCALER_16
+    #define TWI_PRESCALER_VALUE     0x02
+    #define TWI_PRESCALER_DIV       16
+
+#elif TWI_PRESCALER_SELECTOR == TWI_PRESCALER_64
+    #define TWI_PRESCALER_VALUE     0x03
+    #define TWI_PRESCALER_DIV       64
+
+#else
+    #error "Invalid TWI Prescaler value"
+#endif
 /**************************************************************/
 
 
 
 /*************** TWI Configuration Calculations ***************/
-#define TWBR_VALUE		(((F_CPU/TWI_SPEED_SPECIFIER)-16)*0.5)*1/pow(4, TWI_PRESCALER_SELECTOR)
+#define TWBR_VALUE 		(((F_CPU / TWI_SPEED_SPECIFIER) - 16) / (2 * TWI_PRESCALER_DIV))
+
 #define TWI_SET_ADDR	(TWI_NODE_ADDR&0x7F) << 1
 /**************************************************************/
 
@@ -113,7 +126,7 @@
 #define TWI_S_RSUCCESS_CODE_withoutACK		0x88
 
 
-#define TWI
+
 
 
 /************************* TWI Status *************************/

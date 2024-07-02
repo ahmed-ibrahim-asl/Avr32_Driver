@@ -34,5 +34,4 @@ TWIStatus_t	TWI_enuReadData(uint8_t  *copy_pu8Data);
 //!
 ErrorStatus_t TWI_enuCheckMyAddress(void);
 
-
 #endif /* MCAL_TWI_TWI_INTERFACE_H_ */

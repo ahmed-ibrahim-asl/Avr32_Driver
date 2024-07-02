@@ -18,51 +18,42 @@
 
 /**************************************************************************/
 
-TWIStatus_t TWI_enuInit(void){
-	TWIStatus_t Local_enuErrorState = TWI_STATUS_FAILURE;
-
-
-	#if(TWI_MODE_M_or_S == TWI_MASTER_MODE)
-		// Set Value for Bit Rate            (should only be when we working with master)
-		TWBR_REG = TWBR_VALUE;
-	#endif
-
-
-	// Enable TWI Interrupt
-	GIE_enuEnable();
-	SET_BIT(TWCR_REG, TWCR_TWIE);
-
-
-	// Enable TWI Peripheral
-	SET_BIT(TWCR_REG, TWCR_TWEN);
-
-
-	#if(TWI_ACK_CONFIG == TWI_ACK_ENABLE)
-		SET_BIT(TWCR_REG, TWCR_TWEA);
-
-	#elif(TWI_ACK_CONFIG == TWI_ACK_DISABLE)
-		CLR_BIT(TWCR_REG, TWCR_TWEA);
-
-	#endif
 
 
 
-	#if(TWI_GCE_CONFIG == TWI_GCE_ENABLE)
-		SET_BIT(TWAR_REG, TWAR_TWGCE);
-
-	#elif(TWI_GCE_CONFIG == TWI_GCE_DISABLE)
-		CLR_BIT(TWAR_REG, TWAR_TWGCE);
-
-	#endif
 
 
-   // Set Address for MC
-   TWAR_REG = (TWAR_REG&0x01)  | TWI_SET_ADDR;
+TWIStatus_t TWI_enuInit(void) {
+    TWIStatus_t Local_enuErrorState = TWI_STATUS_FAILURE;
 
+    #if (TWI_MODE_M_or_S == TWI_MASTER_MODE)
+        // Set Value for Bit Rate (should only be when we working with master)
+        TWBR_REG = TWBR_VALUE;
+        TWSR_REG = TWI_PRESCALER_VALUE; // Set prescaler bits
+    #endif
 
+    // Enable TWI Interrupt
+    GIE_enuEnable();
 
-   Local_enuErrorState = TWI_STATUS_OK;
-   return Local_enuErrorState;
+    // Configure TWCR register based on ACK configuration
+    #if (TWI_ACK_CONFIG == TWI_ACK_ENABLE)
+        TWCR_REG = (1 << TWCR_TWEN) | (1 << TWCR_TWEA) | (1 << TWCR_TWIE);
+    #elif (TWI_ACK_CONFIG == TWI_ACK_DISABLE)
+        TWCR_REG = (1 << TWCR_TWEN) | (1 << TWCR_TWIE);
+    #endif
+
+    // Configure General Call Enable (GCE)
+    #if (TWI_GCE_CONFIG == TWI_GCE_ENABLE)
+        SET_BIT(TWAR_REG, TWAR_TWGCE);
+    #elif (TWI_GCE_CONFIG == TWI_GCE_DISABLE)
+        CLR_BIT(TWAR_REG, TWAR_TWGCE);
+    #endif
+
+    // Set Address for MC
+    TWAR_REG = (TWAR_REG & 0x01) | TWI_SET_ADDR;
+
+    Local_enuErrorState = TWI_STATUS_OK;
+    return Local_enuErrorState;
 }
 
 
@@ -70,12 +61,14 @@ TWIStatus_t TWI_enuInit(void){
 TWIStatus_t TWI_enuStartCondition(void){
 	TWIStatus_t	  Local_enu_ErrorState = TWI_STATUS_FAILURE;
 
-	// Start condition
-	SET_BIT(TWCR_REG, TWCR_TWSTA);
+	/*
+	 * TWEN bit must be set whenever you want to intiate a TWI operation.
+	 * To send start condition enable TWI by setting TWSTA, TWINT, and TWEN in one operation.
+	 * This ensures that TWI modules receives a consistent command and avoids intermediate states.
+	 * */
 
+	TWCR_REG = (1 << TWCR_TWSTA) | (1 << TWCR_TWINT) | (1 << TWCR_TWEN);
 
-	// Clearing the TWINT flag is part of initiating an operation on the TWI.
-	SET_BIT(TWCR_REG, TWCR_TWINT);
 
 
 	// Wait for TWINT Flag set. This indicates that the START condition has been transmitted.
@@ -89,25 +82,25 @@ TWIStatus_t TWI_enuStartCondition(void){
 	 * 0xF8
 	 * */
 
-//	DDRA = (TWSR_REG &0xF8);
-	if( (TWSR_REG &0xF8) == 0x08){
+	if( (TWSR_REG & 0xF8) == TWI_START_SUCCESS_CODE){
 		Local_enu_ErrorState = TWI_STATUS_OK;
 	}
 
 
-	Local_enu_ErrorState = TWI_STATUS_OK;
 	return Local_enu_ErrorState;
 }
 
 TWIStatus_t TWI_enuRepeatStartCondition(void){
 	TWIStatus_t	  Local_enu_ErrorState = TWI_STATUS_FAILURE;
 
-	// Start condition
-	SET_BIT(TWCR_REG, TWCR_TWSTA);
 
+	/*
+	 * TWEN bit must be set whenever you want to intiate a TWI operation.
+	 * To send start condition enable TWI by setting TWSTA, TWINT, and TWEN in one operation.
+	 * This ensures that TWI modules receives a consistent command and avoids intermediate states.
+	 * */
 
-	// Clearing the TWINT flag is part of initiating an operation on the TWI.
-	SET_BIT(TWCR_REG, TWCR_TWINT);
+	TWCR_REG = (1 << TWCR_TWSTA) | (1 << TWCR_TWINT) | (1 << TWCR_TWEN);
 
 
 	// Wait for TWINT Flag set. This indicates that the START condition has been transmitted.
@@ -138,12 +131,15 @@ TWIStatus_t TWI_enuStopCondition(void){
 	TWIStatus_t	  Local_enu_ErrorState = TWI_STATUS_FAILURE;
 
 
-	// Clearing the TWINT flag is part of initiating an operation on the TWI.
-	SET_BIT(TWCR_REG, TWCR_TWINT);
 
-	// Stop Condition
-	SET_BIT(TWCR_REG, TWCR_TWSTO);
+	/*
+	 * TWCR_TSTO  			  - To send stop condition
+	 * TWCR_TWINT & TWCR_TWEN - essential to start TWI action
+	 *
+	 * */
 
+
+    TWCR_REG = (1 << TWCR_TWSTO) | (1 << TWCR_TWINT) | (1 << TWCR_TWEN);
 
 
 	Local_enu_ErrorState = TWI_STATUS_OK;
@@ -156,70 +152,103 @@ TWIStatus_t TWI_enuSetSlaveOperation(
 
 	TWIStatus_t	  Local_enu_ErrorState = TWI_STATUS_FAILURE;
 
+    // Load the slave address and operation (read/write) into the data register
+	TWDR_REG = (copy_u8SlaveAddress << 1) | (copy_u8Operation);
 
-	TWDR_REG = (copy_u8SlaveAddress<<1) | (copy_u8Operation);
-
-	// Since we should have already send START condition
-	// we have to clear TWSTA
-	CLR_BIT(TWCR_REG, TWCR_TWSTA);
-
-
-	// Clearing the TWINT flag is part of initiating an operation on the TWI.
-	SET_BIT(TWCR_REG, TWCR_TWINT);
+    TWCR_REG = (1 << TWCR_TWINT) | (1 << TWCR_TWEN);
 
 	// Wait for TWINT Flag is set. Waiting for current operation to be done
 	while(!(GET_BIT(TWCR_REG, TWCR_TWINT)));
 
 
-    // Check for operation success based on requested operation
-    if(copy_u8Operation == TWI_SLA_WR_ACK_TSUCCESS_CODE ){
-        Local_enu_ErrorState = TWI_STATUS_OK;
 
 
-    } else if(copy_u8Operation == TWI_SLA_RD_ACK_TSUCCESS_CODE ){
-        Local_enu_ErrorState = TWI_STATUS_OK;
+	if(copy_u8Operation == TWI_WriteOperation){
 
-    }
+		if((TWSR_REG &0xF8) == TWI_SLA_WR_ACK_TSUCCESS_CODE){
+			Local_enu_ErrorState = TWI_STATUS_OK;
+		}
+
+	} else if(copy_u8Operation == TWI_ReadOperation){
+
+		if((TWSR_REG &0xF8) == TWI_SLA_RD_ACK_TSUCCESS_CODE){
+			Local_enu_ErrorState = TWI_STATUS_OK;
+		}
+	}
+
 
 
 	return Local_enu_ErrorState;
 }
-
 
 TWIStatus_t	TWI_enuWriteData(uint8_t copy_u8Data){
 	TWIStatus_t	  Local_enu_ErrorState = TWI_STATUS_FAILURE;
 
 	TWDR_REG = copy_u8Data;
 
-	// Clearing the TWINT flag is part of initiating an operation on the TWI.
-	SET_BIT(TWCR_REG, TWCR_TWINT);
+
+    // Clear the TWINT flag and set TWEN to start the operation
+    TWCR_REG = (1 << TWCR_TWINT) | (1 << TWCR_TWEN);
 
 	// Wait for TWINT Flag is set. Waiting for current operation to be done
 	while(!(GET_BIT(TWCR_REG, TWCR_TWINT)));
 
 
-
-	// 0x28 -(master) data byte has been transmitted ack has been received
-	// 0xB8	- (slave) data byte has been transmitted ack has been received
-	if( ((TWSR_REG & 0xF8) != TWI_M_TSUCCESS_CODE_withACK) || ((TWSR_REG & 0xF8) != TWI_S_TSUCCESS_CODE_withACK) ){
-		return Local_enu_ErrorState;
-	}
+	// 0x28 - Master transmit data with ACK
+	// 0x30 - Master transmit data without ACK
 
 
-	if( (TWSR_REG & 0xF8) == TWI_M_TSUCCESS_CODE_withACK ){
-		Local_enu_ErrorState = TWI_STATUS_OK;
-	}
+	// 0xB8 - Slave transmit data with ACK
+	// 0xC0 - Slave transmit data without ACK
 
-	else if((TWSR_REG & 0xF8) == TWI_S_TSUCCESS_CODE_withACK){
-		Local_enu_ErrorState = TWI_STATUS_OK;
-	}
+	#if(TWI_ACK_CONFIG == TWI_ACK_ENABLE)
+
+		#if(TWI_MODE_M_or_S == TWI_MASTER_MODE)
+
+
+
+
+			if((TWSR_REG & 0xF8) == 0x28){
+
+
+				Local_enu_ErrorState = TWI_STATUS_OK;
+			}
+
+		#elif(TWI_MODE_M_or_S == TWI_SLAVE_MODE)
+			if((TWSR_REG & 0xF8) == 0xB8){
+				Local_enu_ErrorState = TWI_STATUS_OK;
+			}
+
+		#endif
+
+
+
+	#elif(TWI_ACK_CONFIG == TWI_ACK_DISABLE)
+
+
+		#if(TWI_MODE_M_or_S == TWI_MASTER_MODE)
+
+
+			if((TWSR_REG & 0xF8) == 0x30){
+				Local_enu_ErrorState = TWI_STATUS_OK;
+			}
+
+		#elif(TWI_MODE_M_or_S == TWI_SLAVE_MODE)
+
+			if((TWSR_REG & 0xF8) == 0xC0){
+				Local_enu_ErrorState = TWI_STATUS_OK;
+			}
+
+		#endif
+
+	#endif
 
 
 	return Local_enu_ErrorState;
 }
 
 
-
+//!{works fine with status checking}
 TWIStatus_t	TWI_enuReadData(uint8_t  *copy_pu8Data){
 	TWIStatus_t	  Local_enu_ErrorState = TWI_STATUS_FAILURE;
 
@@ -270,12 +299,14 @@ TWIStatus_t	TWI_enuReadData(uint8_t  *copy_pu8Data){
 }
 
 
+//!{works fine with status checking}
 ErrorStatus_t TWI_enuCheckMyAddress(void){
 	TWIStatus_t	  Local_enu_ErrorState = TWI_STATUS_FAILURE;
 
 
 	// Clearing the TWINT flag is part of initiating an operation on the TWI.
 	SET_BIT(TWCR_REG, TWCR_TWINT);
+
 
 	// Wait for TWINT Flag is set. Waiting for current operation to be done
 	while(!(GET_BIT(TWCR_REG, TWCR_TWINT)));

@@ -17,20 +17,30 @@
 /**************************************************************/
 
 
-typedef struct{
+typedef struct {
+    uint8_t address;     // Address within the EEPROM
+    uint8_t data;        // Data to be written or read
 
 
-	#if(EEPROM_TYPE == EEPROM_EIGHT_KBIT)
-		uint8_t address;     // Address within the EEPROM
-		uint8_t A1: 1;
-		uint8_t A0: 1;
-        uint8_t   : 6;       // 6-bit padding
+    #if(EEPROM_TYPE == EEPROM_NM24C04 || EEPROM_TYPE == EEPROM_NM24C04F || EEPROM_TYPE == EEPROM_NM24C05 || EEPROM_TYPE == EEPROM_NM24C05F)
+        uint8_t A2: 1;
+        uint8_t A1: 1;
+        uint8_t A0: 1;
+        uint8_t   : 5;   // Padding to make it 8 bits
 
 
-		uint8_t data;        // Data to be written or read
-	#endif
+    #elif(EEPROM_TYPE == EEPROM_NM24C08 || EEPROM_TYPE == EEPROM_NM24C08F)
+        uint8_t A2: 1;
+        uint8_t A1: 1;
+        uint8_t A0: 1;
+        uint8_t   : 5;   // Padding to make it 8 bits
 
-}EEPROM_Input_t;
+
+     #elif(EEPROM_TYPE == EEPROM_NM24C09 || EEPROM_TYPE == EEPROM_NM24C09F)
+        uint8_t A2: 1;
+        uint8_t   : 7;   // Padding to make it 8 bits
+    #endif
+} EEPROM_Input_t;
 
 
 

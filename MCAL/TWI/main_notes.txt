@@ -36,10 +36,17 @@ int main(){
 
 
 		if(TWI_enuStartCondition() == TWI_STATUS_OK ){
-			TWI_enuSetSlaveOperation(5, TWI_WriteOperation);
-			TWI_enuWriteData('@');
-			TWI_enuStopCondition();
-		}
+
+
+			if( TWI_enuSetSlaveOperation(5, TWI_WriteOperation) == TWI_STATUS_OK){
+
+					TWI_enuWriteData('A');
+					TWI_enuStopCondition();
+
+				}
+
+			};
+
 
 
 
