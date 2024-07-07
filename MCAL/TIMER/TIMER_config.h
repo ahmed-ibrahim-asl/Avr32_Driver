@@ -72,9 +72,29 @@
 
 
 /************************ TIMER1  CONFIG ***********************/
-// Options: TIMER_MODE_NORMALovf	or		TIMER_MODE_PWMphasecorrect
-//			TIMER_MODE_FastPWM      or  	TIMER_MODE_CTC
-#define TIMER1_MODE_SELECT				TIMER_MODE_NORMALovf
+/**
+ *Options:
+ *
+ * - TIMER_MODE_NORMALovf
+ * - TIMER_MODE_CTC
+ *
+ * [[ Fast PWM ]]
+ * - TIMER1_MODE_FastPWM_8bit
+ * - TIMER1_MODE_FastPWM_9bit
+ * - TIMER1_MODE_FastPWM_10bit
+ * - TIMER1_MODE_FastPWM_16bit
+ *
+ * [[ Phase Correct ]]
+ * - TIMER1_MODE_PWMphasecorrect_8bit
+ * - TIMER1_MODE_PWMphasecorrect_9bitTIMER1_MODE_FastPWM_16bit
+ * - TIMER1_MODE_PWMphasecorrect_10bit
+ * - TIMER1_MODE_PWMphasecorrect_16bit
+ *
+ *
+ * !!!!!!!!!	PWM, Phase and Frequency Correct
+ *
+ */
+#define TIMER1_MODE_SELECT				TIMER1_MODE_FastPWM_8bit
 
 // Options: TIMER1_OC1A_OUTPUT_ENABLE or TIMER1_OC1A_OUTPUT_DISABLE
 #define TIMER1_OC1_OUTPUT_STATE		TIMER1_OC1A_OUTPUT_DISABLE
@@ -88,14 +108,37 @@
 		//			TIMER_TOGGLE_OC1B or TIMER_NORMAL_OC1B
 
 		#define TIMER_OC1A_OUTPUT_MODE			TIMER_TOGGLE_OC1A
-		#define	TIMER_OC1B_OUTPUT_MODE			TIMER_TOGGLE_OC1B
+		#define	TIMER_OC1B_OUTPUT_MODE			TIMER_NORMAL_OC1B
 	#endif
 #endif
 
-/*
- * PWM and other options
- *
- **/
+
+
+#if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit || \
+    TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_9bit || \
+    TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_10bit || \
+    TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit)
+
+	//TIMER_FastPwmType_Inverted, TIMER_FastPwmType_NonInverted
+	#define TIMER1_FastPwm_Type			TIMER_FastPwmType_Inverted
+#endif
+
+
+
+#if(TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_8bit || \
+    TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_9bit || \
+    TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_10bit || \
+    TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit || \
+    TIMER1_MODE_SELECT == TIMER1_MODE_PhaseFreqCorrect)
+
+	//TIMER_PhaseCorrect_Inverted, TIMER_PhaseCorrect_NonInverted
+	#define TIMER1_PhaseCorrect_Type			TIMER_PhaseCorrect_NonInverted
+#endif
+
+
+
+
+
 
 // Options: TIMER_PRES_01  or TIMER_PRES_08
 //			TIMER_PRES_64
@@ -108,7 +151,7 @@
 /************************ TIMER2  CONFIG ***********************/
 // Options: TIMER_MODE_NORMALovf	or		TIMER_MODE_PWMphasecorrect
 //			TIMER_MODE_FastPWM      or  	TIMER_MODE_CTC
-#define TIMER2_MODE_SELECT				TIMER_MODE_CTC
+#define TIMER2_MODE_SELECT				TIMER_MODE_PWMphasecorrect
 
 
 // Options: TIMER2_OC2_OUTPUT_ENABLE or TIMER2_OC2_OUTPUT_DISABLE
@@ -123,15 +166,25 @@
 	#endif
 
 #endif
-/*
- *PWM and other options
- *
- **/
+
+
+
+#if(TIMER2_MODE_SELECT == TIMER_MODE_FastPWM)
+	//TIMER_FastPwmType_Inverted, TIMER_FastPwmType_NonInverted
+	#define TIMER2_FastPwm_Type			TIMER_FastPwmType_Inverted
+
+#endif
+
+
+#if(TIMER2_MODE_SELECT == TIMER_MODE_PWMphasecorrect)
+	//TIMER_PhaseCorrect_Inverted, TIMER_PhaseCorrect_NonInverted
+	#define TIMER2_PhaseCorrect_Type			TIMER_PhaseCorrect_Inverted
+#endif
 
 // Options: TIMER_PRES_01  or TIMER_PRES_08
 //			TIMER_PRES_64
 // 			TIMER_PRES_256 or TIMER_PRES_1024
-#define TIMER2_CLK_PRE_SELECT			TIMER_PRES_64
+#define TIMER2_CLK_PRE_SELECT			TIMER_PRES_01
 /***************************************************************/
 
 

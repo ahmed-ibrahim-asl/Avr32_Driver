@@ -19,10 +19,10 @@
 int main(){
 
 
-	TIMER0_voidInit();
+	TIMER1_voidInit();
 
 
-	TIMER0_voidSetPWM(60);
+	TIMER1_voidSetPWM(10);
 
 
 

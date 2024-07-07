@@ -260,14 +260,15 @@ void  TIMER0_voidSetPWM(uint8_t copy_u8DutyCycle){
 	 * **/
 
 
-	OCR0 = (uint8_t)(((uint16_t)copy_u8DutyCycle * 256) / 100);
+	OCR0_REG = (uint8_t)(((uint16_t)copy_u8DutyCycle * 256) / 100);
 }
 
 /******************************************************************************************************/
 
 
 /****************************************** TIMER1 FUNCTIONS ******************************************/
-void TIMER1_voidInit(void){
+
+void TIMER1_voidInit(void) {
 	/**
 	 * TODO:
 	 *
@@ -372,25 +373,49 @@ void TIMER1_voidInit(void){
 		SET_BIT(TCCR1B_REG, TCCR1B_CS12);
 	#endif
 
-
 }
 
-void TIMER1_voidStart(void){
-	#if(TIMER1_MODE_SELECT   == TIMER_MODE_NORMALovf)
-		SET_BIT(TIMSK_REG, TIMSK_TOIE1);
-	#elif(TIMER1_MODE_SELECT == TIMER_MODE_CTC)
-		SET_BIT(TIMSK_REG, TIMSK_OCIE1A);
-	#endif
+void TIMER1_voidStart(void) {
+    #if(TIMER1_MODE_SELECT == TIMER_MODE_NORMALovf)
+        SET_BIT(TIMSK_REG, TIMSK_TOIE1);
 
+    #elif(TIMER1_MODE_SELECT == TIMER_MODE_CTC)
+        SET_BIT(TIMSK_REG, TIMSK_OCIE1A);
+
+    #elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_9bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_10bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_8bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_9bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_10bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_PhaseFreqCorrect)
+        SET_BIT(TIMSK_REG, TIMSK_OCIE1A);
+
+    #endif
 }
 
-void TIMER1_voidStop(void){
-	#if(TIMER1_MODE_SELECT   == TIMER_MODE_NORMALovf)
-		CLR_BIT(TIMSK_REG, TIMSK_TOIE1);
-	#elif(TIMER1_MODE_SELECT == TIMER_MODE_CTC)
-		CLR_BIT(TIMSK_REG, TIMSK_OCIE1A);
-	#endif
 
+void TIMER1_voidStop(void) {
+    #if(TIMER1_MODE_SELECT == TIMER_MODE_NORMALovf)
+        CLR_BIT(TIMSK_REG, TIMSK_TOIE1);
+
+    #elif(TIMER1_MODE_SELECT == TIMER_MODE_CTC)
+        CLR_BIT(TIMSK_REG, TIMSK_OCIE1A);
+
+    #elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_9bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_10bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_8bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_9bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_10bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_PhaseFreqCorrect)
+        CLR_BIT(TIMSK_REG, TIMSK_OCIE1A);
+
+    #endif
 }
 
 uint8_t TIMER1_voidScheduleTask(void (*TaskCallback)(void), float64 copy_f64RequiredTime_inSeconds) {
@@ -429,6 +454,35 @@ uint8_t TIMER1_voidScheduleTask(void (*TaskCallback)(void), float64 copy_f64Requ
     TIMERS_ISR_Functions[1] = TaskCallback;
     TIMER1_voidStart();
     return 0;
+}
+
+
+
+void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle) {
+    uint16_t Local_u16TopValue = 0;
+
+    #if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit || \
+        TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_8bit)
+    	Local_u16TopValue = 0x00FF;  // 8-bit resolution
+
+    #elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_9bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_9bit)
+    	Local_u16TopValue = 0x01FF;  // 9-bit resolution
+
+    #elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_10bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_10bit)
+    	Local_u16TopValue = 0x03FF;  // 10-bit resolution
+
+    #elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit || \
+          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit)
+    	Local_u16TopValue = 0xFFFF;  // 16-bit resolution
+
+    #elif(TIMER1_MODE_SELECT == TIMER1_MODE_PhaseFreqCorrect)
+        // Ensure ICR1 is already set correctly during initialization
+    	Local_u16TopValue = ICR1;  // ICR1 for Phase and Frequency Correct
+    #endif
+
+    OCR1A_REG = (uint16_t)(((uint32_t)copy_u8DutyCycle * Local_u16TopValue) / 100);
 }
 
 
@@ -497,6 +551,31 @@ void TIMER2_voidInit(void){
 
 		#endif
 
+	#elif(TIMER2_MODE_SELECT == TIMER_MODE_FastPWM)
+		SET_BIT(TCCR2_REG, TCCR2_WGM20);
+		SET_BIT(TCCR2_REG, TCCR2_WGM21);
+
+		#if(TIMER2_FastPwm_Type == TIMER_FastPwmType_Inverted)
+			CLR_BIT(TCCR2_REG, TCCR2_COM20);
+			SET_BIT(TCCR2_REG, TCCR2_COM21);
+		#elif(TIMER2_FastPwm_Type == TIMER_FastPwmType_NonInverted)
+			SET_BIT(TCCR2_REG, TCCR2_COM20);
+			SET_BIT(TCCR2_REG, TCCR2_COM21);
+		#endif
+		DIO_enuSetPinDirection(TIMER_OC2_PORT, TIMER_OC2_PIN, DIO_u8OUTPUT);
+
+	#elif(TIMER2_MODE_SELECT == TIMER_MODE_PWMphasecorrect)
+		SET_BIT(TCCR2_REG, TCCR2_WGM20);
+		CLR_BIT(TCCR2_REG, TCCR2_WGM21);
+
+		#if(TIMER2_PhaseCorrect_Type == TIMER_PhaseCorrect_NonInverted)
+			SET_BIT(TCCR2_REG, TCCR2_COM20);
+			SET_BIT(TCCR2_REG, TCCR2_COM21);
+
+		#elif(TIMER2_PhaseCorrect_Type == TIMER_PhaseCorrect_Inverted)
+			CLR_BIT(TCCR2_REG, TCCR2_COM20);
+			SET_BIT(TCCR2_REG, TCCR2_COM21);
+		#endif
 
 	#endif
 	/******************************************************************************/
@@ -623,6 +702,26 @@ uint8_t TIMER2_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64Req
 		TIMER2_voidStart();
 	return 0;
 
+}
+
+
+void  TIMER2_voidSetPWM(uint8_t copy_u8DutyCycle){
+
+	/*
+	 *
+	 * It's more recommened to pass an integer number to OCR0 register
+	 * avoids reliance on floating point hardware support wich is absent in many
+	 * avr micrcontrollersings using floating-point arithmetic can
+	 * consume significantly more CPU cycles due to software emulation,
+	 * leading to potential inaccuracies in time-sensitive applications such
+	 * as PWM signal generation.
+	 *
+	 *
+	 * Avr32 does has floating point operation
+	 * **/
+
+
+	OCR2_REG = (uint8_t)(((uint16_t)copy_u8DutyCycle * 256) / 100);
 }
 /*******************************************************************************************************/
 
