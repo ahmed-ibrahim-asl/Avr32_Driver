@@ -16,15 +16,29 @@
 /****************************************************************/
 
 
+/**
+ * Notice in LAB file in proteus
+ * PA0 (Software-Toggled)
+ * OC0 (Hardware-toggled)
+ *
+ * hardware toggled is faster with no overhead
+ *
+ * so it achieve pwm signal
+ * */
+
+
+void toggle_led(){
+	DIO_enuTogglePinValue(DIO_u8PortA, DIO_u8PIN0);
+}
+
 int main(){
 
-
-	TIMER0_voidInit();
-
-
-	TIMER0_voidSetPWM(60);
+	DIO_enuSetPinDirection(DIO_u8PortA, DIO_u8PIN0, DIO_u8OUTPUT);
 
 
+	TIMER2_voidInit();
+
+	TIMER2_voidScheduleTask(toggle_led, 1);
 
 
 	while(1){
@@ -35,5 +49,6 @@ int main(){
 
 	    return 0;
 }
+
 
 

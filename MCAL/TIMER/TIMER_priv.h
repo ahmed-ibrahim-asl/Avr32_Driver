@@ -26,6 +26,13 @@
 #define OCR2_REG	*((volatile uint8_t*) (0x43))
 
 
+
+#define TCCR1A_REG	*((volatile uint8_t*) (0x4F))
+#define TCCR1B_REG	*((volatile uint8_t*) (0x4E))
+
+#define TCNT1_REG	*((volatile uint16_t*)(0x4C))
+#define OCR1A_REG	*((volatile uint16_t*)(0x4A))
+#define OCR1B_REG	*((volatile uint16_t*)(0x48))
 /*****************************************************************/
 
 
@@ -40,6 +47,30 @@
 #define TCCR0_WGM00							6
 #define TCCR0_FOC0							7
 /************************************************************/
+
+
+/************************ TCCR1A BITS ***********************/
+#define TCCR1A_WGM10						0
+#define TCCR1A_WGM11						1
+#define TCCR1A_FOC1B						2
+#define TCCR1A_FOC1A						3
+#define TCCR1A_COM1B0						4
+#define TCCR1A_COM1B1						5
+#define TCCR1A_COM1A0						6
+#define TCCR1A_COM1A1						7
+/************************************************************/
+
+/************************ TCCR1B BITS ***********************/
+#define TCCR1B_CS10							0
+#define TCCR1B_CS11							1
+#define TCCR1B_CS12							2
+#define TCCR1B_WGM12						3
+#define TCCR1B_WGM13						4
+
+#define TCCR1B_ICES1						6
+#define TCCR1B_ICNC1						7
+/************************************************************/
+
 
 
 /************************ TCCR2 BITS ************************/
@@ -71,20 +102,42 @@
 
 
 #define TIMER_MODE_NORMALovf				0
-#define TIMER_MODE_PWMphasecorrect			1
 #define TIMER_MODE_CTC						2
+#define TIMER_MODE_PWMphasecorrect			1
 #define TIMER_MODE_FastPWM					3
 
 
-#define TIMER_TOGGLE_OC0					4
-#define TIMER_CLR_OC0						5
-#define TIMER_SET_OC0						6
 #define TIMER_NORMAL_OC0					7
+#define TIMER_SET_OC0						6
+#define TIMER_CLR_OC0						5
+#define TIMER_TOGGLE_OC0					4
+
+#define TIMER_FastPwmType_Inverted			5
+#define TIMER_FastPwmType_NonInverted		6
+#define TIMER_PhaseCorrect_Inverted			7
+#define TIMER_PhaseCorrect_NonInverted		8
 
 
-#define TIMER_CLR_OC2						5
-#define TIMER_SET_OC2						6
+
 #define TIMER_NORMAL_OC2					7
+#define TIMER_SET_OC2						6
+#define TIMER_CLR_OC2						5
+#define TIMER_TOGGLE_OC2					8
+
+
+#define	TIMER_NORMAL_OC1A					9
+#define TIMER_SET_OC1A						10
+#define TIMER_CLR_OC1A						11
+#define TIMER_TOGGLE_OC1A					12
+
+
+#define	TIMER_NORMAL_OC1B					13
+#define TIMER_SET_OC1B						14
+#define TIMER_CLR_OC1B						15
+#define TIMER_TOGGLE_OC1B					16
+
+
+
 
 #define TIMER_PRES_01						7
 #define TIMER_PRES_08						8

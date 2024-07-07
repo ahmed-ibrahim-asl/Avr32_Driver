@@ -12,6 +12,9 @@
 void TIMER0_voidInit(void);
 void TIMER0_voidStart(void);
 void TIMER0_voidStop(void);
+void  TIMER0_voidSetPWM(uint8_t copy_u8DutyCycle);
+
+
 
 uint8_t TIMER0_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64RequiredTime_inSeconds);
 /******************************************************************************************************/
@@ -19,6 +22,11 @@ uint8_t TIMER0_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64Req
 
 
 /****************************************** TIMER1 INTERFACE ******************************************/
+void TIMER1_voidInit(void);
+void TIMER1_voidStart(void);
+void TIMER1_voidStop(void);
+
+uint8_t TIMER1_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64RequiredTime_inSeconds);
 /******************************************************************************************************/
 
 

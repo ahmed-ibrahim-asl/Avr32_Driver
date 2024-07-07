@@ -16,15 +16,16 @@
 /****************************************************************/
 
 
+void toggle_led();
+
 int main(){
+
+	DIO_enuSetPinDirection(DIO_u8PortA, DIO_u8PIN0, DIO_u8OUTPUT);
 
 
 	TIMER0_voidInit();
 
-
-	TIMER0_voidSetPWM(60);
-
-
+	TIMER0_voidScheduleTask(toggle_led, 0.10);
 
 
 	while(1){
@@ -37,3 +38,6 @@ int main(){
 }
 
 
+void toggle_led(){
+	DIO_enuTogglePinValue(DIO_u8PortA, DIO_u8PIN0);
+}
