@@ -294,8 +294,14 @@ void TIMER1_voidInit(void) {
 
 		/** Set compare output mode **/
 		#if(TIMER1_OC1_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
-			DIO_enuSetPinDirection(TIMER_OC1A_PORT, TIMER_OC1A_PIN, DIO_u8OUTPUT);
-			DIO_enuSetPinDirection(TIMER_OC1B_PORT, TIMER_OC1B_PIN, DIO_u8OUTPUT);
+
+			#if(TIMER1_OC1A_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
+				DIO_enuSetPinDirection(TIMER_OC1A_PORT, TIMER_OC1A_PIN, DIO_u8OUTPUT);
+			#endif
+
+			#if(TIMER1_OC1A_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
+				DIO_enuSetPinDirection(TIMER_OC1B_PORT, TIMER_OC1B_PIN, DIO_u8OUTPUT);
+			#endif
 
 
 			#if(TIMER_OC1A_OUTPUT_MODE   == TIMER_NORMAL_OC1A)
@@ -339,12 +345,151 @@ void TIMER1_voidInit(void) {
 		#endif
 	#endif
 
+/************************							************************/
+
+	#if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit)
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM10);
+		CLR_BIT(TCCR1A_REG, TCCR1A_WGM11);
+
+		SET_BIT(TCCR1B_REG, TCCR1B_WGM12);
+		CLR_BIT(TCCR1B_REG, TCCR1B_WGM13);
+
+
+	#elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_9bit)
+		CLR_BIT(TCCR1A_REG, TCCR1A_WGM10);
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM11);
+
+		SET_BIT(TCCR1B_REG, TCCR1B_WGM12);
+		CLR_BIT(TCCR1B_REG, TCCR1B_WGM13);
+
+	#elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_10bit)
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM10);
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM11);
+
+		SET_BIT(TCCR1B_REG, TCCR1B_WGM12);
+		CLR_BIT(TCCR1B_REG, TCCR1B_WGM13);
+
+	#elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit)
+		CLR_BIT(TCCR1A_REG, TCCR1A_WGM10);
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM11);
+
+		SET_BIT(TCCR1B_REG, TCCR1B_WGM12);
+		SET_BIT(TCCR1B_REG, TCCR1B_WGM13);
+
+
+	#elif(TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_8bit)
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM10);
+		CLR_BIT(TCCR1A_REG, TCCR1A_WGM11);
+
+		CLR_BIT(TCCR1B_REG, TCCR1B_WGM12);
+		CLR_BIT(TCCR1B_REG, TCCR1B_WGM13);
+
+
+	#elif(TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_9bit)
+		CLR_BIT(TCCR1A_REG, TCCR1A_WGM10);
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM11);
+
+		CLR_BIT(TCCR1B_REG, TCCR1B_WGM12);
+		CLR_BIT(TCCR1B_REG, TCCR1B_WGM13);
+
+
+	#elif(TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_10bit)
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM10);
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM11);
+
+		CLR_BIT(TCCR1B_REG, TCCR1B_WGM12);
+		CLR_BIT(TCCR1B_REG, TCCR1B_WGM13);
+
+
+	#elif(TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit)
+		CLR_BIT(TCCR1A_REG, TCCR1A_WGM10);
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM11);
+
+		CLR_BIT(TCCR1B_REG, TCCR1B_WGM12);
+		SET_BIT(TCCR1B_REG, TCCR1B_WGM13);
+		#endif
+
+/************************			Inverted/ non-inverted/ normal / toggle		************************/
+	#if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit || \
+		TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_9bit || \
+		TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_10bit || \
+		TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit)
 
 
 
 
+		#if(TIMER1_FastPwm_Type_OC1A == TIMER_FastPwmType_Inverted)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+
+		#elif(TIMER1_FastPwm_Type_OC1A == TIMER_FastPwmType_NonInverted)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+
+		#elif(TIMER1_FastPwm_Type_OC1A == TIMER_FastPwmType_Normal)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+		#endif
+
+		#if(TIMER1_FastPwm_Type_OC1B == TIMER_FastPwmType_Inverted)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B1);
+
+		#elif(TIMER1_FastPwm_Type_OC1B == TIMER_FastPwmType_NonInverted)
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B1);
 
 
+		#elif(TIMER1_FastPwm_Type_OC1B == TIMER_FastPwmType_Normal)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B1);
+
+		#endif
+
+
+
+	#elif(TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_8bit || \
+			TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_9bit || \
+			TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_10bit || \
+			TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit || \
+			TIMER1_MODE_SELECT == TIMER1_MODE_PhaseFreqCorrect)
+
+
+		#if(TIMER1_PhaseCorrect_Type_OC1A == TIMER_PhaseCorrect_Inverted)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+
+		#elif(TIMER1_PhaseCorrect_Type_OC1A == TIMER_PhaseCorrect_NonInverted)
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+
+		#elif(TIMER1_PhaseCorrect_Type_OC1A == TIMER_PhaseCorrect_Normal)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+		#endif
+
+		#if(TIMER1_PhaseCorrect_Type_OC1B == TIMER_PhaseCorrect_Inverted)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B1);
+
+		#elif(TIMER1_PhaseCorrect_Type_OC1B == TIMER_PhaseCorrect_NonInverted)
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B1);
+
+
+		#elif(TIMER1_PhaseCorrect_Type_OC1B == TIMER_PhaseCorrect_Normal)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B1);
+
+		#endif
+
+
+	#endif
+
+
+
+
+/***************************************************************************/
 	/**2. Set Prescaller clock **/
 	#if(TIMER1_CLK_PRE_SELECT == TIMER_PRES_01)
 		SET_BIT(TCCR1B_REG, TCCR1B_CS10);
@@ -372,8 +517,8 @@ void TIMER1_voidInit(void) {
 		CLR_BIT(TCCR1B_REG, TCCR1B_CS11);
 		SET_BIT(TCCR1B_REG, TCCR1B_CS12);
 	#endif
-
 }
+
 
 void TIMER1_voidStart(void) {
     #if(TIMER1_MODE_SELECT == TIMER_MODE_NORMALovf)
@@ -457,34 +602,53 @@ uint8_t TIMER1_voidScheduleTask(void (*TaskCallback)(void), float64 copy_f64Requ
 }
 
 
+void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle, uint32_t copy_u8Frequency) {
 
-void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle) {
-    uint16_t Local_u16TopValue = 0;
+		uint16_t Local_u16TopValue = 0;
 
-    #if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit || \
-        TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_8bit)
-    	Local_u16TopValue = 0x00FF;  // 8-bit resolution
+		#if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit || \
+			TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_8bit)
+			Local_u16TopValue = 0x00FF;   // 8-bit resolution
 
-    #elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_9bit || \
-          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_9bit)
-    	Local_u16TopValue = 0x01FF;  // 9-bit resolution
+		#elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_9bit || \
+			TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_9bit)
+			Local_u16TopValue = 0x01FF;  // 9-bit resolution
 
-    #elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_10bit || \
-          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_10bit)
-    	Local_u16TopValue = 0x03FF;  // 10-bit resolution
+		#elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_10bit || \
+			TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_10bit)
+			Local_u16TopValue = 0x03FF;  // 10-bit resolution
 
-    #elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit || \
-          TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit)
-    	Local_u16TopValue = 0xFFFF;  // 16-bit resolution
 
-    #elif(TIMER1_MODE_SELECT == TIMER1_MODE_PhaseFreqCorrect)
-        // Ensure ICR1 is already set correctly during initialization
-    	Local_u16TopValue = ICR1;  // ICR1 for Phase and Frequency Correct
-    #endif
+		#elif(TIMER1_MODE_SELECT == TIMER1_MODE_PhaseFreqCorrect)
+			// Ensure ICR1 is already set correctly during initialization
+			Local_u16TopValue = ICR1;  // ICR1 for Phase and Frequency Correct
 
-    OCR1A_REG = (uint16_t)(((uint32_t)copy_u8DutyCycle * Local_u16TopValue) / 100);
+		#endif
+
+		OCR1A_REG = (uint16_t)(((uint32_t)copy_u8DutyCycle * Local_u16TopValue) / 100);
+
 }
 
+void TIMER1_voidSetPWM_16bit(uint8_t copy_u8DutyCycle, uint32_t copy_u8Frequency){
+	uint32_t Local_u32PrescalerValue = 0;
+	switch (TCCR1B_REG & 0x07) {
+		case 0x01: Local_u32PrescalerValue = 1; break;
+		case 0x02: Local_u32PrescalerValue = 8; break;
+		case 0x03: Local_u32PrescalerValue = 64; break;
+		case 0x04: Local_u32PrescalerValue = 256; break;
+		case 0x05: Local_u32PrescalerValue = 1024; break;
+		default: Local_u32PrescalerValue = 8; // Default to prescaler 8
+	}
+
+	// Calculate TOP value based on desired frequency for Fast PWM or Phase and Frequency Correct PWM
+	uint16_t Local_u16TopValue = (F_CPU / (Local_u32PrescalerValue * copy_u8Frequency)) - 1;
+	ICR1 = Local_u16TopValue; // Set ICR1 as TOP value
+
+	// Calculate OCR1A value based on desired duty cycle percentage
+	uint32_t ocr1a_value = ((uint32_t)copy_u8DutyCycle * Local_u16TopValue) / 100;
+	OCR1A_REG = ocr1a_value;
+
+}
 
 /******************************************************************************************************/
 

@@ -146,55 +146,59 @@
 #define TIMER1_MODE_PWMphasecorrect_16bit  19
 
 #define TIMER1_MODE_PhaseFreqCorrect       20
+
+
+#define TIMER1_OC1_OUTPUT_ENABLE		   21
+#define TIMER1_OC1_OUTPUT_DISABLE		   22
 /*****************************************************************/
 
 
 
 /***************** Output Compare Modes for OC2 ******************/
-#define TIMER_NORMAL_OC2                   22
-#define TIMER_SET_OC2                      23
-#define TIMER_CLR_OC2                      24
-#define TIMER_TOGGLE_OC2                   25
+#define TIMER_NORMAL_OC2                   23
+#define TIMER_SET_OC2                      24
+#define TIMER_CLR_OC2                      25
+#define TIMER_TOGGLE_OC2                   26
 /*****************************************************************/
 
 
 
 /***************** Output Compare Modes for OC1A *****************/
-#define TIMER_NORMAL_OC1A                  26
-#define TIMER_SET_OC1A                     27
-#define TIMER_CLR_OC1A                     28
-#define TIMER_TOGGLE_OC1A                  29
+#define TIMER_NORMAL_OC1A                  27
+#define TIMER_SET_OC1A                     28
+#define TIMER_CLR_OC1A                     29
+#define TIMER_TOGGLE_OC1A                  30
 /*****************************************************************/
 
 
 
 /***************** Output Compare Modes for OC1B *****************/
-#define TIMER_NORMAL_OC1B                  30
-#define TIMER_SET_OC1B                     31
-#define TIMER_CLR_OC1B                     32
-#define TIMER_TOGGLE_OC1B                  33
+#define TIMER_NORMAL_OC1B                  31
+#define TIMER_SET_OC1B                     32
+#define TIMER_CLR_OC1B                     33
+#define TIMER_TOGGLE_OC1B                  34
 /*****************************************************************/
 
 
 
 /******************** Timer Prescaler Values *********************/
-#define TIMER_PRES_01                      34
-#define TIMER_PRES_08                      35
-#define TIMER_PRES_32                      36
-#define TIMER_PRES_64                      37
-#define TIMER_PRES_128                     38
-#define TIMER_PRES_256                     39
-#define TIMER_PRES_1024                    40
+#define TIMER_PRES_01                      35
+#define TIMER_PRES_08                      36
+#define TIMER_PRES_32                      37
+#define TIMER_PRES_64                      38
+#define TIMER_PRES_128                     39
+#define TIMER_PRES_256                     40
+#define TIMER_PRES_1024                    41
 /*****************************************************************/
 
 
 
 /******************** Output Control States  *********************/
-#define TIMER0_OC0_OUTPUT_ENABLE           41
-#define TIMER0_OC0_OUTPUT_DISABLE          42
+#define TIMER0_OC0_OUTPUT_ENABLE           42
+#define TIMER0_OC0_OUTPUT_DISABLE          43
 
-#define TIMER2_OC2_OUTPUT_ENABLE           43
-#define TIMER2_OC2_OUTPUT_DISABLE          44
+#define TIMER2_OC2_OUTPUT_ENABLE           44
+#define TIMER2_OC2_OUTPUT_DISABLE          45
 /*****************************************************************/
 
 

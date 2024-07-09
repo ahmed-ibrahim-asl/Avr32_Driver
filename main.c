@@ -16,24 +16,15 @@
 /****************************************************************/
 
 
-int main(){
 
+int main(void) {
+    DIO_enuSetPinDirection(DIO_u8PortD, DIO_u8PIN5, DIO_u8OUTPUT);
+    TIMER1_voidInit();
+    TIMER1_voidSetPWM(30, 60); // Set PWM duty cycle to 30%
 
-	TIMER1_voidInit();
+    while (1) {
+        // Main loop
+    }
 
-
-	TIMER1_voidSetPWM(10);
-
-
-
-
-	while(1){
-
-
-	}
-
-
-	    return 0;
+    return 0;
 }
-
-

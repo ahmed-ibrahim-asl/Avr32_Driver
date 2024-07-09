@@ -8,7 +8,7 @@
 #ifndef MCAL_TIMER_TIMER_CONFIG_H_
 #define MCAL_TIMER_TIMER_CONFIG_H_
 
-#define F_CPU 8000000UL
+#define F_CPU 1000000UL
 
 /******************* Set  mode for TIMER Pins *******************/
 #define TIMER_OC0_PORT			DIO_u8PortB
@@ -86,7 +86,7 @@
  *
  * [[ Phase Correct ]]
  * - TIMER1_MODE_PWMphasecorrect_8bit
- * - TIMER1_MODE_PWMphasecorrect_9bitTIMER1_MODE_FastPWM_16bit
+ * - TIMER1_MODE_PWMphasecorrect_9bit
  * - TIMER1_MODE_PWMphasecorrect_10bit
  * - TIMER1_MODE_PWMphasecorrect_16bit
  *
@@ -94,10 +94,13 @@
  * !!!!!!!!!	PWM, Phase and Frequency Correct
  *
  */
-#define TIMER1_MODE_SELECT				TIMER1_MODE_FastPWM_8bit
+#define TIMER1_MODE_SELECT				 TIMER1_MODE_PWMphasecorrect_16bit
 
-// Options: TIMER1_OC1A_OUTPUT_ENABLE or TIMER1_OC1A_OUTPUT_DISABLE
-#define TIMER1_OC1_OUTPUT_STATE		TIMER1_OC1A_OUTPUT_DISABLE
+
+// Options: TIMER1_OC1_OUTPUT_ENABLE or TIMER1_OC1_OUTPUT_DISABLE
+#define TIMER1_OC1A_OUTPUT_STATE		TIMER1_OC1_OUTPUT_ENABLE
+#define TIMER1_OC1B_OUTPUT_STATE		TIMER1_OC1_OUTPUT_DISABLE
+
 
 #if(TIMER1_OC1_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
 	#if(TIMER1_MODE_SELECT == TIMER_MODE_CTC)
@@ -119,8 +122,10 @@
     TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_10bit || \
     TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit)
 
-	//TIMER_FastPwmType_Inverted, TIMER_FastPwmType_NonInverted
-	#define TIMER1_FastPwm_Type			TIMER_FastPwmType_Inverted
+	//TIMER_FastPwmType_Inverted, TIMER_FastPwmType_NonInverted, TIMER_FastPwmType_Normal
+
+	#define TIMER1_FastPwm_Type_OC1A	TIMER_FastPwmType_NonInverted
+	#define TIMER1_FastPwm_Type_OC1B	TIMER_FastPwmType_Normal
 #endif
 
 
@@ -131,12 +136,12 @@
     TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit || \
     TIMER1_MODE_SELECT == TIMER1_MODE_PhaseFreqCorrect)
 
-	//TIMER_PhaseCorrect_Inverted, TIMER_PhaseCorrect_NonInverted
-	#define TIMER1_PhaseCorrect_Type			TIMER_PhaseCorrect_NonInverted
+	//TIMER_PhaseCorrect_Inverted, TIMER_PhaseCorrect_NonInverted, TIMER_PhaseCorrect_Normal
+
+	#define TIMER1_PhaseCorrect_Type_OC1A	TIMER_PhaseCorrect_Inverted
+	#define TIMER1_PhaseCorrect_Type_OC1B	TIMER_PhaseCorrect_Normal
+
 #endif
-
-
-
 
 
 

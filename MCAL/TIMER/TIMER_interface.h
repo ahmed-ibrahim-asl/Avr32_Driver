@@ -24,7 +24,12 @@ uint8_t TIMER0_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64Req
 void TIMER1_voidInit(void);
 void TIMER1_voidStart(void);
 void TIMER1_voidStop(void);
-void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle);
+
+// Function for setting PWM in non-16bit modes
+void TIMER1_voidSetPWM(uint8_t duty_cycle_percent);
+
+// Function for setting PWM in 16bit modes with frequency control
+void TIMER1_voidSetPWM_16bit(uint8_t duty_cycle_percent, uint32_t frequency);
 
 
 
@@ -47,7 +52,9 @@ uint8_t TIMER2_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64Req
 
 
 /****************************************** WATCH DOG TIMER INTERFACE ******************************************/
-
+//void TIMER_voidWDTSleep(void);
+//void TIMER_voidWDTEnable (void);
+//void TIMER_voidWDTDisable(void);
 /******************************************************************************************************/
 
 
