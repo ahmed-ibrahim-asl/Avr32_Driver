@@ -90,11 +90,18 @@
  * - TIMER1_MODE_PWMphasecorrect_10bit
  * - TIMER1_MODE_PWMphasecorrect_16bit
  *
+ * TIMER1_MODE_PhaseFreqCorrect
  *
- * !!!!!!!!!	PWM, Phase and Frequency Correct
+ *
+ * [NOTICE]
+ * Phase Correct PWM:
+ * 		Immediate duty cycle updates can cause frequency instability.
+ *
+ * Phase and Frequency Correct PWM:
+ * 		Duty cycle updates at the end of the cycle ensure stable frequency and smooth transitions.
  *
  */
-#define TIMER1_MODE_SELECT				 TIMER1_MODE_PWMphasecorrect_16bit
+#define TIMER1_MODE_SELECT				 TIMER1_MODE_PhaseFreqCorrect
 
 
 // Options: TIMER1_OC1_OUTPUT_ENABLE or TIMER1_OC1_OUTPUT_DISABLE
@@ -191,6 +198,9 @@
 // 			TIMER_PRES_256 or TIMER_PRES_1024
 #define TIMER2_CLK_PRE_SELECT			TIMER_PRES_01
 /***************************************************************/
+
+
+
 
 
 #endif /* MCAL_TIMER_TIMER_CONFIG_H_ */

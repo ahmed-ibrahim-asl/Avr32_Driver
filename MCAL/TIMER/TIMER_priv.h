@@ -33,8 +33,9 @@
 #define TCNT1_REG					*((volatile uint16_t*)(0x4C))
 #define OCR1A_REG					*((volatile uint16_t*)(0x4A))
 #define OCR1B_REG					*((volatile uint16_t*)(0x48))
-/*****************************************************************/
+#define WDTCSR_REG 				    *((volatile uint8_t*) (0x41))
 
+/*****************************************************************/
 
 
 /************************** TCCR0 BITS ***************************/
@@ -99,6 +100,8 @@
 #define TIMSK_TOIE2							6
 #define TIMSK_OCIE2							7
 /*****************************************************************/
+
+
 
 
 
@@ -200,7 +203,5 @@
 #define TIMER2_OC2_OUTPUT_ENABLE           44
 #define TIMER2_OC2_OUTPUT_DISABLE          45
 /*****************************************************************/
-
-
 
 #endif /* MCAL_TIMER_TIMER_PRIV_H_ */

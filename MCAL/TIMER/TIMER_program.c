@@ -39,6 +39,8 @@ static uint32_t TIMER2_CURRENT_NTICKS = 0;  // Current overflow count for TIMER2
 
 // Array of function pointers for Timer ISR callbacks
 static void (*TIMERS_ISR_Functions[3])(void) = {NULL, NULL, NULL};
+
+
 /*******************************************************************************************************/
 
 
@@ -242,9 +244,9 @@ uint8_t TIMER0_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64Req
 	return 0;
 }
 
-
-
 void  TIMER0_voidSetPWM(uint8_t copy_u8DutyCycle){
+
+
 
 	/*
 	 *
@@ -262,6 +264,10 @@ void  TIMER0_voidSetPWM(uint8_t copy_u8DutyCycle){
 
 	OCR0_REG = (uint8_t)(((uint16_t)copy_u8DutyCycle * 256) / 100);
 }
+
+
+
+
 
 /******************************************************************************************************/
 
@@ -407,6 +413,14 @@ void TIMER1_voidInit(void) {
 
 		CLR_BIT(TCCR1B_REG, TCCR1B_WGM12);
 		SET_BIT(TCCR1B_REG, TCCR1B_WGM13);
+
+	#elif(TIMER1_MODE_SELECT == TIMER1_MODE_PhaseFreqCorrect)
+		CLR_BIT(TCCR1A_REG, TCCR1A_WGM10);
+		CLR_BIT(TCCR1A_REG, TCCR1A_WGM11);
+
+		CLR_BIT(TCCR1B_REG, TCCR1B_WGM12);
+		SET_BIT(TCCR1B_REG, TCCR1B_WGM13);
+
 		#endif
 
 /************************			Inverted/ non-inverted/ normal / toggle		************************/
@@ -602,7 +616,7 @@ uint8_t TIMER1_voidScheduleTask(void (*TaskCallback)(void), float64 copy_f64Requ
 }
 
 
-void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle, uint32_t copy_u8Frequency) {
+void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle) {
 
 		uint16_t Local_u16TopValue = 0;
 
@@ -641,12 +655,10 @@ void TIMER1_voidSetPWM_16bit(uint8_t copy_u8DutyCycle, uint32_t copy_u8Frequency
 	}
 
 	// Calculate TOP value based on desired frequency for Fast PWM or Phase and Frequency Correct PWM
-	uint16_t Local_u16TopValue = (F_CPU / (Local_u32PrescalerValue * copy_u8Frequency)) - 1;
-	ICR1 = Local_u16TopValue; // Set ICR1 as TOP value
+	ICR1 = (F_CPU / (Local_u32PrescalerValue * copy_u8Frequency)) - 1;
 
 	// Calculate OCR1A value based on desired duty cycle percentage
-	uint32_t ocr1a_value = ((uint32_t)copy_u8DutyCycle * Local_u16TopValue) / 100;
-	OCR1A_REG = ocr1a_value;
+	OCR1A_REG = (uint16_t) (((uint32_t)copy_u8DutyCycle * ICR1) / 100);
 
 }
 
@@ -888,6 +900,50 @@ void  TIMER2_voidSetPWM(uint8_t copy_u8DutyCycle){
 	OCR2_REG = (uint8_t)(((uint16_t)copy_u8DutyCycle * 256) / 100);
 }
 /*******************************************************************************************************/
+
+
+
+/****************************************** WATCH DOG TIMER INTERFACE ******************************************/
+void TIMER_voidWDTSleep(uint8_t copy_u8WdtPeriod){
+    // Reset watchdog timer using macro
+    WDT_voidRestart();
+
+    // Start timed sequence
+    WDTCSR_REG |= (1 << WDTCSR_WDCE) | (1 << WDTCSR_WDE);
+
+    // Set watchdog timer prescaler and enable watchdog timer
+    WDTCSR_REG = (1 << WDTCSR_WDE) | copy_u8WdtPeriod;
+
+}
+
+void TIMER_voidWDTEnable (void){
+    // Reset watchdog timer using macro
+    WDT_voidRestart();
+
+    // Start timed sequence
+    WDTCSR_REG |= (1 << WDTCSR_WDCE) | (1 << WDTCSR_WDE);
+
+    // Enable watchdog timer with the previously set period
+    SET_BIT(WDTCSR_REG, WDTCSR_WDE);
+
+}
+
+
+void TIMER_voidWDTDisable(void) {
+    // Reset watchdog timer using macro
+    WDT_voidRestart();
+
+    // Start timed sequence
+    WDTCSR_REG |= (1 << WDTCSR_WDCE) | (1 << WDTCSR_WDE);
+
+    // Disable watchdog timer
+    WDTCSR_REG = 0x00;
+}
+/******************************************************************************************************/
+
+
+
+
 
 ISR(TIMER0_OVF_vect){
 
