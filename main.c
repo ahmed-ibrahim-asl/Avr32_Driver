@@ -1,40 +1,34 @@
-#include <avr/io.h>
-#include <avr/interrupt.h>
 
-volatile uint16_t t1 = 0;
-volatile uint16_t t2 = 0;
-volatile uint16_t period = 0;
-volatile uint8_t capture_flag = 0;
+/**
+ * [Amit kit LEDs PIN out]
+ *
+ * Right  led	- (PORTC)	(2)
+ * Center led   - (PORTC)	(7)
+ * Left   led   - (PORTD)	(3)
+ * */
 
-ISR(TIMER1_CAPT_vect) {
-    if (capture_flag == 0) {
-        t1 = ICR1;
-        capture_flag = 1;
-        TCCR1B &= ~(1 << ICES1); // Switch to falling edge
-    } else {
-        t2 = ICR1;
-        period = t2 - t1;
-        capture_flag = 0;
-        TCCR1B |= (1 << ICES1); // Switch to rising edge
-    }
-}
+/******************** Include  Section Start ********************/
+#include "MCAL/DIO/DIO_interface.h"
+#include "HAL/LCD/LCD_HAL_interface.h"
+/****************************************************************/
 
-void timer1_init() {
-    TCCR1A = 0x00;
-    TCCR1B = (1 << ICES1) | (1 << CS10); // Rising edge, no prescaler
-    TIMSK = (1 << TICIE1); // Enable input capture interrupt
-    sei(); // Enable global interrupts
-}
 
-int main() {
-    DDRB &= ~(1 << PB0); // Set PB0 as input (ICP1 pin)
-    timer1_init();
 
-    while (1) {
-        if (capture_flag == 0 && period != 0) {
-            // Do something with the period
-        }
-    }
+int main(){
 
-    return 0;
+	DIO_enuSetPinDirection(DIO_u8PortC, DIO_u8PIN2, DIO_u8OUTPUT);
+	DIO_enuSetPinDirection(DIO_u8PortC, DIO_u8PIN7, DIO_u8OUTPUT);
+	DIO_enuSetPinDirection(DIO_u8PortD, DIO_u8PIN3, DIO_u8OUTPUT);
+
+
+
+
+
+	DIO_enuSetPinValue(DIO_u8PortD, DIO_u8PIN3, 0);
+	DIO_enuSetPinValue(DIO_u8PortC, DIO_u8PIN2, 1);
+	DIO_enuSetPinValue(DIO_u8PortC, DIO_u8PIN7, 0);
+
+	while(1){
+
+	}
 }
