@@ -28,12 +28,12 @@
 
 /***
  *
- * [[ EEPROM exist in proteus ]]
+ * [[ Supported eeprom ]]
  *
- *	1. NM24C04					[]
- *	2. NM24C04F	400khz			[]
- *	3. NM24C05					[]
- *	4. NM24C05F	400khz			[]
+ *	1. NM24C04					[x]
+ *	2. NM24C04F	400khz			[x]
+ *	3. NM24C05					[x]
+ *	4. NM24C05F	400khz			[x]
  * 	1. NM24C08	100khz	8k		[x]
  * 	2. NM24C08F	400khz	8k		[x]
  * 	3. NM24C09					[x]
