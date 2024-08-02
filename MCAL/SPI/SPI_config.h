@@ -37,7 +37,7 @@
 
 // CPOL - CLock Polarity
 // Options: SPI_LRising_TFalling or SPI_LFalling_TRising
-#define SPI_CPOL				SPI_LFalling_TRising
+#define SPI_CPOL				SPI_LRising_TFalling
 
 // CPHA - Clock Phase
 // Options: SPI_LRead_TWrite	or SPI_LWrite_TRead

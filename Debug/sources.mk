@@ -21,8 +21,10 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+HAL/BUZZER \
 HAL/EEPROM \
 HAL/LCD \
+HAL/LED \
 HAL/keypad \
 MCAL/ADC \
 MCAL/DIO \

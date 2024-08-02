@@ -66,7 +66,7 @@
 // Options: TIMER_PRES_01  or TIMER_PRES_08
 //			TIMER_PRES_64
 // 			TIMER_PRES_256 or TIMER_PRES_1024
-#define TIMER0_CLK_PRE_SELECT			TIMER_PRES_01
+#define TIMER0_CLK_PRE_SELECT			TIMER_PRES_256
 /***************************************************************/
 
 

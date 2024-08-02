@@ -9,7 +9,7 @@
 #define HAL_BUZZER_BUZZER_INTERFACE_H_
 
 
-
+#include "../../MCAL/DIO/helper_embedded_libraries/micro_config.h"
 
 typedef struct{
 	uint8_t PortID;
@@ -20,9 +20,9 @@ typedef struct{
 /********************* Functions  Prototype *********************/
 void Buzzer_voidInit(Buzzer_t *Copy_Buzzer);
 
-void Buzzeer_voidON(Buzzer_t *Copy_Buzzer);
+void Buzzer_voidON(Buzzer_t *Copy_Buzzer);
 
-void Buzzeer_voidOFF(Buzzer_t *Copy_Buzzer);
+void Buzzer_voidOFF(Buzzer_t *Copy_Buzzer);
 
 void Buzzer_voidTOGGLE(Buzzer_t *Copy_Buzzer);
 /****************************************************************/

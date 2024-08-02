@@ -57,5 +57,11 @@ ErrorStatus_t EEPROM_enuReadData(EEPROM_Input_t* eepromInstance);
 
 
 
+void EEPROM_WriteDataSequence(EEPROM_Input_t* eepromInstance, const uint8_t *dataBuffer, uint8_t dataLength, uint8_t flag, uint8_t startAddress);
+
+uint8_t EEPROM_SearchForFlag(EEPROM_Input_t eepromInstance, uint8_t flag, uint8_t startAddress, uint8_t dataLength);
+
+void EEPROM_Format(EEPROM_Input_t* eepromInstance);
+
 
 #endif /* HAL_EEPROM_EEPROM_INTERFACE_H_ */

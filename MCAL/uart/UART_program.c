@@ -200,25 +200,33 @@ ErrorStatus_t UART_enuRecieveChar(uint8_t* copy_pu8Data){
 
 
 
-ErrorStatus_t UART_enuRecieveString(uint8_t* copy_pu8Data){
-	ErrorStatus_t Local_enuErrrorState = ERROR_STATUS_FAILURE;
+ErrorStatus_t UART_enuRecieveString(uint8_t* copy_pu8Data) {
+    if (copy_pu8Data == NULL) {
+        return ERROR_STATUS_FAILURE;
+    }
 
-	if(copy_pu8Data == NULL){
-		return Local_enuErrrorState;
-	}
+    uint8_t receivedChar;
+    while (1) {
+        // Receive a character from UART
+        UART_enuRecieveChar(&receivedChar);
 
-	else{
-		while(*copy_pu8Data != '\0'){
-			UART_enuRecieveChar(copy_pu8Data);
-			copy_pu8Data+=1;
-		}
-	}
+        // Store the received character in the buffer
+        *copy_pu8Data = receivedChar;
 
+        // Check if the received character is the null terminator
+        if (receivedChar == '\0') {
+            break; // Exit the loop if end of string is detected
+        }
 
-	Local_enuErrrorState = ERROR_STATUS_OK;
-	return Local_enuErrrorState;
+        // Move to the next position in the buffer
+        copy_pu8Data++;
+    }
+
+    // Null-terminate the string
+    *copy_pu8Data = '\0';
+
+    return ERROR_STATUS_OK;
 }
-
 
 //!
 void UART_setBaudRate(uint16 copy_u8UART_BaudRate){

@@ -11,6 +11,7 @@
 
 
 #include "EEPROM_interface.h"
+#include <util/delay.h>
 /**************************************************************/
 
 
@@ -64,6 +65,8 @@ ErrorStatus_t EEPROM_enuWriteData(EEPROM_Input_t* eepromInstance) {
 
     }
 
+    // Small delay to ensure data is written
+    _delay_ms(10);
     Local_enuErrorState = ERROR_STATUS_OK;
     return Local_enuErrorState;
 }
@@ -124,4 +127,53 @@ ErrorStatus_t EEPROM_enuReadData(EEPROM_Input_t* eepromInstance) {
 
     Local_enuErrorState = ERROR_STATUS_OK;
     return Local_enuErrorState;
+}
+
+
+
+void EEPROM_WriteDataSequence(EEPROM_Input_t* eepromInstance, const uint8_t *dataBuffer, uint8_t dataLength, uint8_t flag, uint8_t startAddress) {
+    eepromInstance->address = startAddress;  // Set the EEPROM address to the specified start address
+
+    for(uint8_t i = 0; i < dataLength; i++) {
+        eepromInstance->data = dataBuffer[i];
+        EEPROM_enuWriteData(eepromInstance);
+        eepromInstance->address++;  // Move to the next address
+    }
+
+    eepromInstance->data = flag;  // Write the flag to indicate the end of the data
+    EEPROM_enuWriteData(eepromInstance);
+}
+
+uint8_t EEPROM_SearchForFlag(EEPROM_Input_t eepromInstance, uint8_t flag, uint8_t startAddress, uint8_t dataLength){
+
+    // Set address to start searching from
+	eepromInstance.address = startAddress + dataLength;
+
+    // Read the data at the address where the flag is expected
+    EEPROM_enuReadData(&eepromInstance);
+
+    // Check if the read data matches the flag
+    if (eepromInstance.data == flag) {
+        return 1;  // Flag found
+    }
+
+    return 0;  // Flag not found
+
+}
+
+
+void EEPROM_Format(EEPROM_Input_t* eepromInstance) {
+    // Define the starting address and the end address
+    uint16_t startAddress = 0x00; // Starting address of EEPROM
+    uint16_t endAddress = 0xFF;   // Ending address of EEPROM (example)
+
+    // Set the EEPROM address to the start address
+    eepromInstance->address = startAddress;
+
+    // Write the default value (e.g., 0x00) to each address in EEPROM
+    for (uint16_t address = startAddress; address <= endAddress; address++) {
+        eepromInstance->data = 0x00;  // Default value
+        EEPROM_enuWriteData(eepromInstance);  // Write to EEPROM
+        eepromInstance->address++;  // Move to the next address
+    }
 }

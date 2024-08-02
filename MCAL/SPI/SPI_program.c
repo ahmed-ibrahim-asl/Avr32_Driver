@@ -55,7 +55,7 @@ void SPI_vidInit(void){
 		// SCK is high when idle
 		CLR_BIT(SPCR_REG, SPCR_CPOL);
 
-	#elif(SPI_CPOL == SPI_LRising_TFalling)
+	#elif(SPI_CPOL == SPI_LFalling_TRising)
 		// SCK is low when idle
 		SET_BIT(SPCR_REG, SPCR_CPOL);
 	#endif

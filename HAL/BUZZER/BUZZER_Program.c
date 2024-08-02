@@ -13,15 +13,15 @@
 
 
 void Buzzer_voidInit(Buzzer_t *Copy_Buzzer){
-	 DIO_enuSetPinDirection(Copy_Buzzer->PortID, Copy_Buzzer->PortID, 0);
+	 DIO_enuSetPinDirection(Copy_Buzzer->PortID, Copy_Buzzer->PortID, DIO_u8OUTPUT);
 }
 
-void Buzzeer_voidON(Buzzer_t *Copy_Buzzer){
-	DIO_enuSetPinValue(Copy_Buzzer->PortID, Copy_Buzzer->PinID, 1);
+void Buzzer_voidON(Buzzer_t *Copy_Buzzer){
+	DIO_enuSetPinValue(Copy_Buzzer->PortID, Copy_Buzzer->PinID, DIO_u8HIGH);
 }
 
-void Buzzeer_voidOFF(Buzzer_t *Copy_Buzzer){
-	DIO_enuSetPinValue(Copy_Buzzer->PortID, Copy_Buzzer->PinID, 0);
+void Buzzer_voidOFF(Buzzer_t *Copy_Buzzer){
+	DIO_enuSetPinValue(Copy_Buzzer->PortID, Copy_Buzzer->PinID, DIO_u8LOW);
 }
 
 void Buzzer_voidTOGGLE(Buzzer_t *Copy_Buzzer){
