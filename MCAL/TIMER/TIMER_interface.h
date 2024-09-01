@@ -26,13 +26,16 @@ void TIMER1_voidStart(void);
 void TIMER1_voidStop(void);
 
 // Function for setting PWM in non-16bit modes
-void TIMER1_voidSetPWM(uint8_t duty_cycle_percent);
+void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle);
 
-// Function for setting PWM in 16bit modes with frequency control
-void TIMER1_voidSetPWM_16bit(uint8_t duty_cycle_percent, uint32_t frequency);
-
+#if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit_FREQ || TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit_FREQ )
+	// Function for setting PWM in 16bit modes with frequency control
+	void TIMER1_voidSetPWM_16bit(uint8_t copy_u8DutyCycle, uint32_t copy_u32Frequency);
+#endif
 
 uint8_t TIMER1_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64RequiredTime_inSeconds);
+
+
 /******************************************************************************************************/
 
 

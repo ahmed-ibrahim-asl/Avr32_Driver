@@ -1,49 +1,3 @@
-//Content of main_notes.txt
-/*
- * main.c
- *
- *  Created on: Dec 30, 2023
- *      Author: ad
- */
-
-/******************** Include  Section Start ********************/
-#include "MCAL/DIO/DIO_interface.h"
-#include "MCAL/TWI/TWI_interface.h"
-#include "HAL/LCD/LCD_HAL_interface.h"
-#include <util/delay.h>
-
-
-#include "MCAL/TIMER/TIMER_interface.h"
-/****************************************************************/
-
-
-void toggle_led();
-
-int main(){
-
-	DIO_enuSetPinDirection(DIO_u8PortA, DIO_u8PIN0, DIO_u8OUTPUT);
-
-
-	TIMER2_voidInit();
-
-	TIMER2_voidScheduleTask(toggle_led, 0.10);
-
-
-	while(1){
-
-
-	}
-
-
-	    return 0;
-}
-
-
-void toggle_led(){
-	DIO_enuTogglePinValue(DIO_u8PortA, DIO_u8PIN0);
-}
-
-//--------------------
 //Content of TIMER_config.h
 /*
  * TIMER_config.h
@@ -55,7 +9,7 @@ void toggle_led(){
 #ifndef MCAL_TIMER_TIMER_CONFIG_H_
 #define MCAL_TIMER_TIMER_CONFIG_H_
 
-#define F_CPU 1000000UL
+#define F_CPU 16000000UL
 
 /******************* Set  mode for TIMER Pins *******************/
 #define TIMER_OC0_PORT			DIO_u8PortB
@@ -86,7 +40,7 @@ void toggle_led(){
 	#if(TIMER0_MODE_SELECT == TIMER_MODE_CTC)
 		// Options: TIMER_SET_OC0 or TIMER_CLR_OC0
 		//			TIMER_TOGGLE_OC0 or TIMER_NORMAL_OC0
-		#define TIMER_OC0_OUTPUT_MODE			TIMER_TOGGLE_OC0
+		#define TIMER_OC0_OUTPUT_MODE			TIMER_CLR_OC0
 	#endif
 #endif
 
@@ -113,7 +67,7 @@ void toggle_led(){
 // Options: TIMER_PRES_01  or TIMER_PRES_08
 //			TIMER_PRES_64
 // 			TIMER_PRES_256 or TIMER_PRES_1024
-#define TIMER0_CLK_PRE_SELECT			TIMER_PRES_01
+#define TIMER0_CLK_PRE_SELECT			TIMER_PRES_64
 /***************************************************************/
 
 
@@ -130,14 +84,15 @@ void toggle_led(){
  * - TIMER1_MODE_FastPWM_9bit
  * - TIMER1_MODE_FastPWM_10bit
  * - TIMER1_MODE_FastPWM_16bit
+ * - TIMER1_MODE_FastPWM_16bit_FREQ
  *
  * [[ Phase Correct ]]
  * - TIMER1_MODE_PWMphasecorrect_8bit
  * - TIMER1_MODE_PWMphasecorrect_9bit
  * - TIMER1_MODE_PWMphasecorrect_10bit
  * - TIMER1_MODE_PWMphasecorrect_16bit
+ * - TIMER1_MODE_PWMphasecorrect_16bit_FREQ
  *
- * TIMER1_MODE_PhaseFreqCorrect
  *
  *
  * [NOTICE]
@@ -148,7 +103,7 @@ void toggle_led(){
  * 		Duty cycle updates at the end of the cycle ensure stable frequency and smooth transitions.
  *
  */
-#define TIMER1_MODE_SELECT				 TIMER1_MODE_PhaseFreqCorrect
+#define TIMER1_MODE_SELECT				 TIMER1_MODE_FastPWM_16bit_FREQ
 
 
 // Options: TIMER1_OC1_OUTPUT_ENABLE or TIMER1_OC1_OUTPUT_DISABLE
@@ -171,12 +126,16 @@ void toggle_led(){
 
 
 
-#if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit || \
-    TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_9bit || \
+#if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit  || \
+    TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_9bit  || \
     TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_10bit || \
-    TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit)
+    TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit || \
+	TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit_FREQ )
 
-	//TIMER_FastPwmType_Inverted, TIMER_FastPwmType_NonInverted, TIMER_FastPwmType_Normal
+	// Options:
+	//	- TIMER_FastPwmType_Inverted,
+	//	- TIMER_FastPwmType_NonInverted,
+	//  - TIMER_FastPwmType_Normal
 
 	#define TIMER1_FastPwm_Type_OC1A	TIMER_FastPwmType_NonInverted
 	#define TIMER1_FastPwm_Type_OC1B	TIMER_FastPwmType_Normal
@@ -188,9 +147,12 @@ void toggle_led(){
     TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_9bit || \
     TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_10bit || \
     TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit || \
-    TIMER1_MODE_SELECT == TIMER1_MODE_PhaseFreqCorrect)
+    TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit_FREQ)
 
-	//TIMER_PhaseCorrect_Inverted, TIMER_PhaseCorrect_NonInverted, TIMER_PhaseCorrect_Normal
+	// Options:
+	//	- TIMER_PhaseCorrect_Inverted
+	//  - TIMER_PhaseCorrect_NonInverted
+	//  - TIMER_PhaseCorrect_Normal
 
 	#define TIMER1_PhaseCorrect_Type_OC1A	TIMER_PhaseCorrect_Inverted
 	#define TIMER1_PhaseCorrect_Type_OC1B	TIMER_PhaseCorrect_Normal
@@ -210,7 +172,7 @@ void toggle_led(){
 /************************ TIMER2  CONFIG ***********************/
 // Options: TIMER_MODE_NORMALovf	or		TIMER_MODE_PWMphasecorrect
 //			TIMER_MODE_FastPWM      or  	TIMER_MODE_CTC
-#define TIMER2_MODE_SELECT				TIMER_MODE_PWMphasecorrect
+#define TIMER2_MODE_SELECT				TIMER_MODE_FastPWM
 
 
 // Options: TIMER2_OC2_OUTPUT_ENABLE or TIMER2_OC2_OUTPUT_DISABLE
@@ -243,7 +205,7 @@ void toggle_led(){
 // Options: TIMER_PRES_01  or TIMER_PRES_08
 //			TIMER_PRES_64
 // 			TIMER_PRES_256 or TIMER_PRES_1024
-#define TIMER2_CLK_PRE_SELECT			TIMER_PRES_01
+#define TIMER2_CLK_PRE_SELECT			TIMER_PRES_64
 /***************************************************************/
 
 
@@ -284,9 +246,10 @@ void TIMER1_voidStop(void);
 // Function for setting PWM in non-16bit modes
 void TIMER1_voidSetPWM(uint8_t duty_cycle_percent);
 
-// Function for setting PWM in 16bit modes with frequency control
-void TIMER1_voidSetPWM_16bit(uint8_t duty_cycle_percent, uint32_t frequency);
-
+#if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit_FREQ || TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit_FREQ )
+	// Function for setting PWM in 16bit modes with frequency control
+	void TIMER1_voidSetPWM_16bit(uint8_t copy_u8DutyCycle, uint32_t copy_u32Frequency);
+#endif
 
 uint8_t TIMER1_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64RequiredTime_inSeconds);
 /******************************************************************************************************/
@@ -482,21 +445,22 @@ void TIMER_voidWDTDisable(void);
 
 
 /*********************** Timer1 PWM Modes ************************/
-#define TIMER1_MODE_FastPWM_8bit           12
-#define TIMER1_MODE_FastPWM_9bit           13
-#define TIMER1_MODE_FastPWM_10bit          14
-#define TIMER1_MODE_FastPWM_16bit          15
+#define TIMER1_MODE_FastPWM_8bit           			 12
+#define TIMER1_MODE_FastPWM_9bit           			 13
+#define TIMER1_MODE_FastPWM_10bit          			 14
+#define TIMER1_MODE_FastPWM_16bit          			 15
+#define TIMER1_MODE_FastPWM_16bit_FREQ				 50
 
-#define TIMER1_MODE_PWMphasecorrect_8bit   16
-#define TIMER1_MODE_PWMphasecorrect_9bit   17
-#define TIMER1_MODE_PWMphasecorrect_10bit  18
-#define TIMER1_MODE_PWMphasecorrect_16bit  19
+#define TIMER1_MODE_PWMphasecorrect_8bit   			 16
+#define TIMER1_MODE_PWMphasecorrect_9bit   			 17
+#define TIMER1_MODE_PWMphasecorrect_10bit  			 18
+#define TIMER1_MODE_PWMphasecorrect_16bit  			 19
 
-#define TIMER1_MODE_PhaseFreqCorrect       20
+#define TIMER1_MODE_PWMphasecorrect_16bit_FREQ       20
 
 
-#define TIMER1_OC1_OUTPUT_ENABLE		   21
-#define TIMER1_OC1_OUTPUT_DISABLE		   22
+#define TIMER1_OC1_OUTPUT_ENABLE		   			 21
+#define TIMER1_OC1_OUTPUT_DISABLE		   			 22
 /*****************************************************************/
 
 
@@ -838,6 +802,7 @@ void TIMER1_voidInit(void) {
 	/** Active global interrupt **/
 	GIE_enuEnable();
 
+
 	/**1. Set Timer Mode **/
 	#if(TIMER1_MODE_SELECT == TIMER_MODE_NORMALovf)
 		CLR_BIT(TCCR1A_REG, TCCR1A_WGM10);
@@ -975,7 +940,20 @@ void TIMER1_voidInit(void) {
 		CLR_BIT(TCCR1B_REG, TCCR1B_WGM12);
 		SET_BIT(TCCR1B_REG, TCCR1B_WGM13);
 
-		#endif
+	#elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit_FREQ)
+		CLR_BIT(TCCR1A_REG, TCCR1A_WGM10);
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM11);
+
+		SET_BIT(TCCR1B_REG, TCCR1B_WGM12);
+		SET_BIT(TCCR1B_REG, TCCR1B_WGM13);
+
+	#elif(TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit_FREQ)
+		CLR_BIT(TCCR1A_REG, TCCR1A_WGM10);
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM11);
+
+		CLR_BIT(TCCR1B_REG, TCCR1B_WGM12);
+		SET_BIT(TCCR1B_REG, TCCR1B_WGM13);
+	#endif
 
 /************************			Inverted/ non-inverted/ normal / toggle		************************/
 	#if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit || \
@@ -1197,25 +1175,29 @@ void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle) {
 
 }
 
-void TIMER1_voidSetPWM_16bit(uint8_t copy_u8DutyCycle, uint32_t copy_u8Frequency){
-	uint32_t Local_u32PrescalerValue = 0;
-	switch (TCCR1B_REG & 0x07) {
-		case 0x01: Local_u32PrescalerValue = 1; break;
-		case 0x02: Local_u32PrescalerValue = 8; break;
-		case 0x03: Local_u32PrescalerValue = 64; break;
-		case 0x04: Local_u32PrescalerValue = 256; break;
-		case 0x05: Local_u32PrescalerValue = 1024; break;
-		default: Local_u32PrescalerValue = 8; // Default to prescaler 8
+#if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit_FREQ || TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit_FREQ )
+	void TIMER1_voidSetPWM_16bit(uint8_t copy_u8DutyCycle, uint32_t copy_u32Frequency){
+		uint32_t Local_u32PrescalerValue = 0;
+		switch (TCCR1B_REG & 0x07) {
+			case 0x01: Local_u32PrescalerValue = 1; break;
+			case 0x02: Local_u32PrescalerValue = 8; break;
+			case 0x03: Local_u32PrescalerValue = 64; break;
+			case 0x04: Local_u32PrescalerValue = 256; break;
+			case 0x05: Local_u32PrescalerValue = 1024; break;
+			default: Local_u32PrescalerValue = 8; // Default to prescaler 8
+		}
+
+		// Calculate TOP value based on desired frequency for Fast PWM or Phase and Frequency Correct PWM
+		ICR1 = ( F_CPU / (Local_u32PrescalerValue * copy_u32Frequency) ) - 1;
+
+		// Calculate OCR1A value based on desired duty cycle percentage
+		OCR1A_REG = (uint16_t) (((uint32_t)copy_u8DutyCycle * ICR1) / 100);
+
+
+	//	TIMER1_MODE_PWMphasecorrect_16bit_FREQ
+	//	TIMER1_MODE_FastPWM_16bit_FREQ
 	}
-
-	// Calculate TOP value based on desired frequency for Fast PWM or Phase and Frequency Correct PWM
-	ICR1 = (F_CPU / (Local_u32PrescalerValue * copy_u8Frequency)) - 1;
-
-	// Calculate OCR1A value based on desired duty cycle percentage
-	OCR1A_REG = (uint16_t) (((uint32_t)copy_u8DutyCycle * ICR1) / 100);
-
-}
-
+#endif
 /******************************************************************************************************/
 
 

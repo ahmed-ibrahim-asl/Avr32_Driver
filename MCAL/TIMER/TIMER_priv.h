@@ -138,21 +138,22 @@
 
 
 /*********************** Timer1 PWM Modes ************************/
-#define TIMER1_MODE_FastPWM_8bit           12
-#define TIMER1_MODE_FastPWM_9bit           13
-#define TIMER1_MODE_FastPWM_10bit          14
-#define TIMER1_MODE_FastPWM_16bit          15
+#define TIMER1_MODE_FastPWM_8bit           			 12
+#define TIMER1_MODE_FastPWM_9bit           			 13
+#define TIMER1_MODE_FastPWM_10bit          			 14
+#define TIMER1_MODE_FastPWM_16bit          			 15
+#define TIMER1_MODE_FastPWM_16bit_FREQ				 50
 
-#define TIMER1_MODE_PWMphasecorrect_8bit   16
-#define TIMER1_MODE_PWMphasecorrect_9bit   17
-#define TIMER1_MODE_PWMphasecorrect_10bit  18
-#define TIMER1_MODE_PWMphasecorrect_16bit  19
+#define TIMER1_MODE_PWMphasecorrect_8bit   			 16
+#define TIMER1_MODE_PWMphasecorrect_9bit   			 17
+#define TIMER1_MODE_PWMphasecorrect_10bit  			 18
+#define TIMER1_MODE_PWMphasecorrect_16bit  			 19
 
-#define TIMER1_MODE_PhaseFreqCorrect       20
+#define TIMER1_MODE_PWMphasecorrect_16bit_FREQ       20
 
 
-#define TIMER1_OC1_OUTPUT_ENABLE		   21
-#define TIMER1_OC1_OUTPUT_DISABLE		   22
+#define TIMER1_OC1_OUTPUT_ENABLE		   			 21
+#define TIMER1_OC1_OUTPUT_DISABLE		   			 22
 /*****************************************************************/
 
 
@@ -203,5 +204,6 @@
 #define TIMER2_OC2_OUTPUT_ENABLE           44
 #define TIMER2_OC2_OUTPUT_DISABLE          45
 /*****************************************************************/
+
 
 #endif /* MCAL_TIMER_TIMER_PRIV_H_ */

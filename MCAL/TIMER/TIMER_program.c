@@ -20,7 +20,11 @@
 /********************************************************************************************************/
 
 
+#if(TIMER1_MODE_SELECT == TIMER1_MODE_ANY_PIN_PWM)
 
+	static uint8_t global_u8PortID;
+	static uint8_t global_u8PinID;
+#endif
 
 
 /******************************** Timer Tick Counters and ISR Handlers ********************************/
@@ -284,7 +288,55 @@ void TIMER1_voidInit(void) {
 	/** Active global interrupt **/
 	GIE_enuEnable();
 
+
+	#if(TIMER1_OC1A_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
+		DIO_enuSetPinDirection(TIMER_OC1A_PORT, TIMER_OC1A_PIN, DIO_u8OUTPUT);
+
+		#if(TIMER_OC1A_OUTPUT_MODE   == TIMER_NORMAL_OC1A)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+
+		#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_SET_OC1A)
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+
+		#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_CLR_OC1A)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+
+		#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_TOGGLE_OC1A)
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+
+		#endif
+	#endif
+
+	#if(TIMER1_OC1B_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
+		DIO_enuSetPinDirection(TIMER_OC1B_PORT, TIMER_OC1B_PIN, DIO_u8OUTPUT);
+
+		#if(TIMER_OC1B_OUTPUT_MODE   == TIMER_NORMAL_OC1B)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B1);
+
+		#elif(TIMER_OC1B_OUTPUT_MODE == TIMER_SET_OC1B)
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B1);
+
+		#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_CLR_OC1A)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B1);
+
+		#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_TOGGLE_OC1A)
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B1);
+
+		#endif
+
+	#endif
+
+
 	/**1. Set Timer Mode **/
+
 	#if(TIMER1_MODE_SELECT == TIMER_MODE_NORMALovf)
 		CLR_BIT(TCCR1A_REG, TCCR1A_WGM10);
 		CLR_BIT(TCCR1A_REG, TCCR1A_WGM11);
@@ -297,58 +349,6 @@ void TIMER1_voidInit(void) {
 		SET_BIT(TCCR1B_REG, TCCR1B_WGM12);
 		CLR_BIT(TCCR1B_REG, TCCR1B_WGM13);
 
-
-		/** Set compare output mode **/
-		#if(TIMER1_OC1_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
-
-			#if(TIMER1_OC1A_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
-				DIO_enuSetPinDirection(TIMER_OC1A_PORT, TIMER_OC1A_PIN, DIO_u8OUTPUT);
-			#endif
-
-			#if(TIMER1_OC1A_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
-				DIO_enuSetPinDirection(TIMER_OC1B_PORT, TIMER_OC1B_PIN, DIO_u8OUTPUT);
-			#endif
-
-
-			#if(TIMER_OC1A_OUTPUT_MODE   == TIMER_NORMAL_OC1A)
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1A0);
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1A1);
-
-			#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_SET_OC1A)
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1A0);
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1A1);
-
-			#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_CLR_OC1A)
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1A0);
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1A1);
-
-			#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_TOGGLE_OC1A)
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1A0);
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1A1);
-
-			#endif
-
-
-
-			#if(TIMER_OC1B_OUTPUT_MODE   == TIMER_NORMAL_OC1B)
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1B0);
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1B1);
-
-			#elif(TIMER_OC1B_OUTPUT_MODE == TIMER_SET_OC1B)
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1B0);
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1B1);
-
-			#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_CLR_OC1A)
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1B0);
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1B1);
-
-			#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_TOGGLE_OC1A)
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1B0);
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1B1);
-
-			#endif
-
-		#endif
 	#endif
 
 /************************							************************/
@@ -421,7 +421,20 @@ void TIMER1_voidInit(void) {
 		CLR_BIT(TCCR1B_REG, TCCR1B_WGM12);
 		SET_BIT(TCCR1B_REG, TCCR1B_WGM13);
 
-		#endif
+	#elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit_FREQ)
+		CLR_BIT(TCCR1A_REG, TCCR1A_WGM10);
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM11);
+
+		SET_BIT(TCCR1B_REG, TCCR1B_WGM12);
+		SET_BIT(TCCR1B_REG, TCCR1B_WGM13);
+
+	#elif(TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit_FREQ)
+		CLR_BIT(TCCR1A_REG, TCCR1A_WGM10);
+		SET_BIT(TCCR1A_REG, TCCR1A_WGM11);
+
+		CLR_BIT(TCCR1B_REG, TCCR1B_WGM12);
+		SET_BIT(TCCR1B_REG, TCCR1B_WGM13);
+	#endif
 
 /************************			Inverted/ non-inverted/ normal / toggle		************************/
 	#if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit || \
@@ -560,7 +573,7 @@ void TIMER1_voidStop(void) {
     #if(TIMER1_MODE_SELECT == TIMER_MODE_NORMALovf)
         CLR_BIT(TIMSK_REG, TIMSK_TOIE1);
 
-    #elif(TIMER1_MODE_SELECT == TIMER_MODE_CTC)
+    #elif(TIMER1_MODE_SELECT == TIMER_MODE_CTC || TIMER1_MODE_SELECT == TIMER1_MODE_ANY_PIN_PWM)
         CLR_BIT(TIMSK_REG, TIMSK_OCIE1A);
 
     #elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit || \
@@ -643,25 +656,63 @@ void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle) {
 
 }
 
-void TIMER1_voidSetPWM_16bit(uint8_t copy_u8DutyCycle, uint32_t copy_u8Frequency){
-	uint32_t Local_u32PrescalerValue = 0;
-	switch (TCCR1B_REG & 0x07) {
-		case 0x01: Local_u32PrescalerValue = 1; break;
-		case 0x02: Local_u32PrescalerValue = 8; break;
-		case 0x03: Local_u32PrescalerValue = 64; break;
-		case 0x04: Local_u32PrescalerValue = 256; break;
-		case 0x05: Local_u32PrescalerValue = 1024; break;
-		default: Local_u32PrescalerValue = 8; // Default to prescaler 8
+#if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit_FREQ || TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit_FREQ )
+	void TIMER1_voidSetPWM_16bit(uint8_t copy_u8DutyCycle, uint32_t copy_u32Frequency){
+		uint32_t Local_u32PrescalerValue = 0;
+		switch (TCCR1B_REG & 0x07) {
+			case 0x01: Local_u32PrescalerValue = 1; break;
+			case 0x02: Local_u32PrescalerValue = 8; break;
+			case 0x03: Local_u32PrescalerValue = 64; break;
+			case 0x04: Local_u32PrescalerValue = 256; break;
+			case 0x05: Local_u32PrescalerValue = 1024; break;
+			default: Local_u32PrescalerValue = 8; // Default to prescaler 8
+		}
+
+		// Calculate TOP value based on desired frequency for Fast PWM or Phase and Frequency Correct PWM
+		ICR1 = ( F_CPU / (Local_u32PrescalerValue * copy_u32Frequency) ) - 1;
+
+		// Calculate OCR1A value based on desired duty cycle percentage
+		OCR1A_REG = (uint16_t) (((uint32_t)copy_u8DutyCycle * ICR1) / 100);
+
+
+
 	}
+#endif
 
-	// Calculate TOP value based on desired frequency for Fast PWM or Phase and Frequency Correct PWM
-	ICR1 = (F_CPU / (Local_u32PrescalerValue * copy_u8Frequency)) - 1;
 
-	// Calculate OCR1A value based on desired duty cycle percentage
-	OCR1A_REG = (uint16_t) (((uint32_t)copy_u8DutyCycle * ICR1) / 100);
+#if(TIMER1_MODE_SELECT == TIMER1_MODE_ANY_PIN_PWM)
+	void TIMER1_OutputPwm(uint8_t Copy_u8PortID, uint8_t Copy_u8PinID, uint8_t copy_u8DutyCycle, uint32_t copy_u32Frequency){
 
-}
+		uint32_t Local_u32PrescalerValue = 0;
+		switch (TCCR1B_REG & 0x07) {
+			case 0x01: Local_u32PrescalerValue = 1; break;
+			case 0x02: Local_u32PrescalerValue = 8; break;
+			case 0x03: Local_u32PrescalerValue = 64; break;
+			case 0x04: Local_u32PrescalerValue = 256; break;
+			case 0x05: Local_u32PrescalerValue = 1024; break;
+			default: Local_u32PrescalerValue = 8; // Default to prescaler 8
+		}
 
+
+		DIO_enuSetPinDirection(Copy_u8PortID, Copy_u8PinID, DIO_u8OUTPUT);
+		ICR1 = ( F_CPU / (Local_u32PrescalerValue * copy_u32Frequency) ) - 1;
+
+		// Calculate OCR1A value based on desired duty cycle percentage
+		OCR1A_REG = (uint16_t) (((uint32_t)copy_u8DutyCycle * ICR1) / 100);
+
+
+		//! SET Function that going to be called, active flag
+
+
+		global_u8PortID = Copy_u8PortID;
+		global_u8PinID  = Copy_u8PinID;
+
+
+
+		// Start Timer1
+		SET_BIT(TIMSK_REG, TIMSK_OCIE1A);
+	}
+#endif
 /******************************************************************************************************/
 
 
@@ -986,15 +1037,35 @@ ISR(TIMER1_OVF_vect){
 
 ISR(TIMER1_COMPA_vect){
 
-	TIMER1_CURRENT_NTICKS++;
 
-	if(TIMER1_CURRENT_NTICKS >= TIMER1_TARGET_NTICKS){
-		TIMER1_CURRENT_NTICKS = 0;
-		TIMERS_ISR_Functions[1]();
-	}
+//	if(global_u8PwmActiveFlag){
+//		DIO_enuTogglePinValue(global_u8PortID, global_u8PinID);
+//
+//	} else {
+//
+//		TIMER1_CURRENT_NTICKS++;
+//
+//		if(TIMER1_CURRENT_NTICKS >= TIMER1_TARGET_NTICKS){
+//			TIMER1_CURRENT_NTICKS = 0;
+//			TIMERS_ISR_Functions[1]();
+//		}
+//
+//		//here we can specify whether we want to stop timer0 or keep repeat or anything
+//	}
 
 
-	//here we can specify whether we want to stop timer0 or keep repeat or anything
+	#if(TIMER1_MODE_SELECT == TIMER1_MODE_ANY_PIN_PWM)
+		DIO_enuTogglePinValue(global_u8PortID, global_u8PinID);
+	#else
+		TIMER1_CURRENT_NTICKS++;
+
+		if(TIMER1_CURRENT_NTICKS >= TIMER1_TARGET_NTICKS){
+			TIMER1_CURRENT_NTICKS = 0;
+			TIMERS_ISR_Functions[1]();
+		}
+	#endif
+
+
 }
 
 
