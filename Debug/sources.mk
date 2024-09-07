@@ -26,6 +26,8 @@ HAL/EEPROM \
 HAL/LCD \
 HAL/LED \
 HAL/keypad \
+HAL/servoMotor \
+HAL/ultraSonic \
 MCAL/ADC \
 MCAL/DIO \
 MCAL/EXTI \

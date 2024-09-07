@@ -16,6 +16,8 @@ RM := rm -rf
 -include MCAL/EXTI/subdir.mk
 -include MCAL/DIO/subdir.mk
 -include MCAL/ADC/subdir.mk
+-include HAL/ultraSonic/subdir.mk
+-include HAL/servoMotor/subdir.mk
 -include HAL/keypad/subdir.mk
 -include HAL/LED/subdir.mk
 -include HAL/LCD/subdir.mk

@@ -22,6 +22,13 @@ uint8_t TIMER0_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64Req
 
 /****************************************** TIMER1 INTERFACE ******************************************/
 void TIMER1_voidInit(void);
+ErrorStatus_t Timer1_SetupForTimeMeasurement(uint16 copy_u16prescaler);
+
+
+
+uint16 TIMER1_u16ReadCount(void);
+
+
 void TIMER1_voidStart(void);
 void TIMER1_voidStop(void);
 
@@ -34,6 +41,8 @@ void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle);
 #endif
 
 uint8_t TIMER1_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64RequiredTime_inSeconds);
+
+#define RESET_TIMER1()  (TCNT1_REG = 0)
 
 
 /******************************************************************************************************/

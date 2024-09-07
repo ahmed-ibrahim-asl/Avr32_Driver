@@ -547,6 +547,59 @@ void TIMER1_voidInit(void) {
 }
 
 
+
+ErrorStatus_t Timer1_SetupForTimeMeasurement(uint16 copy_u16prescaler){
+
+	ErrorStatus_t Local_enuErrrorState = ERROR_STATUS_FAILURE;
+
+
+	// Setup Prescaler
+	if(copy_u16prescaler == 1){
+		SET_BIT(TCCR1B_REG, TCCR1B_CS10);
+		CLR_BIT(TCCR1B_REG, TCCR1B_CS11);
+		CLR_BIT(TCCR1B_REG, TCCR1B_CS12);
+
+	} else if (copy_u16prescaler == 8){
+		CLR_BIT(TCCR1B_REG, TCCR1B_CS10);
+		SET_BIT(TCCR1B_REG, TCCR1B_CS11);
+		CLR_BIT(TCCR1B_REG, TCCR1B_CS12);
+
+	} else if(copy_u16prescaler == 64){
+		SET_BIT(TCCR1B_REG, TCCR1B_CS10);
+		SET_BIT(TCCR1B_REG, TCCR1B_CS11);
+		CLR_BIT(TCCR1B_REG, TCCR1B_CS12);
+
+	} else if(copy_u16prescaler == 256){
+		CLR_BIT(TCCR1B_REG, TCCR1B_CS10);
+		CLR_BIT(TCCR1B_REG, TCCR1B_CS11);
+		SET_BIT(TCCR1B_REG, TCCR1B_CS12);
+
+	} else if(copy_u16prescaler == 1024){
+		SET_BIT(TCCR1B_REG, TCCR1B_CS10);
+		CLR_BIT(TCCR1B_REG, TCCR1B_CS11);
+		SET_BIT(TCCR1B_REG, TCCR1B_CS12);
+
+	} else{
+		return Local_enuErrrorState;
+	}
+
+
+	// Setup normal mode without no pwm
+	TCCR1A_REG = 0x00;
+
+	// Reset the timer counter
+	RESET_TIMER1();
+
+	Local_enuErrrorState = ERROR_STATUS_OK;
+	return Local_enuErrrorState;
+}
+
+
+uint16 TIMER1_u16ReadCount(void){
+	return TCNT1_REG;
+}
+
+
 void TIMER1_voidStart(void) {
     #if(TIMER1_MODE_SELECT == TIMER_MODE_NORMALovf)
         SET_BIT(TIMSK_REG, TIMSK_TOIE1);

@@ -5,17 +5,18 @@
  *      Author: ad
  */
 
+
+// HMI
 #ifndef HAL_EEPROM_EEPROM_INTERFACE_H_
 #define HAL_EEPROM_EEPROM_INTERFACE_H_
 
 
-/********************** Include  Section **********************/
+/************************ Include Section ************************/
 #include "../../MCAL/DIO/helper_embedded_libraries/micro_config.h"
 #include "../../MCAL/TWI/TWI_interface.h"
 #include "EEPROM_config.h"
 #include "EEPROM_priv.h"
-/**************************************************************/
-
+/*****************************************************************/
 
 typedef struct {
     uint8_t address;     // Address within the EEPROM

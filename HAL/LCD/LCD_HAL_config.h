@@ -22,15 +22,15 @@
 
 /******************* Control Pins *******************/
 
-#define RS_PORT 			    	DIO_u8PortA
-#define RS_PIN						DIO_u8PIN7
+#define RS_PORT 			    	DIO_u8PortB
+#define RS_PIN						DIO_u8PIN1
 
 
-#define RW_PORT						DIO_u8PortA
-#define RW_PIN						DIO_u8PIN5
+#define RW_PORT						DIO_u8PortB
+#define RW_PIN						DIO_u8PIN2
 
-#define EN_PORT 					DIO_u8PortA
-#define EN_PIN						DIO_u8PIN6
+#define EN_PORT 					DIO_u8PortB
+#define EN_PIN						DIO_u8PIN3
 /***************************************************/
 
 
@@ -38,19 +38,19 @@
 
 #if(LCD_MODE == FOUR_BIT)
 	/*Define 4digital pins*/
-	#define LCD_DATA_PORT 	DIO_u8PortC
+	#define LCD_DATA_PORT 	DIO_u8PortA
 
 
-	#define DB7_PORT				DIO_u8PortC
+	#define DB7_PORT				DIO_u8PortA
 	#define DB7_PIN					DIO_u8PIN7
 
-	#define DB6_PORT				DIO_u8PortC
+	#define DB6_PORT				DIO_u8PortA
 	#define DB6_PIN					DIO_u8PIN6
 
-	#define DB5_PORT				DIO_u8PortC
+	#define DB5_PORT				DIO_u8PortA
 	#define DB5_PIN					DIO_u8PIN5
 
-	#define DB4_PORT				DIO_u8PortC
+	#define DB4_PORT				DIO_u8PortA
 	#define DB4_PIN					DIO_u8PIN4
 #endif
 
