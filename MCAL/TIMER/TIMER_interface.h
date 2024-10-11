@@ -37,7 +37,7 @@ void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle);
 
 #if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit_FREQ || TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit_FREQ )
 	// Function for setting PWM in 16bit modes with frequency control
-	void TIMER1_voidSetPWM_16bit(uint8_t copy_u8DutyCycle, uint32_t copy_u32Frequency);
+	void TIMER1_voidSetPWM_16bit(double copy_u8DutyCycle, uint32_t copy_u32Frequency);
 #endif
 
 uint8_t TIMER1_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64RequiredTime_inSeconds);

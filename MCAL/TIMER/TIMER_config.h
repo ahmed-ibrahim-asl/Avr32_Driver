@@ -90,12 +90,11 @@
  * - TIMER1_MODE_PWMphasecorrect_9bit
  * - TIMER1_MODE_PWMphasecorrect_10bit
  * - TIMER1_MODE_PWMphasecorrect_16bit
- * - TIMER1_MODE_PWMphasecorrect_16bit_FREQ
+ * - TIMER1_MODE_PWMphasecorrect_16bit_FREQ			[not tested]
  *
  *
  *
  *
-
  *
  * [NOTICE]
  * Phase Correct PWM:
@@ -166,7 +165,7 @@
 // Options: TIMER_PRES_01  or TIMER_PRES_08
 //			TIMER_PRES_64
 // 			TIMER_PRES_256 or TIMER_PRES_1024
-#define TIMER1_CLK_PRE_SELECT			TIMER_PRES_08
+#define TIMER1_CLK_PRE_SELECT			TIMER_PRES_01
 /***************************************************************/
 
 

@@ -95,6 +95,9 @@
  *
  *
  *
+ *
+
+ *
  * [NOTICE]
  * Phase Correct PWM:
  * 		Immediate duty cycle updates can cause frequency instability.
@@ -111,17 +114,17 @@
 #define TIMER1_OC1B_OUTPUT_STATE		TIMER1_OC1_OUTPUT_DISABLE
 
 
-#if(TIMER1_OC1_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
-	#if(TIMER1_MODE_SELECT == TIMER_MODE_CTC)
-		// Options: TIMER_SET_OC1A or TIMER_CLR_OC1A
-		//			TIMER_TOGGLE_OC1A or TIMER_NORMAL_OC1A
+#if(TIMER1_MODE_SELECT == TIMER_MODE_CTC 				|| \
+	TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit_FREQ|| \
+	TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit_FREQ)
+	// Options: TIMER_SET_OC1A or TIMER_CLR_OC1A
+	//			TIMER_TOGGLE_OC1A or TIMER_NORMAL_OC1A
 
-		// Options: TIMER_SET_OC1B or TIMER_CLR_OC1B
-		//			TIMER_TOGGLE_OC1B or TIMER_NORMAL_OC1B
+	// Options: TIMER_SET_OC1B or TIMER_CLR_OC1B
+	//			TIMER_TOGGLE_OC1B or TIMER_NORMAL_OC1B
 
-		#define TIMER_OC1A_OUTPUT_MODE			TIMER_TOGGLE_OC1A
-		#define	TIMER_OC1B_OUTPUT_MODE			TIMER_NORMAL_OC1B
-	#endif
+	#define TIMER_OC1A_OUTPUT_MODE			TIMER_CLR_OC1A
+	#define	TIMER_OC1B_OUTPUT_MODE			TIMER_NORMAL_OC1B
 #endif
 
 
@@ -164,7 +167,7 @@
 // Options: TIMER_PRES_01  or TIMER_PRES_08
 //			TIMER_PRES_64
 // 			TIMER_PRES_256 or TIMER_PRES_1024
-#define TIMER1_CLK_PRE_SELECT			TIMER_PRES_01
+#define TIMER1_CLK_PRE_SELECT			TIMER_PRES_08
 /***************************************************************/
 
 
@@ -240,11 +243,18 @@ uint8_t TIMER0_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64Req
 
 /****************************************** TIMER1 INTERFACE ******************************************/
 void TIMER1_voidInit(void);
+ErrorStatus_t Timer1_SetupForTimeMeasurement(uint16 copy_u16prescaler);
+
+
+
+uint16 TIMER1_u16ReadCount(void);
+
+
 void TIMER1_voidStart(void);
 void TIMER1_voidStop(void);
 
 // Function for setting PWM in non-16bit modes
-void TIMER1_voidSetPWM(uint8_t duty_cycle_percent);
+void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle);
 
 #if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit_FREQ || TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit_FREQ )
 	// Function for setting PWM in 16bit modes with frequency control
@@ -252,6 +262,10 @@ void TIMER1_voidSetPWM(uint8_t duty_cycle_percent);
 #endif
 
 uint8_t TIMER1_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64RequiredTime_inSeconds);
+
+#define RESET_TIMER1()  (TCNT1_REG = 0)
+
+
 /******************************************************************************************************/
 
 
@@ -512,6 +526,7 @@ void TIMER_voidWDTDisable(void);
 #define TIMER2_OC2_OUTPUT_DISABLE          45
 /*****************************************************************/
 
+
 #endif /* MCAL_TIMER_TIMER_PRIV_H_ */
 
 //--------------------
@@ -538,7 +553,11 @@ void TIMER_voidWDTDisable(void);
 /********************************************************************************************************/
 
 
+#if(TIMER1_MODE_SELECT == TIMER1_MODE_ANY_PIN_PWM)
 
+	static uint8_t global_u8PortID;
+	static uint8_t global_u8PinID;
+#endif
 
 
 /******************************** Timer Tick Counters and ISR Handlers ********************************/
@@ -803,7 +822,54 @@ void TIMER1_voidInit(void) {
 	GIE_enuEnable();
 
 
+	#if(TIMER1_OC1A_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
+		DIO_enuSetPinDirection(TIMER_OC1A_PORT, TIMER_OC1A_PIN, DIO_u8OUTPUT);
+
+		#if(TIMER_OC1A_OUTPUT_MODE   == TIMER_NORMAL_OC1A)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+
+		#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_SET_OC1A)
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+
+		#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_CLR_OC1A)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+
+		#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_TOGGLE_OC1A)
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1A0);
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1A1);
+
+		#endif
+	#endif
+
+	#if(TIMER1_OC1B_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
+		DIO_enuSetPinDirection(TIMER_OC1B_PORT, TIMER_OC1B_PIN, DIO_u8OUTPUT);
+
+		#if(TIMER_OC1B_OUTPUT_MODE   == TIMER_NORMAL_OC1B)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B1);
+
+		#elif(TIMER_OC1B_OUTPUT_MODE == TIMER_SET_OC1B)
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B1);
+
+		#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_CLR_OC1A)
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B1);
+
+		#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_TOGGLE_OC1A)
+			SET_BIT(TCCR1A_REG, TCCR1A_COM1B0);
+			CLR_BIT(TCCR1A_REG, TCCR1A_COM1B1);
+
+		#endif
+
+	#endif
+
+
 	/**1. Set Timer Mode **/
+
 	#if(TIMER1_MODE_SELECT == TIMER_MODE_NORMALovf)
 		CLR_BIT(TCCR1A_REG, TCCR1A_WGM10);
 		CLR_BIT(TCCR1A_REG, TCCR1A_WGM11);
@@ -816,58 +882,6 @@ void TIMER1_voidInit(void) {
 		SET_BIT(TCCR1B_REG, TCCR1B_WGM12);
 		CLR_BIT(TCCR1B_REG, TCCR1B_WGM13);
 
-
-		/** Set compare output mode **/
-		#if(TIMER1_OC1_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
-
-			#if(TIMER1_OC1A_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
-				DIO_enuSetPinDirection(TIMER_OC1A_PORT, TIMER_OC1A_PIN, DIO_u8OUTPUT);
-			#endif
-
-			#if(TIMER1_OC1A_OUTPUT_STATE == TIMER1_OC1_OUTPUT_ENABLE)
-				DIO_enuSetPinDirection(TIMER_OC1B_PORT, TIMER_OC1B_PIN, DIO_u8OUTPUT);
-			#endif
-
-
-			#if(TIMER_OC1A_OUTPUT_MODE   == TIMER_NORMAL_OC1A)
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1A0);
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1A1);
-
-			#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_SET_OC1A)
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1A0);
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1A1);
-
-			#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_CLR_OC1A)
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1A0);
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1A1);
-
-			#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_TOGGLE_OC1A)
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1A0);
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1A1);
-
-			#endif
-
-
-
-			#if(TIMER_OC1B_OUTPUT_MODE   == TIMER_NORMAL_OC1B)
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1B0);
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1B1);
-
-			#elif(TIMER_OC1B_OUTPUT_MODE == TIMER_SET_OC1B)
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1B0);
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1B1);
-
-			#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_CLR_OC1A)
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1B0);
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1B1);
-
-			#elif(TIMER_OC1A_OUTPUT_MODE == TIMER_TOGGLE_OC1A)
-				SET_BIT(TCCR1A_REG, TCCR1A_COM1B0);
-				CLR_BIT(TCCR1A_REG, TCCR1A_COM1B1);
-
-			#endif
-
-		#endif
 	#endif
 
 /************************							************************/
@@ -1066,6 +1080,59 @@ void TIMER1_voidInit(void) {
 }
 
 
+
+ErrorStatus_t Timer1_SetupForTimeMeasurement(uint16 copy_u16prescaler){
+
+    ErrorStatus_t Local_enuErrrorState = ERROR_STATUS_FAILURE;
+
+    // Setup Prescaler
+    switch(copy_u16prescaler) {
+        case 1:
+            SET_BIT(TCCR1B_REG, TCCR1B_CS10);
+            CLR_BIT(TCCR1B_REG, TCCR1B_CS11);
+            CLR_BIT(TCCR1B_REG, TCCR1B_CS12);
+            break;
+        case 8:
+            CLR_BIT(TCCR1B_REG, TCCR1B_CS10);
+            SET_BIT(TCCR1B_REG, TCCR1B_CS11);
+            CLR_BIT(TCCR1B_REG, TCCR1B_CS12);
+            break;
+        case 64:
+            SET_BIT(TCCR1B_REG, TCCR1B_CS10);
+            SET_BIT(TCCR1B_REG, TCCR1B_CS11);
+            CLR_BIT(TCCR1B_REG, TCCR1B_CS12);
+            break;
+        case 256:
+            CLR_BIT(TCCR1B_REG, TCCR1B_CS10);
+            CLR_BIT(TCCR1B_REG, TCCR1B_CS11);
+            SET_BIT(TCCR1B_REG, TCCR1B_CS12);
+            break;
+        case 1024:
+            SET_BIT(TCCR1B_REG, TCCR1B_CS10);
+            CLR_BIT(TCCR1B_REG, TCCR1B_CS11);
+            SET_BIT(TCCR1B_REG, TCCR1B_CS12);
+            break;
+        default:
+            // Invalid prescaler value
+            return Local_enuErrrorState;
+    }
+
+    // Setup normal mode without no pwm
+    TCCR1A_REG = 0x00;
+
+    // Reset the timer counter
+    RESET_TIMER1();
+
+    Local_enuErrrorState = ERROR_STATUS_OK;
+    return Local_enuErrrorState;
+}
+
+
+uint16 TIMER1_u16ReadCount(void){
+	return TCNT1_REG;
+}
+
+
 void TIMER1_voidStart(void) {
     #if(TIMER1_MODE_SELECT == TIMER_MODE_NORMALovf)
         SET_BIT(TIMSK_REG, TIMSK_TOIE1);
@@ -1092,7 +1159,7 @@ void TIMER1_voidStop(void) {
     #if(TIMER1_MODE_SELECT == TIMER_MODE_NORMALovf)
         CLR_BIT(TIMSK_REG, TIMSK_TOIE1);
 
-    #elif(TIMER1_MODE_SELECT == TIMER_MODE_CTC)
+    #elif(TIMER1_MODE_SELECT == TIMER_MODE_CTC || TIMER1_MODE_SELECT == TIMER1_MODE_ANY_PIN_PWM)
         CLR_BIT(TIMSK_REG, TIMSK_OCIE1A);
 
     #elif(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_8bit || \
@@ -1194,8 +1261,42 @@ void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle) {
 		OCR1A_REG = (uint16_t) (((uint32_t)copy_u8DutyCycle * ICR1) / 100);
 
 
-	//	TIMER1_MODE_PWMphasecorrect_16bit_FREQ
-	//	TIMER1_MODE_FastPWM_16bit_FREQ
+
+	}
+#endif
+
+
+#if(TIMER1_MODE_SELECT == TIMER1_MODE_ANY_PIN_PWM)
+	void TIMER1_OutputPwm(uint8_t Copy_u8PortID, uint8_t Copy_u8PinID, uint8_t copy_u8DutyCycle, uint32_t copy_u32Frequency){
+
+		uint32_t Local_u32PrescalerValue = 0;
+		switch (TCCR1B_REG & 0x07) {
+			case 0x01: Local_u32PrescalerValue = 1; break;
+			case 0x02: Local_u32PrescalerValue = 8; break;
+			case 0x03: Local_u32PrescalerValue = 64; break;
+			case 0x04: Local_u32PrescalerValue = 256; break;
+			case 0x05: Local_u32PrescalerValue = 1024; break;
+			default: Local_u32PrescalerValue = 8; // Default to prescaler 8
+		}
+
+
+		DIO_enuSetPinDirection(Copy_u8PortID, Copy_u8PinID, DIO_u8OUTPUT);
+		ICR1 = ( F_CPU / (Local_u32PrescalerValue * copy_u32Frequency) ) - 1;
+
+		// Calculate OCR1A value based on desired duty cycle percentage
+		OCR1A_REG = (uint16_t) (((uint32_t)copy_u8DutyCycle * ICR1) / 100);
+
+
+		//! SET Function that going to be called, active flag
+
+
+		global_u8PortID = Copy_u8PortID;
+		global_u8PinID  = Copy_u8PinID;
+
+
+
+		// Start Timer1
+		SET_BIT(TIMSK_REG, TIMSK_OCIE1A);
 	}
 #endif
 /******************************************************************************************************/
@@ -1522,15 +1623,35 @@ ISR(TIMER1_OVF_vect){
 
 ISR(TIMER1_COMPA_vect){
 
-	TIMER1_CURRENT_NTICKS++;
 
-	if(TIMER1_CURRENT_NTICKS >= TIMER1_TARGET_NTICKS){
-		TIMER1_CURRENT_NTICKS = 0;
-		TIMERS_ISR_Functions[1]();
-	}
+//	if(global_u8PwmActiveFlag){
+//		DIO_enuTogglePinValue(global_u8PortID, global_u8PinID);
+//
+//	} else {
+//
+//		TIMER1_CURRENT_NTICKS++;
+//
+//		if(TIMER1_CURRENT_NTICKS >= TIMER1_TARGET_NTICKS){
+//			TIMER1_CURRENT_NTICKS = 0;
+//			TIMERS_ISR_Functions[1]();
+//		}
+//
+//		//here we can specify whether we want to stop timer0 or keep repeat or anything
+//	}
 
 
-	//here we can specify whether we want to stop timer0 or keep repeat or anything
+	#if(TIMER1_MODE_SELECT == TIMER1_MODE_ANY_PIN_PWM)
+		DIO_enuTogglePinValue(global_u8PortID, global_u8PinID);
+	#else
+		TIMER1_CURRENT_NTICKS++;
+
+		if(TIMER1_CURRENT_NTICKS >= TIMER1_TARGET_NTICKS){
+			TIMER1_CURRENT_NTICKS = 0;
+			TIMERS_ISR_Functions[1]();
+		}
+	#endif
+
+
 }
 
 

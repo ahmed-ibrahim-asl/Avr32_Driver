@@ -17,6 +17,7 @@
 #include "../GIE/GIE_interface.h"
 #include "../EXTI/EXTI_interface.h"
 #include <avr/interrupt.h>
+#include <math.h>
 /********************************************************************************************************/
 
 
@@ -710,26 +711,27 @@ void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle) {
 }
 
 #if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit_FREQ || TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit_FREQ )
-	void TIMER1_voidSetPWM_16bit(uint8_t copy_u8DutyCycle, uint32_t copy_u32Frequency){
-		uint32_t Local_u32PrescalerValue = 0;
-		switch (TCCR1B_REG & 0x07) {
-			case 0x01: Local_u32PrescalerValue = 1; break;
-			case 0x02: Local_u32PrescalerValue = 8; break;
-			case 0x03: Local_u32PrescalerValue = 64; break;
-			case 0x04: Local_u32PrescalerValue = 256; break;
-			case 0x05: Local_u32PrescalerValue = 1024; break;
-			default: Local_u32PrescalerValue = 8; // Default to prescaler 8
-		}
+void TIMER1_voidSetPWM_16bit(double copy_u8DutyCycle, uint32_t copy_u32Frequency) {
+    double Local_u32PrescalerValue = 0;
+    switch (TCCR1B_REG & 0x07) {
+        case 0x01: Local_u32PrescalerValue = 1; break;
+        case 0x02: Local_u32PrescalerValue = 8; break;
+        case 0x03: Local_u32PrescalerValue = 64; break;
+        case 0x04: Local_u32PrescalerValue = 256; break;
+        case 0x05: Local_u32PrescalerValue = 1024; break;
+        default: Local_u32PrescalerValue = 8; // Default to prescaler 8
+    }
 
-		// Calculate TOP value based on desired frequency for Fast PWM or Phase and Frequency Correct PWM
-		ICR1 = ( F_CPU / (Local_u32PrescalerValue * copy_u32Frequency) ) - 1;
+    // Calculate TOP value based on desired frequency
+    double icr1Double = (double)(F_CPU) / (Local_u32PrescalerValue * copy_u32Frequency) - 1;
+    ICR1 = (uint32_t)icr1Double;
 
-		// Calculate OCR1A value based on desired duty cycle percentage
-		OCR1A_REG = (uint16_t) (((uint32_t)copy_u8DutyCycle * ICR1) / 100);
+    // Calculate OCR1A value based on desired duty cycle percentage with rounding
+    double dutyCycleValue = (copy_u8DutyCycle * icr1Double) / 100.0;
+    OCR1A_REG = (uint16_t)round(dutyCycleValue);
 
+}
 
-
-	}
 #endif
 
 
