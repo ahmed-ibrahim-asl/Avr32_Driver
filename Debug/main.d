@@ -5,7 +5,8 @@ main.o main.o: ../main.c ../MCAL/DIO/DIO_interface.h \
   ../MCAL/DIO/helper_embedded_libraries/std_types.h \
   ../MCAL/DIO/helper_embedded_libraries/register.h \
   ../MCAL/DIO/DIO_config.h ../MCAL/DIO/DIO_priv.h \
-  ../MCAL/TIMER/TIMER_interface.h
+  ../MCAL/TIMER/TIMER_interface.h ../HAL/servoMotor/servo_interface.h \
+  ../HAL/servoMotor/../../MCAL/DIO/DIO_interface.h
 
 ../MCAL/DIO/DIO_interface.h:
 
@@ -24,3 +25,7 @@ main.o main.o: ../main.c ../MCAL/DIO/DIO_interface.h \
 ../MCAL/DIO/DIO_priv.h:
 
 ../MCAL/TIMER/TIMER_interface.h:
+
+../HAL/servoMotor/servo_interface.h:
+
+../HAL/servoMotor/../../MCAL/DIO/DIO_interface.h:

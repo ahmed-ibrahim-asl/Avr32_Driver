@@ -21,11 +21,6 @@
 /********************************************************************************************************/
 
 
-#if(TIMER1_MODE_SELECT == TIMER1_MODE_ANY_PIN_PWM)
-
-	static uint8_t global_u8PortID;
-	static uint8_t global_u8PinID;
-#endif
 
 
 /******************************** Timer Tick Counters and ISR Handlers ********************************/
@@ -683,7 +678,7 @@ uint8_t TIMER1_voidScheduleTask(void (*TaskCallback)(void), float64 copy_f64Requ
 }
 
 
-void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle) {
+void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle, uint8_t copy_u8Channel) {
 
 		uint16_t Local_u16TopValue = 0;
 
@@ -706,12 +701,21 @@ void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle) {
 
 		#endif
 
-		OCR1A_REG = (uint16_t)(((uint32_t)copy_u8DutyCycle * Local_u16TopValue) / 100);
+		switch(copy_u8Channel){
+
+			case 'A': case 'a':
+
+				OCR1A_REG = (uint16_t)(((uint32_t)copy_u8DutyCycle * Local_u16TopValue) / 100);
+			break;
+
+			case 'B': case 'b':
+				OCR1B_REG = (uint16_t)(((uint32_t)copy_u8DutyCycle * Local_u16TopValue) / 100);
+		}
 
 }
 
 #if(TIMER1_MODE_SELECT == TIMER1_MODE_FastPWM_16bit_FREQ || TIMER1_MODE_SELECT == TIMER1_MODE_PWMphasecorrect_16bit_FREQ )
-void TIMER1_voidSetPWM_16bit(double copy_u8DutyCycle, uint32_t copy_u32Frequency) {
+void TIMER1_voidSetPWM_16bit(double copy_u8DutyCycle, uint32_t copy_u32Frequency, uint8_t copy_u8Channel) {
     double Local_u32PrescalerValue = 0;
     switch (TCCR1B_REG & 0x07) {
         case 0x01: Local_u32PrescalerValue = 1; break;
@@ -728,9 +732,36 @@ void TIMER1_voidSetPWM_16bit(double copy_u8DutyCycle, uint32_t copy_u32Frequency
 
     // Calculate OCR1A value based on desired duty cycle percentage with rounding
     double dutyCycleValue = (copy_u8DutyCycle * icr1Double) / 100.0;
-    OCR1A_REG = (uint16_t)round(dutyCycleValue);
+
+
+    switch(copy_u8Channel){
+
+    	case 'A': case 'a':
+    		OCR1A_REG = (uint16_t)round(dutyCycleValue);
+    	break;
+
+    	case 'B': case 'b':
+    		OCR1B_REG = (uint16_t)round(dutyCycleValue);
+    	break;
+    }
 
 }
+
+double TIMER1_CalculateDutyCycleFromTon(double copy_f64HighTimeMilliseconds, uint32_t copy_u32Frequency){
+
+
+	if(copy_f64HighTimeMilliseconds != 0 && copy_u32Frequency != 0){
+
+
+		return ( (copy_f64HighTimeMilliseconds /1000.0) / (1.0 / copy_u32Frequency) ) * 100.0;
+	}
+
+	return 0;
+}
+
+
+
+
 
 #endif
 

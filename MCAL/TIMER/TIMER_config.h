@@ -109,7 +109,7 @@
 
 // Options: TIMER1_OC1_OUTPUT_ENABLE or TIMER1_OC1_OUTPUT_DISABLE
 #define TIMER1_OC1A_OUTPUT_STATE		TIMER1_OC1_OUTPUT_ENABLE
-#define TIMER1_OC1B_OUTPUT_STATE		TIMER1_OC1_OUTPUT_DISABLE
+#define TIMER1_OC1B_OUTPUT_STATE		TIMER1_OC1_OUTPUT_ENABLE
 
 
 #if(TIMER1_MODE_SELECT == TIMER_MODE_CTC 				|| \
@@ -122,7 +122,7 @@
 	//			TIMER_TOGGLE_OC1B or TIMER_NORMAL_OC1B
 
 	#define TIMER_OC1A_OUTPUT_MODE			TIMER_CLR_OC1A
-	#define	TIMER_OC1B_OUTPUT_MODE			TIMER_NORMAL_OC1B
+	#define	TIMER_OC1B_OUTPUT_MODE			TIMER_CLR_OC1A
 #endif
 
 
@@ -139,7 +139,7 @@
 	//  - TIMER_FastPwmType_Normal
 
 	#define TIMER1_FastPwm_Type_OC1A	TIMER_FastPwmType_NonInverted
-	#define TIMER1_FastPwm_Type_OC1B	TIMER_FastPwmType_Normal
+	#define TIMER1_FastPwm_Type_OC1B	TIMER_FastPwmType_NonInverted
 #endif
 
 
@@ -156,7 +156,7 @@
 	//  - TIMER_PhaseCorrect_Normal
 
 	#define TIMER1_PhaseCorrect_Type_OC1A	TIMER_PhaseCorrect_Inverted
-	#define TIMER1_PhaseCorrect_Type_OC1B	TIMER_PhaseCorrect_Normal
+	#define TIMER1_PhaseCorrect_Type_OC1B	TIMER_PhaseCorrect_Inverted
 
 #endif
 

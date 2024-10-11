@@ -1,10 +1,23 @@
 #include "MCAL/DIO/DIO_interface.h"
 #include "MCAL/TIMER/TIMER_interface.h"
 
-
+#include "HAL/servoMotor/servo_interface.h"
 int main(){
-	TIMER1_voidInit();
 
-	TIMER1_voidSetPWM_16bit(6.25, 50);
-	while(1){}
+	servo_init();
+
+	servo_SetAngle(40, 'A');
+
+	servo_SetAngle(50, 'B');
+
+
+
+
+	while(1){
+
+
+	}
+
+
+	return 0;
 }
