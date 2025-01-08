@@ -63,7 +63,7 @@ void ultraSonic_u16GetDistance(ultraSonic_t* ultraSonic_Instance){
 		DIO_enuGetPinValue(ultraSonic_Instance->ECHO_PORT, ultraSonic_Instance->ECHO_PIN, &Local_u8EchoPinStatus);
 	}
 
-	RESET_TIMER1();
+	RESET_TIMER1_COUNTER();
 
 	// Wait for echo pin to go low (reflected pulse received)
 

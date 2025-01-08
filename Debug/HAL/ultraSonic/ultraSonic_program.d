@@ -11,6 +11,7 @@ HAL/ultraSonic/ultraSonic_program.o HAL/ultraSonic/ultraSonic_program.o:  \
   ../HAL/ultraSonic/../../MCAL/DIO/DIO_priv.h \
   ../HAL/ultraSonic/../../MCAL/TIMER/TIMER_interface.h \
   ../HAL/ultraSonic/../../MCAL/TIMER/TIMER_priv.h \
+  ../HAL/ultraSonic/../../MCAL/TIMER/TIMER_priv.h \
   ../HAL/ultraSonic/ultraSonic_interface.h
 
 ../HAL/ultraSonic/../../MCAL/DIO/helper_embedded_libraries/micro_config.h:
@@ -32,6 +33,8 @@ HAL/ultraSonic/ultraSonic_program.o HAL/ultraSonic/ultraSonic_program.o:  \
 ../HAL/ultraSonic/../../MCAL/DIO/DIO_priv.h:
 
 ../HAL/ultraSonic/../../MCAL/TIMER/TIMER_interface.h:
+
+../HAL/ultraSonic/../../MCAL/TIMER/TIMER_priv.h:
 
 ../HAL/ultraSonic/../../MCAL/TIMER/TIMER_priv.h:
 

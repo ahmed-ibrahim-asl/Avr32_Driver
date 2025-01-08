@@ -8,6 +8,8 @@
 #ifndef MCAL_TIMER_TIMER_INTERFACE_H_
 #define MCAL_TIMER_TIMER_INTERFACE_H_
 
+#include "TIMER_priv.h"
+
 /****************************************** TIMER0 INTERFACE ******************************************/
 void TIMER0_voidInit(void);
 void TIMER0_voidStart(void);
@@ -16,6 +18,8 @@ void TIMER0_voidSetPWM(uint8_t copy_u8DutyCycle);
 
 void TIMER0_voidOutputPWM(uint8_t Copy_u8DutyCycle, uint8_t Copy_u8PortID, uint8_t Copy_u8PinID);
 uint8_t TIMER0_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64RequiredTime_inSeconds);
+void RESET_TIMER0_COUNTER();
+
 /******************************************************************************************************/
 
 
@@ -45,8 +49,8 @@ void TIMER1_voidSetPWM(uint8_t copy_u8DutyCycle, uint8_t copy_u8Channel);
 
 uint8_t TIMER1_voidScheduleTask( void (*TaskCallback)(void), float64 copy_f64RequiredTime_inSeconds);
 
-#define RESET_TIMER1()  (TCNT1_REG = 0)
 
+void RESET_TIMER1_COUNTER();
 
 /******************************************************************************************************/
 

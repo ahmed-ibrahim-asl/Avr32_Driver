@@ -9,6 +9,7 @@
 /******************************************* Include  Section *******************************************/
 #include "servo_interface.h"
 #include "../../MCAL/TIMER/TIMER_interface.h"
+#include <util/delay.h>
 /********************************************************************************************************/
 
 
@@ -34,7 +35,9 @@ void servo_init(){
 
 
 void servo_SetAngle(uint8_t copy_u8Angle,  uint8_t copy_u8Channel) {
-    // Step 1: Convert the angle to Ton (pulse width) in milliseconds
+
+
+	// Step 1: Convert the angle to Ton (pulse width) in milliseconds
     double tonMilliseconds = 1000.0 + ((double)copy_u8Angle / 180.0) * 1000.0;
 
     // Step 2: Calculate the duty cycle for the PWM signal (period = 20 ms for 50 Hz)

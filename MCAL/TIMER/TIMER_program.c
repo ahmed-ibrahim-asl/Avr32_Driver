@@ -266,7 +266,9 @@ void  TIMER0_voidSetPWM(uint8_t copy_u8DutyCycle){
 }
 
 
-
+void RESET_TIMER0_COUNTER(){
+	TCNT0_REG = 0;
+}
 
 
 /******************************************************************************************************/
@@ -584,7 +586,7 @@ ErrorStatus_t Timer1_SetupForTimeMeasurement(uint16 copy_u16prescaler){
 	TCCR1A_REG = 0x00;
 
 	// Reset the timer counter
-	RESET_TIMER1();
+	RESET_TIMER1_COUNTER();
 
 	Local_enuErrrorState = ERROR_STATUS_OK;
 	return Local_enuErrrorState;
@@ -799,6 +801,13 @@ double TIMER1_CalculateDutyCycleFromTon(double copy_f64HighTimeMilliseconds, uin
 		SET_BIT(TIMSK_REG, TIMSK_OCIE1A);
 	}
 #endif
+
+
+
+void RESET_TIMER1_COUNTER(){
+	TCNT1_REG = 0;
+}
+
 /******************************************************************************************************/
 
 
